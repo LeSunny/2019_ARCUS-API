@@ -1,0 +1,32 @@
+package com.jam2in.restapi.config;
+
+import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+
+import net.spy.memcached.ArcusClient;
+import net.spy.memcached.ArcusClientPool;
+import net.spy.memcached.ConnectionFactoryBuilder;
+import net.spy.memcached.transcoders.Transcoder;
+
+import java.io.FileInputStream;
+
+import javax.annotation.Resource;
+
+
+@Configuration
+@PropertySource(value = "file:/Arcus-rest-api/src/test/resources/arcus.properties")
+public class ArcusConfig {
+	
+	static Environment env;
+	
+	@Bean
+	public static ArcusClient defaultClient() {
+		ArcusClient arcusClient = ArcusClient.createArcusClient(env.getProperty("arcus.address"),env.getProperty("arcus.serviceCode"), new ConnectionFactoryBuilder());
+//		arcusClient.connect();
+		return arcusClient;
+	}
+
+}

@@ -1,0 +1,7 @@
+package com.jam2in.restapi;
+
+public class ArcusRequest {
+	String key;
+	int expireTime;
+	String obj;
+}

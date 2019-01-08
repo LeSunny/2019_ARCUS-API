@@ -1,0 +1,7 @@
+INDEX VERSION 1.4+C:\Users\jam2in\2019_arcus-api\workspace\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+316354670.index
+3237906646.index
+678400443.index
+1216591877.index
+2798833224.index
+1275093508.index

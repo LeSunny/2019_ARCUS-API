@@ -1,0 +1,98 @@
+package restapi.sample.controller;
+
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import net.spy.memcached.ArcusClient;
+import net.spy.memcached.ConnectionFactoryBuilder;
+
+/**
+ * Handles requests for the application home page.
+ */
+@Controller
+public class HomeController {
+	
+	/*private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	
+	**
+	 * Simply selects the home view to render by returning its name.
+	 *
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String home(Locale locale, Model model) {
+		logger.info("Welcome home! The client locale is {}.", locale);
+		
+		Date date = new Date();
+		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
+		
+		String formattedDate = dateFormat.format(date);
+		
+		model.addAttribute("serverTime", formattedDate );
+		
+		return "home";
+	}*/
+	
+	
+	private String arcusAdmin;
+	private String serviceCode;
+	private ArcusClient arcusClient;
+	
+
+	public HomeController (String arcusAdmin, String serviceCode) {
+		this.arcusAdmin = arcusAdmin;
+		this.serviceCode = serviceCode;
+		
+		this.arcusAdmin = arcusAdmin;
+		this.serviceCode = serviceCode;
+		
+		// log4j logger를 사용하도록 설정합니다.
+		// 코드에 직접 추가하지 않고 아래의 JVM 환경변수를 사용해도 됩니다.
+		//   -Dnet.spy.log.LoggerImpl=net.spy.memcached.compat.log.Log4JLogger
+		System.setProperty("net.spy.log.LoggerImpl", "net.spy.memcached.compat.log.Log4JLogger");
+
+		// Arcus 클라이언트 객체를 생성합니다.
+		// - arcusAdmin : Arcus 캐시 서버들의 그룹을 관리하는 admin 서버(ZooKeeper)의 주소입니다.
+		// - serviceCode : 사용자에게 할당된 Arcus 캐시 서버들의 집합에 대한 코드값입니다. 
+		// - connectionFactoryBuilder : 클라이언트 생성 옵션을 지정할 수 있습니다.
+		//
+		// 정리하면 arcusAdmin과 serviceCode의 조합을 통해 유일한 캐시 서버들의 집합을 얻어 연결할 수 있는 것입니다.
+		this.arcusClient = ArcusClient.createArcusClient(arcusAdmin, serviceCode, new ConnectionFactoryBuilder());
+	
+	}
+	
+	@RequestMapping(value="/{address}/{api_version}/{service_code}/set", method=RequestMethod.POST)
+	void set(String key, int exp, Object obj){
+		Future<Boolean> future = null;
+		boolean setSuccess = false;
+		
+		future = this.arcusClient.set(key, exp, obj);
+		
+		try {
+			setSuccess = future.get(700L, TimeUnit.MILLISECONDS);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TimeoutException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
+		
+	}
+	
+}

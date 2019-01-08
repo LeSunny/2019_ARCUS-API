@@ -1,0 +1,35 @@
+package com.himart.arcus.config;
+
+import com.himart.arcus.manager.ArcusCacheManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.*;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
+@Configuration
+@ComponentScan("com.himart.arcus.component")
+@EnableAspectJAutoProxy(proxyTargetClass=true)
+@PropertySource("classpath:arcus.properties")
+public class TestConfig {
+
+    @Autowired
+    private ArcusCacheManager arcusCacheManager;
+
+    @PostConstruct
+    public void postConstruct() {
+        arcusCacheManager.connect();
+    }
+
+    @PreDestroy
+    public void preDestroy() {
+        arcusCacheManager.disconnect();
+    }
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
+
+}

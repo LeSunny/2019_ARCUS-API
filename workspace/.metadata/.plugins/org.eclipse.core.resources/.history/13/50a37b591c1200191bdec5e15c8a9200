@@ -1,0 +1,8 @@
+# default="127.0.0.1:2181"
+arcus.address=1.255.51.181:8080
+
+# default="arcus"
+arcus.serviceCode=test
+
+# default=4
+arcus.poolSize=8

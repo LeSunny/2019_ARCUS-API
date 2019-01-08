@@ -1,0 +1,5 @@
+package restapi.common.logger;
+
+public class LoggerInterceptor {
+
+}

@@ -1,0 +1,5 @@
+package restapi.sample.controller;
+
+public class SampleController {
+
+}

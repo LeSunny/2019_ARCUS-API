@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete resource &apos;ARCUS_REST_API&apos;" deleteContents="true" description="Delete resource &apos;ARCUS_REST_API&apos;" element1="/ARCUS_REST_API" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1545900886369"/>
+</session>
