@@ -1,0 +1,34 @@
+package com.jam2in.restapi.response;
+
+import java.util.logging.Logger;
+
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ControllerAdvice
+public class ArcusExceptionResponse {
+	/*InterruptedException
+	ExecutionException
+	TimeoutException
+	IOException
+	*/
+
+	Logger logger = Logger.getLogger(ArcusExceptionResponse.class);
+	 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(NotContextException.class)
+    public ModelAndView handleNotContent() {
+        logger.info("NotContextException ¿‘¥œ¥Ÿ.");
+        return new ModelAndView("error");
+    }
+ 
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(IllegalArgumentException.class)
+    public void handleConflict() {
+        logger.info("handleConflict");
+    }
+
+
+	
+}

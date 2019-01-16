@@ -1,0 +1,130 @@
+package com.jam2in.restapi.Service;
+
+import java.io.IOException;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
+import javax.annotation.Resource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jam2in.restapi.DAO.ApiDAO;
+
+import net.spy.memcached.ArcusClient;
+import net.spy.memcached.collection.CollectionAttributes;
+import net.spy.memcached.internal.CollectionFuture;
+import net.spy.memcached.ops.CollectionOperationStatus;
+
+@Service("apiService")
+public class ApiServiceImpl implements ApiService {
+
+	@Autowired
+	private ArcusClient arcusClient;
+	
+	@Resource(name="apiDAO")
+	private ApiDAO apiDAO;
+	
+	public JsonNode set(String key, int expireTime, String value) {
+		
+		JsonNode resultJson = arcusClient.set(key, expireTime, value, arcusClient);
+		
+		return resultJson;
+		
+	}
+	public JsonNode add(String key, int expireTime, String value) {
+		
+		JsonNode resultJson = arcusClient.add(key, expireTime, value);
+		
+		return resultJson;
+				
+	}
+	public JsonNode replace(String key, int expireTime, String value) {
+		
+		JsonNode resultJson = arcusClient.replace(key, expireTime, value);
+		return resultJson;
+		
+	}
+	public JsonNode prepend(long cas, String key, Object value) {
+		
+		JsonNode resultJson = arcusClient.prepend(cas, key, value);
+		return resultJson;
+		
+	}
+	public JsonNode append(long cas, String key, Object value) {
+
+		JsonNode resultJson = arcusClient.append(cas, key, value);
+		return resultJson;
+		
+	}
+	public JsonNode setBulk(List<String> key, int expireTime, Object value) {
+		
+		JsonNode resultJson = arcusClient.asyncSetBulk(key, expireTime, value);
+		return resultJson;
+		
+	}
+	public JsonNode setBulk(Map<String, Object> map, int expireTime) {
+		
+		JsonNode resultJson = arcusClient.asyncSetBulk(map, expireTime);
+		return resultJson;
+		
+	}
+	public JsonNode get(String key) {
+		
+		JsonNode resultJson = arcusClient.asyncGet(key);
+		return resultJson;
+		
+	}
+	public JsonNode getBulk(Collection<String> key) {
+		
+		JsonNode resultJson = arcusClient.asyncGetBulk(key);
+		return resultJson;
+		
+	}
+	
+	public JsonNode getAttr(String key) {
+		
+		JsonNode resultJson = arcusClient.asyncGetAttr(key);
+		return resultJson;
+		
+	}
+	public JsonNode increase(String key, int by) {
+		
+		JsonNode resultJson = arcusClient.asyncIncr(key, by);
+		return resultJson;
+		
+	}
+	public JsonNode increase(String key, int by, long def, int exp) {
+		
+		JsonNode resultJson = arcusClient.asyncIncr(key, by, def, exp);
+		return resultJson;
+		
+	}
+	public JsonNode decrease(String key, int by) {
+
+		JsonNode resultJson = arcusClient.asyncDecr(key, by);
+		return resultJson;
+		
+	}
+	public JsonNode decrease(String key, int by, long def, int exp) {
+	
+		JsonNode resultJson = arcusClient.asyncDecr(key, by, def, exp);
+		return resultJson;
+		
+	}
+	public JsonNode delete(String key) {
+		
+		JsonNode resultJson = arcusClient.delete(key);
+		return resultJson;
+
+	}
+}

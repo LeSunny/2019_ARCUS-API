@@ -1,0 +1,28 @@
+package com.jam2in.restapi.response;
+
+import java.util.logging.Logger;
+
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ControllerAdvice
+public class ArcusExceptionResponse {
+	/*InterruptedException
+	ExecutionException
+	TimeoutException
+	IOException
+	*/
+
+	Logger logger = Logger.getAnonymousLogger(ArcusExceptionResponse.class);
+	 
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(IllegalArgumentException.class)
+    public void handleConflict() {
+        logger.info("handleConflict");
+    }
+
+
+	
+}

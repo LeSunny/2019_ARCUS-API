@@ -1,0 +1,278 @@
+package com.jam2in.restapi.DAO;
+
+import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import net.spy.memcached.ArcusClient;
+import net.spy.memcached.collection.CollectionAttributes;
+import net.spy.memcached.internal.CollectionFuture;
+import net.spy.memcached.ops.CollectionOperationStatus;
+
+@Repository("apiDAO")
+public class ApiDAO {
+
+
+	public JsonNode set(String key, int expireTime, String value, ArcusClient arcusClient) {
+		Future<Boolean> future = null;
+		boolean result = false;	
+		future = arcusClient.set(key, expireTime, value);
+		
+		try {
+			result = future.get(700L, TimeUnit.MILLISECONDS);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		} catch (TimeoutException e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println(result);
+		
+		String jsonString;
+		
+		if(result) {
+			jsonString = "{\"result\":\"" + "SUCCESS\"}";
+		}else {
+			jsonString = "{\"result\":\"" + "FAILED\"}";
+		}
+		
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode returnJson = null;
+		try {
+			returnJson = mapper.readTree(jsonString);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return returnJson;
+	}
+	public JsonNode add(String key, int expireTime, String value, ArcusClient arcusClient){
+		Future<Boolean> future = null;
+		boolean result = false;
+		
+		future = arcusClient.add(key, expireTime, value);
+		
+		try {
+			result = future.get(700L, TimeUnit.MILLISECONDS);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		} catch (TimeoutException e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println(result);
+		
+		String jsonString;
+		
+		if(result) {
+			jsonString = "{\"result\":\"" + "SUCCESS\"}";
+		}else {
+			jsonString = "{\"result\":\"" + "FAILED\"}";
+		}
+		
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode returnJson = null;
+		try {
+			returnJson = mapper.readTree(jsonString);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return returnJson;
+	}
+	public JsonNode replace(String key, int expireTime, String value, ArcusClient arcusClient){
+
+		Future<Boolean> future = null;
+		boolean result = false;
+		
+		future = arcusClient.replace(key, expireTime, value);
+		
+		try {
+			result = future.get(700L, TimeUnit.MILLISECONDS);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		} catch (TimeoutException e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println(result);
+		
+		String jsonString;
+		
+		if(result) {
+			jsonString = "{\"result\":\"" + "SUCCESS\"}";
+		}else {
+			jsonString = "{\"result\":\"" + "FAILED\"}";
+		}
+		
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode returnJson = null;
+		try {
+			returnJson = mapper.readTree(jsonString);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return returnJson;
+	}
+	
+	public JsonNode prepend(long cas, String key, Object value, ArcusClient arcusClient) {
+		Future<Boolean> future = null;
+		boolean result = false;
+		
+		future = arcusClient.prepend(cas,key,value);
+		
+		try {
+			result = future.get(700L, TimeUnit.MILLISECONDS);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		} catch (TimeoutException e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println(result);
+		
+		String jsonString;
+		
+		if(result) {
+			jsonString = "{\"result\":\"" + "SUCCESS\"}";
+		}else {
+			jsonString = "{\"result\":\"" + "FAILED\"}";
+		}
+		
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode returnJson = null;
+		try {
+			returnJson = mapper.readTree(jsonString);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return returnJson;
+	}
+	public JsonNode append(long cas, String key, Object value, ArcusClient arcusClient){
+		Future<Boolean> future = null;
+		boolean result = false;
+		
+		future = (Future<Boolean>) apiDAO.append(cas, key, value);
+		
+		try {
+			result = future.get(700L, TimeUnit.MILLISECONDS);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		} catch (TimeoutException e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println(result);
+		
+		String jsonString;
+		
+		if(result) {
+			jsonString = "{\"result\":\"" + "SUCCESS\"}";
+		}else {
+			jsonString = "{\"result\":\"" + "FAILED\"}";
+		}
+		
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode returnJson = null;
+		try {
+			returnJson = mapper.readTree(jsonString);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return returnJson;
+	}
+	public JsonNode setBulk(List<String> keys, int expireTime, Object value){
+		Future<Map<String,CollectionOperationStatus>> future = null;
+		
+		future = arcusClient.asyncSetBulk(keys, expireTime, value);
+		
+		return future;
+	}
+	public JsonNode setBulk(Map<String, Object> map, int expireTime){
+		Future<Map<String,CollectionOperationStatus>> future = null;
+		
+		future = arcusClient.asyncSetBulk(map, expireTime);
+		
+		return future;
+	}
+	public JsonNode get(String key){
+		Future<Object> future = null;
+		
+		future = arcusClient.asyncGet(key);
+		
+		return future;
+	}
+	public JsonNode getBulk(Collection<String> keys){
+		Future<Map<String, Object>> future = null;
+		
+		future = arcusClient.asyncGetBulk(keys);
+		
+		return future;
+	}
+	public JsonNode getAttr(String key){
+		CollectionFuture<CollectionAttributes> future = null;
+		
+		future = arcusClient.asyncGetAttr(key);
+		
+		return future;
+	}
+	public JsonNode increase(String key, int by){
+		Future<Long> future = null;
+		
+		future = arcusClient.asyncIncr(key, by);
+		
+		return future;
+	}
+	public JsonNode increase(String key, int by, long def, int expireTime){
+		Future<Long> future = null;
+		
+		future = arcusClient.asyncIncr(key, by, def, expireTime);
+		
+		return future;
+	}
+	public JsonNode decrease(String key, int by){
+Future<Long> future = null;
+		
+		future = arcusClient.asyncDecr(key, by);
+		
+		return future;
+	}
+	public JsonNode decrease(String key, int by, long def, int expireTime){
+		Future<Long> future = null;
+		
+		future = arcusClient.asyncDecr(key, by, def, expireTime);
+		
+		return future;
+	}
+	public JsonNode delete(String key){
+		Future<Boolean> future = null;
+		
+		future = arcusClient.delete(key);
+		
+		return future;
+	}
+	
+}

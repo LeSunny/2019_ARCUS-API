@@ -13,12 +13,14 @@ import java.util.concurrent.TimeoutException;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jam2in.restapi.DAO.ApiDAO;
 
+import net.spy.memcached.ArcusClient;
 import net.spy.memcached.collection.CollectionAttributes;
 import net.spy.memcached.internal.CollectionFuture;
 import net.spy.memcached.ops.CollectionOperationStatus;
@@ -30,9 +32,9 @@ public class ApiServiceImpl implements ApiService {
 	private ApiDAO apiDAO;
 	
 	public JsonNode set(String key, int expireTime, String value) {
-		Future<Boolean> future = null;
-		boolean result = false;
 		
+		Future<Boolean> future = null;
+		boolean result = false;	
 		future = apiDAO.set(key, expireTime, value);
 		
 		try {
@@ -47,13 +49,7 @@ public class ApiServiceImpl implements ApiService {
 		
 		System.out.println(result);
 		
-		String jsonString;
-		
-		if(result) {
-			jsonString = "{\"result\":\"" + "SUCCESS\"}";
-		}else {
-			jsonString = "{\"result\":\"" + "FAILED\"}";
-		}
+		String jsonString = "{\"result\":\"" + "SUCCESS\"}";
 		
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode returnJson = null;
@@ -64,8 +60,10 @@ public class ApiServiceImpl implements ApiService {
 		}
 		
 		return returnJson;
+		
 	}
 	public JsonNode add(String key, int expireTime, String value) {
+		
 		Future<Boolean> future = null;
 		boolean result = false;
 		
@@ -83,13 +81,7 @@ public class ApiServiceImpl implements ApiService {
 		
 		System.out.println(result);
 		
-		String jsonString;
-		
-		if(result) {
-			jsonString = "{\"result\":\"" + "SUCCESS\"}";
-		}else {
-			jsonString = "{\"result\":\"" + "FAILED\"}";
-		}
+		String jsonString = "{\"result\":\"" + "SUCCESS\"}";
 		
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode returnJson = null;
@@ -100,8 +92,10 @@ public class ApiServiceImpl implements ApiService {
 		}
 		
 		return returnJson;
+				
 	}
 	public JsonNode replace(String key, int expireTime, String value) {
+		
 		Future<Boolean> future = null;
 		boolean result = false;
 		
@@ -119,14 +113,8 @@ public class ApiServiceImpl implements ApiService {
 		
 		System.out.println(result);
 		
-		String jsonString;
-		
-		if(result) {
-			jsonString = "{\"result\":\"" + "SUCCESS\"}";
-		}else {
-			jsonString = "{\"result\":\"" + "FAILED\"}";
-		}
-		
+		String jsonString = "{\"result\":\"" + "SUCCESS\"}";
+
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode returnJson = null;
 		try {
@@ -136,8 +124,10 @@ public class ApiServiceImpl implements ApiService {
 		}
 		
 		return returnJson;
+		
 	}
 	public JsonNode prepend(long cas, String key, Object value) {
+		
 		Future<Boolean> future = null;
 		boolean result = false;
 		
@@ -155,14 +145,8 @@ public class ApiServiceImpl implements ApiService {
 		
 		System.out.println(result);
 		
-		String jsonString;
-		
-		if(result) {
-			jsonString = "{\"result\":\"" + "SUCCESS\"}";
-		}else {
-			jsonString = "{\"result\":\"" + "FAILED\"}";
-		}
-		
+		String jsonString = "{\"result\":\"" + "SUCCESS\"}";
+
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode returnJson = null;
 		try {
@@ -172,12 +156,13 @@ public class ApiServiceImpl implements ApiService {
 		}
 		
 		return returnJson;
+		
 	}
 	public JsonNode append(long cas, String key, Object value) {
+
 		Future<Boolean> future = null;
 		boolean result = false;
-		
-		future = (Future<Boolean>) apiDAO.append(cas, key, value);
+		future = apiDAO.append(cas, key, value);
 		
 		try {
 			result = future.get(700L, TimeUnit.MILLISECONDS);
@@ -191,14 +176,8 @@ public class ApiServiceImpl implements ApiService {
 		
 		System.out.println(result);
 		
-		String jsonString;
-		
-		if(result) {
-			jsonString = "{\"result\":\"" + "SUCCESS\"}";
-		}else {
-			jsonString = "{\"result\":\"" + "FAILED\"}";
-		}
-		
+		String jsonString = "{\"result\":\"" + "SUCCESS\"}";
+
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode returnJson = null;
 		try {
@@ -207,8 +186,10 @@ public class ApiServiceImpl implements ApiService {
 			e.printStackTrace();
 		}
 		return returnJson;
+		
 	}
 	public JsonNode setBulk(List<String> key, int expireTime, Object value) {
+		
 		Future<Map<String,CollectionOperationStatus>> future = null;
 		Map<String,CollectionOperationStatus> resultMap = null;
 		
@@ -224,9 +205,11 @@ public class ApiServiceImpl implements ApiService {
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode returnJson = mapper.convertValue(resultMap, JsonNode.class);
 		
-		return returnJson;		
+		return returnJson;
+		
 	}
 	public JsonNode setBulk(Map<String, Object> map, int expireTime) {
+		
 		Future<Map<String,CollectionOperationStatus>> future = null;
 		Map<String,CollectionOperationStatus> resultMap = null;
 		
@@ -244,8 +227,11 @@ public class ApiServiceImpl implements ApiService {
 		JsonNode returnJson = mapper.convertValue(resultMap, JsonNode.class);
 		
 		return returnJson;
+		
 	}
 	public JsonNode get(String key) {
+		
+
 		Future<Object> future = null;
 		Object value = null;
 		
@@ -281,11 +267,12 @@ public class ApiServiceImpl implements ApiService {
 		}
 		
 		return returnJson;
+	
 	}
 	public JsonNode getBulk(Collection<String> key) {
+		
 		Future<Map<String,Object>> future = null;
 		Map<String,Object> resultMap = null;
-		
 		
 		future = apiDAO.getBulk(key);
 		
@@ -298,11 +285,14 @@ public class ApiServiceImpl implements ApiService {
 		
 		//Map to json
 		ObjectMapper mapper = new ObjectMapper();
-		JsonNode beforeJson = mapper.convertValue(resultMap, JsonNode.class);
-		System.out.println(beforeJson);
-		return beforeJson;
+		JsonNode resultJson = mapper.convertValue(resultMap, JsonNode.class);
+		System.out.println(resultJson);
+		return resultJson;
+		
 	}
+	
 	public JsonNode getAttr(String key) {
+		
 		CollectionFuture<CollectionAttributes> future = null;
 		CollectionAttributes result = null;
 		
@@ -332,6 +322,7 @@ public class ApiServiceImpl implements ApiService {
 		
 	}
 	public JsonNode increase(String key, int by) {
+		
 		Future<Long> future = null;
 		long value = 0;
 		
@@ -343,13 +334,8 @@ public class ApiServiceImpl implements ApiService {
 			e.printStackTrace();
 		}
 		
-		String jsonString;		
+		String jsonString = "{\"value\":\""+value+"\"}";
 		
-		if(value==-1) {
-			jsonString = "{\"value\":\"null\"}";
-		}else {
-			jsonString = "{\"value\":\""+value+"\"}";
-		}
 		
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode returnJson = null;
@@ -360,8 +346,10 @@ public class ApiServiceImpl implements ApiService {
 		}
 		
 		return returnJson;
+		
 	}
 	public JsonNode increase(String key, int by, long def, int exp) {
+		
 		Future<Long> future = null;
 		long value = 0;
 		
@@ -373,13 +361,7 @@ public class ApiServiceImpl implements ApiService {
 			e.printStackTrace();
 		}
 		
-		String jsonString;		
-		
-		if(value==-1) {
-			jsonString = "{\"value\":\"null\"}";
-		}else {
-			jsonString = "{\"value\":\""+value+"\"}";
-		}
+		String jsonString = "{\"value\":\"null\"}";
 		
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode returnJson = null;
@@ -390,12 +372,12 @@ public class ApiServiceImpl implements ApiService {
 		}
 		
 		return returnJson;
-	
+		
 	}
 	public JsonNode decrease(String key, int by) {
+
 		Future<Long> future = null;
 		long value = 0;
-		
 		future = apiDAO.decrease(key, by);
 		
 		try {
@@ -404,13 +386,8 @@ public class ApiServiceImpl implements ApiService {
 			e.printStackTrace();
 		}
 		
-		String jsonString;		
+		String jsonString = "{\"value\":\""+value+"\"}";
 		
-		if(value==-1) {
-			jsonString = "{\"value\":\"null\"}";
-		}else {
-			jsonString = "{\"value\":\""+value+"\"}";
-		}
 		
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode returnJson = null;
@@ -421,12 +398,14 @@ public class ApiServiceImpl implements ApiService {
 		}
 		
 		return returnJson;
+		
 	}
 	public JsonNode decrease(String key, int by, long def, int exp) {
+	
 		Future<Long> future = null;
 		long value = 0;
 		
-		future = apiDAO.increase(key, by, def, exp);
+		future = apiDAO.decrease(key, by, def, exp);
 		
 		try {
 			value = future.get(700L, TimeUnit.MILLISECONDS);
@@ -434,13 +413,7 @@ public class ApiServiceImpl implements ApiService {
 			e.printStackTrace();
 		}
 		
-		String jsonString;		
-		
-		if(value==-1) {
-			jsonString = "{\"value\":\"null\"}";
-		}else {
-			jsonString = "{\"value\":\""+value+"\"}";
-		}
+		String jsonString = "{\"value\":\""+value+"\"}";		
 		
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode returnJson = null;
@@ -451,32 +424,24 @@ public class ApiServiceImpl implements ApiService {
 		}
 		
 		return returnJson;
+
+		
 	}
 	public JsonNode delete(String key) {
-		Future<Boolean> future = null;
-		boolean result = false;
 		
+		Future<Boolean> future = null;
+		boolean result = false;	
 		future = apiDAO.delete(key);
 		
 		try {
 			result = future.get(700L, TimeUnit.MILLISECONDS);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		} catch (TimeoutException e) {
+		} catch (InterruptedException | ExecutionException | TimeoutException e) {
 			e.printStackTrace();
 		}
 		
 		System.out.println(result);
 		
-		String jsonString;
-		
-		if(result) {
-			jsonString = "{\"result\":\"" + "SUCCESS\"}";
-		}else {
-			jsonString = "{\"result\":\"" + "FAILED\"}";
-		}
+		String jsonString = "{\"result\":\"" + "SUCCESS\"}";
 		
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode returnJson = null;
@@ -487,5 +452,6 @@ public class ApiServiceImpl implements ApiService {
 		}
 		
 		return returnJson;
+
 	}
 }

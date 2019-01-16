@@ -1,0 +1,27 @@
+package com.jam2in.restapi.response;
+
+
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+import net.spy.memcached.compat.log.Logger;
+
+@ControllerAdvice
+public class ArcusExceptionResponse {
+	/*InterruptedException
+	ExecutionException
+	TimeoutException
+	IOException
+	*/
+	 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(RestClientException.class)
+    @ResponseBody
+    public ErrorInfo handleBadRequest(HttpServletRequest req, Exception ex) {
+        return new ErrorInfo(req.getRequestURL().toString(), ex);
+    }
+
+	
+}
