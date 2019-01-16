@@ -1,0 +1,54 @@
+package com.jam2in.restapi.response;
+
+
+import java.util.concurrent.TimeoutException;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ControllerAdvice
+public class ArcusExceptionResponse {
+	/*InterruptedException
+	ExecutionException
+	TimeoutException
+	IOException
+	*/
+	 
+    @ResponseStatus(value=HttpStatus.REQUEST_TIMEOUT)
+    @ExceptionHandler(TimeoutException.class)
+    @ResponseBody
+    public String handleBadRequest(HttpServletRequest req, TimeoutException ex)  {
+    	
+        return new ErrorInfo(TimeoutException ex).getErrorMessage();
+    }
+
+    @ResponseStatus(value=HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(TimeoutException.class)
+    @ResponseBody
+    public String handleBadRequest2(HttpServletRequest req, ExecutionException ex) {
+    	
+        return new ErrorInfo(req.getRequestURL().toString(), ex).getErrorMessage();
+    }
+    
+    @ResponseStatus(value=HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(TimeoutException.class)
+    @ResponseBody
+    public String handleBadRequest3(HttpServletRequest req, TimeoutException ex) {
+    	
+        return new ErrorInfo(req.getRequestURL().toString(), ex).getErrorMessage();
+    }
+    
+    @ResponseStatus(value=HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(TimeoutException.class)
+    @ResponseBody
+    public String handleBadRequest4(HttpServletRequest req, TimeoutException ex) {
+    	
+        return new ErrorInfo(req.getRequestURL().toString(), ex).getErrorMessage();
+    }
+	
+}

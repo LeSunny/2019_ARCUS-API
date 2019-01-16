@@ -34,6 +34,7 @@ import com.jam2in.restapi.request.OneRequest;
 import com.jam2in.restapi.request.ThreeRequest;
 import com.jam2in.restapi.request.ThreeSingularRequest;
 import com.jam2in.restapi.request.TwoRequest;
+import com.jam2in.restapi.response.ArcusSuccessResponse;
 import com.jam2in.restapi.Service.ApiService;
 import com.jam2in.restapi.config.ArcusConfig;
 
@@ -49,66 +50,56 @@ import net.spy.memcached.ops.CollectionOperationStatus;
 @Controller
 @PropertySource("classpath:/arcus.properties")
 public class HomeController {
-		
-	@Autowired
-	private ArcusClient arcusClient;
 	
 	@Resource(name="apiService")
 	private ApiService apiService;
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/set", method=RequestMethod.POST)
-	@ResponseBody
-	JsonNode set(@RequestBody ThreeSingularRequest arcusRequest){
+	@ResponseBody // 응답 시 return 되는 것을 자동으로 json으로 바꾸어 줌
+	ArcusSuccessResponse set(@RequestBody ThreeSingularRequest arcusRequest){
 				
-		JsonNode resultJson = apiService.set(arcusRequest.getKey(), arcusRequest.getExpireTime(), arcusRequest.getValue());
-		return resultJson;
+		return apiService.set(arcusRequest.getKey(), arcusRequest.getExpireTime(), arcusRequest.getValue());
 		
 	}
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/add", method=RequestMethod.POST)
 	@ResponseBody
-	JsonNode add(@RequestBody ThreeSingularRequest arcusRequest){
+	ArcusSuccessResponse add(@RequestBody ThreeSingularRequest arcusRequest){
 	
-		JsonNode resultJson = apiService.add(arcusRequest.getKey(), arcusRequest.getExpireTime(), arcusRequest.getValue());
-		return resultJson;
+		return apiService.add(arcusRequest.getKey(), arcusRequest.getExpireTime(), arcusRequest.getValue());
 		
 	}
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/replace", method=RequestMethod.PATCH)
 	@ResponseBody
-	JsonNode replace(@RequestBody ThreeSingularRequest arcusRequest){
+	ArcusSuccessResponse replace(@RequestBody ThreeSingularRequest arcusRequest){
 		
-		JsonNode resultJson = apiService.replace(arcusRequest.getKey(), arcusRequest.getExpireTime(), arcusRequest.getValue());
-		return resultJson;
+		return apiService.replace(arcusRequest.getKey(), arcusRequest.getExpireTime(), arcusRequest.getValue());
 	
 	}
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/prepend", method=RequestMethod.PATCH)
 	@ResponseBody
-	JsonNode prepend(@RequestBody TwoRequest arcusRequest){
+	ArcusSuccessResponse prepend(@RequestBody TwoRequest arcusRequest){
 
-		JsonNode resultJson = apiService.prepend(-1, arcusRequest.getKey(), arcusRequest.getValue());
-		return resultJson;
+		return apiService.prepend(-1, arcusRequest.getKey(), arcusRequest.getValue());
 
 	}
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/append", method=RequestMethod.PATCH)
 	@ResponseBody
-	JsonNode append(@RequestBody TwoRequest arcusRequest){
+	ArcusSuccessResponse append(@RequestBody TwoRequest arcusRequest){
 	
-		JsonNode resultNode = apiService.append(-1, arcusRequest.getKey(), arcusRequest.getValue());
-		return resultNode;
+		return apiService.append(-1, arcusRequest.getKey(), arcusRequest.getValue());
 	
 	}
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/set-bulk", method=RequestMethod.POST)
 	@ResponseBody
-	JsonNode setBulk(@RequestBody ThreeRequest arcusRequest) {
-
-		JsonNode resultJson = null;
+	ArcusSuccessResponse setBulk(@RequestBody ThreeRequest arcusRequest) {
 		
 		if(arcusRequest.getValue().get(1)==null) {
-			resultJson = apiService.setBulk(arcusRequest.getKey(),arcusRequest.getExpireTime(),arcusRequest.getValue().get(0));
+			return apiService.setBulk(arcusRequest.getKey(),arcusRequest.getExpireTime(),arcusRequest.getValue().get(0));
 		}else {
 			Iterator<String> key = arcusRequest.getKey().iterator();
 			Iterator<String> value = arcusRequest.getValue().iterator();
@@ -117,72 +108,64 @@ public class HomeController {
 			while(key.hasNext() && value.hasNext()) {
 				paramMap.put(key.next(),value.next());
 			}
-			resultJson = apiService.setBulk(paramMap, arcusRequest.getExpireTime());
+			return apiService.setBulk(paramMap, arcusRequest.getExpireTime());
 		}
-		return resultJson;
 		
 	}
 	
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/get", method=RequestMethod.GET)
 	@ResponseBody
-	JsonNode get(@RequestBody OneRequest arcusRequest){
+	ArcusSuccessResponse get(@RequestBody OneRequest arcusRequest){
 		
-		JsonNode resultJson = apiService.get(arcusRequest.getKey());
-		return resultJson;
+		return apiService.get(arcusRequest.getKey());
+	
 	}
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/get-bulk", method=RequestMethod.GET)
 	@ResponseBody
-	JsonNode getBulk(@RequestBody OnePluralRequest arcusRequest) {		
+	ArcusSuccessResponse getBulk(@RequestBody OnePluralRequest arcusRequest) {		
 
-		JsonNode resultJson = apiService.getBulk(arcusRequest.getKey());
-		return resultJson;
+		return apiService.getBulk(arcusRequest.getKey());
 	
 	}
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/get-attrs",method=RequestMethod.GET)
 	@ResponseBody
-	JsonNode getAttr(@RequestBody OneRequest arcusRequest) {
+	ArcusSuccessResponse getAttr(@RequestBody OneRequest arcusRequest) {
 
-		JsonNode resultJson = apiService.getAttr(arcusRequest.getKey());
-		return resultJson;				
+		return apiService.getAttr(arcusRequest.getKey());
 		
 	}
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/incr",method=RequestMethod.PATCH)
 	@ResponseBody
-	JsonNode increase(@RequestBody FourRequest arcusRequest){//@RequestBody ArcusRequest arcusRequest) {
+	ArcusSuccessResponse increase(@RequestBody FourRequest arcusRequest){//@RequestBody ArcusRequest arcusRequest) {
 		
-		JsonNode resultJson = null;
 		if(arcusRequest.getDef() == null) {
-			resultJson = apiService.increase(arcusRequest.getKey(), arcusRequest.getBy());
+			return apiService.increase(arcusRequest.getKey(), arcusRequest.getBy());
 		}else {
-			resultJson = apiService.increase(arcusRequest.getKey(), arcusRequest.getBy(), arcusRequest.getDef(), arcusRequest.getExpireTime());
+			return apiService.increase(arcusRequest.getKey(), arcusRequest.getBy(), arcusRequest.getDef(), arcusRequest.getExpireTime());
 		}
-		return resultJson;
 		
 	}
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/decr",method=RequestMethod.PATCH)
 	@ResponseBody
-	JsonNode decrease(@RequestBody FourRequest arcusRequest) {
-		JsonNode resultJson = null;
+	ArcusSuccessResponse decrease(@RequestBody FourRequest arcusRequest) {
 		if(arcusRequest.getDef() == null) {
-			resultJson = apiService.increase(arcusRequest.getKey(), arcusRequest.getBy());
+			return apiService.increase(arcusRequest.getKey(), arcusRequest.getBy());
 		}else {
-			resultJson = apiService.increase(arcusRequest.getKey(), arcusRequest.getBy(), arcusRequest.getDef(), arcusRequest.getExpireTime());
+			return apiService.increase(arcusRequest.getKey(), arcusRequest.getBy(), arcusRequest.getDef(), arcusRequest.getExpireTime());
 		}
-		return resultJson;
 			
 	}
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/delete",method=RequestMethod.DELETE)
 	@ResponseBody
-	JsonNode delete(@RequestBody OneRequest arcusRequest) {
+	ArcusSuccessResponse delete(@RequestBody OneRequest arcusRequest) throws InterruptedException, ExecutionException, TimeoutException {
 		
-		JsonNode resultJson = apiService.delete(arcusRequest.getKey());
-		return resultJson;
+		return apiService.delete(arcusRequest.getKey());
 		
 	}
 	

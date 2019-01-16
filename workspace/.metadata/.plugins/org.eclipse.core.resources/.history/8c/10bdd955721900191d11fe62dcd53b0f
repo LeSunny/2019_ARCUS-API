@@ -1,0 +1,15 @@
+package com.jam2in.restapi.response;
+
+public class ErrorInfo {
+
+	public final String url;
+	public final String ex;
+	
+	public String ErrorInfo(String url, Exception ex) {
+		this.url = url;
+		this.ex = ex.getLocalizedMessage();
+		
+		return "";
+	}
+
+}
