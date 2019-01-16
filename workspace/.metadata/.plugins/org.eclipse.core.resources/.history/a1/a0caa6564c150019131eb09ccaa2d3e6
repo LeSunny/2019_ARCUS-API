@@ -1,0 +1,5 @@
+package com.jam2in.restapi;
+
+public class RawDeserializer {
+
+}

@@ -1,0 +1,33 @@
+package com.jam2in.restapi.Service;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import com.jam2in.restapi.DAO.ApiDAO;
+
+public class ApiServiceImpl {
+
+	@Resource(name="apiDAO")
+	private ApiDAO apiDAO;
+	
+	void set(String key, int expireTime, String value) {
+		apiDAO.set(String key, int expireTime,String value);
+	}
+	void add(String key, int expireTime, String value);
+	void replace(String key, int expireTime, String value);
+	void prepend(long cas, String key, Object value);
+	void append(long cas, String key, Object value);
+	void setBulk(List<String> key, int expireTime, Object value);
+	void setBulk(Map<String, Object> map, int expireTime);
+	void get(String key);
+	void getBulk(Collection<String> key);
+	void getAttr(String key);
+	void increase(String key, int by);
+	void increase(String key, int by, long def, int exp);
+	void decrease(String key, int by);
+	void decrease(String key, int by, long def, int exp);
+	void delete(String key);
+}

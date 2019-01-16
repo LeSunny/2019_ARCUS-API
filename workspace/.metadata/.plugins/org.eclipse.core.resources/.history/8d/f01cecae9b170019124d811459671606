@@ -1,0 +1,11 @@
+package com.jam2in.restapi.request;
+
+import com.fasterxml.jackson.annotation.JsonRawValue;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+public class ThreePluralKeysRequest {
+	@JsonDeserialize(using = ValueDeserializer.class)
+	@JsonRawValue
+	List<String> value = null;
+	
+}

@@ -1,0 +1,41 @@
+package com.jam2in.restapi.DAO;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Future;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.jam2in.restapi.Controller.boeolan;
+
+import net.spy.memcached.ArcusClient;
+
+public class ApiDAO {
+
+	@Autowired
+	private ArcusClient arcusClient;
+	
+	public Future<Boolean> set(String key, int expireTime, String value) {
+		Future<Boolean> future = null;
+			
+		future = arcusClient.set(key, expireTime, value);
+		
+		return future;
+	}
+	public void add(String key, int expireTime, String value);
+	public void replace(String key, int expireTime, String value);
+	public void prepend(long cas, String key, Object value);
+	public void append(long cas, String key, Object value);
+	public void setBulk(List<String> key, int expireTime, Object value);
+	public void setBulk(Map<String, Object> map, int expireTime);
+	public void get(String key);
+	public void getBulk(Collection<String> key);
+	public void getAttr(String key);
+	public void increase(String key, int by);
+	public void increase(String key, int by, long def, int exp);
+	public void decrease(String key, int by);
+	public void decrease(String key, int by, long def, int exp);
+	public void delete(String key);
+	
+}

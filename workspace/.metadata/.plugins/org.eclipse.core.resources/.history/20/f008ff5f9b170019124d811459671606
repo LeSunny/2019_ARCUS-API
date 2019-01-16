@@ -1,0 +1,10 @@
+package com.jam2in.restapi.request;
+
+public class ThreeSingularKeyRequest {
+	@JsonDeserialize(using = VluaeDerializer.class)
+	@JsonRawValue
+	String value;
+	int expireTime;
+	String key;
+	
+}

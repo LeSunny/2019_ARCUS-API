@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="java.util.concurrent.Future"/>
 <fullyQualifiedTypeName name="org.springframework.web.servlet.handler.HandlerInterceptorAdapter"/>
 <fullyQualifiedTypeName name="org.apache.ibatis.logging.Log"/>
 <fullyQualifiedTypeName name="javax.servlet.http.HttpServletRequest"/>
@@ -12,7 +11,6 @@
 <fullyQualifiedTypeName name="java.io.InputStream"/>
 <fullyQualifiedTypeName name="org.apache.zookeeper.Environment"/>
 <fullyQualifiedTypeName name="org.springframework.context.annotation.Bean"/>
-<fullyQualifiedTypeName name="javax.annotation.Resource"/>
 <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.ResponseBody"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="javax.annotation.PostConstruct"/>
@@ -21,7 +19,39 @@
 <fullyQualifiedTypeName name="org.springframework.context.annotation.PropertySource"/>
 <fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
 <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestBody"/>
-<fullyQualifiedTypeName name="com.fasterxml.jackson.databind.ObjectMapper"/>
 <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestParam"/>
+<fullyQualifiedTypeName name="net.spy.memcached.ops.CollectionOperationStatus"/>
+<fullyQualifiedTypeName name="java.util.HashMap"/>
+<fullyQualifiedTypeName name="java.util.Iterator"/>
+<fullyQualifiedTypeName name="net.spy.memcached.internal.CollectionFuture"/>
+<fullyQualifiedTypeName name="net.spy.memcached.collection.CollectionAttributes"/>
+<fullyQualifiedTypeName name="com.jam2in.restapi.RawJsonDeserializer"/>
+<fullyQualifiedTypeName name="com.fasterxml.jackson.databind.deser.std.StdDeserializer"/>
+<fullyQualifiedTypeName name="com.fasterxml.jackson.databind.JsonDeserializer"/>
+<fullyQualifiedTypeName name="com.fasterxml.jackson.databind.annotation.JsonDeserialize"/>
+<fullyQualifiedTypeName name="com.fasterxml.jackson.annotation.JsonRawValue"/>
+<fullyQualifiedTypeName name="com.jam2in.restapi.request.ThreeRequest"/>
+<fullyQualifiedTypeName name="com.jam2in.restapi.request.TwoRequest"/>
+<fullyQualifiedTypeName name="com.jam2in.restapi.request.OneRequest"/>
+<fullyQualifiedTypeName name="com.jam2in.restapi.request.FourRequest"/>
+<fullyQualifiedTypeName name="com.jam2in.restapi.request.OnePluralRequest"/>
+<fullyQualifiedTypeName name="com.fasterxml.jackson.databind.ObjectReader"/>
+<fullyQualifiedTypeName name="com.fasterxml.jackson.core.type.TypeReference"/>
+<fullyQualifiedTypeName name="com.fasterxml.jackson.core.JsonParser"/>
+<fullyQualifiedTypeName name="com.fasterxml.jackson.databind.DeserializationContext"/>
+<fullyQualifiedTypeName name="java.io.IOException"/>
+<fullyQualifiedTypeName name="com.fasterxml.jackson.core.JsonProcessingException"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="com.fasterxml.jackson.databind.ObjectMapper"/>
+<fullyQualifiedTypeName name="com.jam2in.restapi.request.ThreeSingularRequest"/>
+<fullyQualifiedTypeName name="org.springframework.context.ApplicationContext"/>
+<fullyQualifiedTypeName name="com.jam2in.restapi.Service.ApiService"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="java.util.Map"/>
+<fullyQualifiedTypeName name="java.util.Collection"/>
+<fullyQualifiedTypeName name="javax.annotation.Resource"/>
+<fullyQualifiedTypeName name="com.jam2in.restapi.DAO.ApiDAO"/>
+<fullyQualifiedTypeName name="java.util.concurrent.Future"/>
 <fullyQualifiedTypeName name="com.fasterxml.jackson.databind.JsonNode"/>
+<fullyQualifiedTypeName name="org.springframework.stereotype.Service"/>
 </qualifiedTypeNameHistroy>

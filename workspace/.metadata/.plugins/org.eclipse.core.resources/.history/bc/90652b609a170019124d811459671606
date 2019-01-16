@@ -1,0 +1,7 @@
+package com.jam2in.restapi.request;
+
+public class TwoKeyValueRequest {
+	//prepend, append
+	String key;
+	String value;	
+}

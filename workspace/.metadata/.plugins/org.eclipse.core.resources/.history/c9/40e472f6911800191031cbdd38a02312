@@ -1,0 +1,25 @@
+package com.jam2in.restapi.Service;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
+public interface ApiService {
+
+	public JsonNode set(String key, int expireTime, String value);
+	public void add(String key, int expireTime, String value);
+	public void replace(String key, int expireTime, String value);
+	public void prepend(long cas, String key, Object value);
+	public void append(long cas, String key, Object value);
+	public void setBulk(List<String> key, int expireTime, Object value);
+	public void setBulk(Map<String, Object> map, int expireTime);
+	public void get(String key);
+	public void getBulk(Collection<String> key);
+	public void getAttr(String key);
+	public void increase(String key, int by);
+	public void increase(String key, int by, long def, int exp);
+	public void decrease(String key, int by);
+	public void decrease(String key, int by, long def, int exp);
+	public void delete(String key);
+	
+}

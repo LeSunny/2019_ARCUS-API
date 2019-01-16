@@ -21,31 +21,16 @@ import net.spy.memcached.ConnectionFactoryBuilder;
 //@PropertySource(value = "classpath:arcus.properties")
 public class ArcusConfig {
 	
-	Environment env;
-	ArcusClient arcusClient;
-	
 	@Value("${arcus.address}")
 	private String address;
 	@Value("${arcus.serviceCode}")
 	private String serviceCode;
 	
-	
-	@PostConstruct
-	public ArcusClient defaultClient() {
-		
-		//arcusAdmin "192.168.0.155"´Â vmwareÀÇ ip
-		//arcusClient = ArcusClient.createArcusClient("192.168.0.155","test", new ConnectionFactoryBuilder());
-//		arcusClient = ArcusClient.createArcusClient(env.getProperty("arcus.address"),env.getProperty("arcus.serviceCode"), new ConnectionFactoryBuilder());
-		arcusClient = ArcusClient.createArcusClient(address,serviceCode, new ConnectionFactoryBuilder());
+	@Bean(destroyMethod = "shutdown")
+	public ArcusClient arcusClient() {
+		ArcusClient arcusClient = ArcusClient.createArcusClient(address,serviceCode, new ConnectionFactoryBuilder());
 		
 		return arcusClient;
 	}
 	
-	
-//	@PreDestroy
-//	public ArcusClient closeClient() {
-//		arcusClient.shutdown();
-//		arcusClient=null;
-//		return arcusClient;
-//	}
 }
