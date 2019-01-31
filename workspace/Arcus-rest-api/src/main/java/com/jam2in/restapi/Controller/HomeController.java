@@ -56,8 +56,7 @@ public class HomeController {
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/set", method=RequestMethod.POST)
 	@ResponseBody // 응답 시 return 되는 것을 자동으로 json으로 바꾸어 줌
-	ArcusSuccessResponse set(@RequestBody ThreeSingularRequest arcusRequest){
-				
+	ArcusSuccessResponse set(@RequestBody ThreeSingularRequest arcusRequest){				
 		return apiService.set(arcusRequest.getKey(), arcusRequest.getExpireTime(), arcusRequest.getValue());
 		
 	}
@@ -65,39 +64,30 @@ public class HomeController {
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/add", method=RequestMethod.POST)
 	@ResponseBody
 	ArcusSuccessResponse add(@RequestBody ThreeSingularRequest arcusRequest){
-	
-		return apiService.add(arcusRequest.getKey(), arcusRequest.getExpireTime(), arcusRequest.getValue());
-		
+		return apiService.add(arcusRequest.getKey(), arcusRequest.getExpireTime(), arcusRequest.getValue());		
 	}
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/replace", method=RequestMethod.PATCH)
 	@ResponseBody
 	ArcusSuccessResponse replace(@RequestBody ThreeSingularRequest arcusRequest){
-		
 		return apiService.replace(arcusRequest.getKey(), arcusRequest.getExpireTime(), arcusRequest.getValue());
-	
 	}
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/prepend", method=RequestMethod.PATCH)
 	@ResponseBody
 	ArcusSuccessResponse prepend(@RequestBody TwoRequest arcusRequest){
-
 		return apiService.prepend(-1, arcusRequest.getKey(), arcusRequest.getValue());
-
 	}
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/append", method=RequestMethod.PATCH)
 	@ResponseBody
 	ArcusSuccessResponse append(@RequestBody TwoRequest arcusRequest){
-	
 		return apiService.append(-1, arcusRequest.getKey(), arcusRequest.getValue());
-	
 	}
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/set-bulk", method=RequestMethod.POST)
 	@ResponseBody
 	ArcusSuccessResponse setBulk(@RequestBody ThreeRequest arcusRequest) {
-		
 		if(arcusRequest.getValue().get(1)==null) {
 			return apiService.setBulk(arcusRequest.getKey(),arcusRequest.getExpireTime(),arcusRequest.getValue().get(0));
 		}else {
@@ -110,44 +100,35 @@ public class HomeController {
 			}
 			return apiService.setBulk(paramMap, arcusRequest.getExpireTime());
 		}
-		
 	}
 	
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/get", method=RequestMethod.GET)
 	@ResponseBody
 	ArcusSuccessResponse get(@RequestBody OneRequest arcusRequest){
-		
 		return apiService.get(arcusRequest.getKey());
-	
 	}
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/get-bulk", method=RequestMethod.GET)
 	@ResponseBody
 	ArcusSuccessResponse getBulk(@RequestBody OnePluralRequest arcusRequest) {		
-
 		return apiService.getBulk(arcusRequest.getKey());
-	
 	}
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/get-attrs",method=RequestMethod.GET)
 	@ResponseBody
 	ArcusSuccessResponse getAttr(@RequestBody OneRequest arcusRequest) {
-
 		return apiService.getAttr(arcusRequest.getKey());
-		
 	}
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/incr",method=RequestMethod.PATCH)
 	@ResponseBody
 	ArcusSuccessResponse increase(@RequestBody FourRequest arcusRequest){//@RequestBody ArcusRequest arcusRequest) {
-		
 		if(arcusRequest.getDef() == null) {
 			return apiService.increase(arcusRequest.getKey(), arcusRequest.getBy());
 		}else {
 			return apiService.increase(arcusRequest.getKey(), arcusRequest.getBy(), arcusRequest.getDef(), arcusRequest.getExpireTime());
 		}
-		
 	}
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/decr",method=RequestMethod.PATCH)
@@ -157,16 +138,13 @@ public class HomeController {
 			return apiService.increase(arcusRequest.getKey(), arcusRequest.getBy());
 		}else {
 			return apiService.increase(arcusRequest.getKey(), arcusRequest.getBy(), arcusRequest.getDef(), arcusRequest.getExpireTime());
-		}
-			
+		}	
 	}
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/delete",method=RequestMethod.DELETE)
 	@ResponseBody
 	ArcusSuccessResponse delete(@RequestBody OneRequest arcusRequest) throws InterruptedException, ExecutionException, TimeoutException {
-		
 		return apiService.delete(arcusRequest.getKey());
-		
 	}
 	
 }

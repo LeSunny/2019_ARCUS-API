@@ -1,9 +1,0 @@
-package com.jam2in.restapi.response;
-
-public class ErrorInfo {
-
-	public ErrorInfo(String string, Exception ex) {
-		// TODO Auto-generated constructor stub
-	}
-
-}

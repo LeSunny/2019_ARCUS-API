@@ -20,10 +20,8 @@ public class ValueDeserializer extends JsonDeserializer<String>{
 		  String result;
 	      ObjectMapper mapper = (ObjectMapper) jp.getCodec();
 	      JsonNode node = mapper.readTree(jp);
-	      result = mapper.writeValueAsString(node);
+	      result = mapper.writeValueAsString(node);	      
 
-	      
-	      
 	      return result;
 	  }
 }
