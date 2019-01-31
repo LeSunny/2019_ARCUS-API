@@ -32,52 +32,9 @@
 		<level value="info" />
 	</logger>
 
-	
-	<!-- collection piped exist -->
-	<logger name="net.spy.memcached.protocol.ascii.CollectionPipedExistOperationImpl" additivity="false">
-		<level value="DEBUG" />
-		<appender-ref ref="console" />
-	</logger>
-
-	<!-- set attributes -->
-	<logger name="net.spy.memcached.protocol.ascii.SetAttrOperationImpl" additivity="false">
-		<level value="DEBUG" />
-		<appender-ref ref="console" />
-	</logger>
-
-	<!-- collection insert -->
-	<logger name="net.spy.memcached.protocol.ascii.CollectionStoreOperationImpl" additivity="false">
-		<level value="DEBUG" />
-		<appender-ref ref="console" />
-	</logger>
-
-	<!-- collection get -->
-	<logger name="net.spy.memcached.protocol.ascii.CollectionGetOperationImpl" additivity="false">
-		<level value="DEBUG" />
-		<appender-ref ref="console" />
-	</logger>
-
-	<!-- collection upsert -->
-	<logger name="net.spy.memcached.protocol.ascii.CollectionUpsertOperationImpl" additivity="false">
-		<level value="DEBUG" />
-		<appender-ref ref="console" />
-	</logger>
-
-	<!-- collection update -->
-	<logger name="net.spy.memcached.protocol.ascii.CollectionUpdateOperationImpl" additivity="false">
-		<level value="DEBUG" />
-		<appender-ref ref="console" />
-	</logger>
-
-	<!-- collection count -->
-	<logger name="net.spy.memcached.protocol.ascii.CollectionCountOperationImpl" additivity="false">
-		<level value="DEBUG" />
-		<appender-ref ref="console" />
-	</logger>
-
 	<!-- define root -->
 	<root>
-		<level value="DEBUG" />
+		<level value="info" />
 		<appender-ref ref="console" />
 	</root>
 	
