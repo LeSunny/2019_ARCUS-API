@@ -1,4 +1,4 @@
-GitRepositoriesView.GitDirectories=C\:\\Users\\jam2in\\dev\\workspace\\arcus-java-client\\.git;
-GitRepositoriesView.GitDirectories.relative=arcus-java-client\\.git;
+GitRepositoriesView.GitDirectories=C\:\\Users\\jam2in\\.git;C\:\\Users\\jam2in\\2019_arcus-api\\workspace\\arcus-java-client\\.git;
+GitRepositoriesView.GitDirectories.relative=C\:\\Users\\jam2in\\.git;arcus-java-client\\.git;
 core_autoIgnoreDerivedResources=false
 eclipse.preferences.version=1
