@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Copy element &apos;arcus.properties&apos; to &apos;Arcus-rest-api/src/test/resources&apos;&#x0D;&#x0A;- Original project: &apos;arcus-himart&apos;&#x0D;&#x0A;- Destination element: &apos;Arcus-rest-api/src/test/resources&apos;&#x0D;&#x0A;- Original element: &apos;arcus.properties&apos;" description="Copy file" destination="=Arcus-rest-api/src\/test\/resources" element1="src/test/resources/arcus.properties" files="1" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1546508918429" units="0" version="1.0"/>
-</session>

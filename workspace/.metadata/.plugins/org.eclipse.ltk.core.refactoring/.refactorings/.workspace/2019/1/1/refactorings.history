@@ -1,3 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">&#x0A;<refactoring comment="Delete resource &apos;ARCUS-REST-API&apos;" deleteContents="true" description="Delete resource &apos;ARCUS-REST-API&apos;" element1="/ARCUS-REST-API" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1546415961938"/>&#x0A;&#x0A;<refactoring comment="Delete resource &apos;arcus-java-client&apos;" deleteContents="true" description="Delete resource &apos;arcus-java-client&apos;" element1="/arcus-java-client" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1546421489996"/>
-</session>
