@@ -28,8 +28,5 @@ public class ThreeRequest {
 	}
 	public void setExpireTime(int expireTime) {
 		this.expireTime = expireTime;
-	}
-	
-	
-	
+	}	
 }

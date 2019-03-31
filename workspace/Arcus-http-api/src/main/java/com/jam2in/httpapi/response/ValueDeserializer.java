@@ -1,4 +1,4 @@
-package com.jam2in.httpapi.request;
+package com.jam2in.httpapi.response;
 
 import java.io.IOException;
 import java.util.List;

@@ -7,13 +7,17 @@ import java.util.concurrent.TimeoutException;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ControllerAdvice //Àü¿ªÃ³¸® : ¿¹¿ÜÃ³¸®¸¦ ¸Ã´Â Class
+import com.jam2in.httpapi.Controller.HomeController;
+
+@ControllerAdvice //ï¿½ï¿½ï¿½ï¿½Ã³ï¿½ï¿½ : ï¿½ï¿½ï¿½ï¿½Ã³ï¿½ï¿½ï¿½ï¿½ ï¿½Ã´ï¿½ Class
 public class ArcusExceptionResponse {
 	/*InterruptedException
 	ExecutionException
@@ -57,7 +61,10 @@ public class ArcusExceptionResponse {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public ErrorInfo handleBadRequest(HttpServletRequest req, Exception ex)  {
-    	
+
+    	Logger log = LoggerFactory.getLogger(HomeController.class);
+
+    	log.error("response error ", ex);
         return new ErrorInfo(ex);
     }
 	

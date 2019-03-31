@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jam2in.httpapi.DAO.ApiDAO;
+import com.jam2in.httpapi.response.ArcusLongSuccessResponse;
+import com.jam2in.httpapi.response.ArcusSetBulkSuccessResponse;
 import com.jam2in.httpapi.response.ArcusSuccessResponse;
 
 import net.spy.memcached.ArcusClient;
@@ -197,7 +199,7 @@ public class ApiServiceImpl implements ApiService {
 //		return returnJson;
 		
 	}
-	public ArcusSuccessResponse setBulk(List<String> key, int expireTime, Object value) {
+	public ArcusSetBulkSuccessResponse setBulk(List<String> key, int expireTime, Object value) {
 		
 		Future<Map<String,CollectionOperationStatus>> future = null;
 		Map<String,CollectionOperationStatus> resultMap = null;
@@ -210,7 +212,9 @@ public class ApiServiceImpl implements ApiService {
 			e.printStackTrace();
 		}
 		
-		return new ArcusSuccessResponse();
+		ArcusSetBulkSuccessResponse response = new ArcusSetBulkSuccessResponse();
+		response.setResult(resultMap);
+		return response;
 		
 //		ObjectMapper mapper = new ObjectMapper();
 //		JsonNode returnJson = mapper.convertValue(resultMap, JsonNode.class);
@@ -218,7 +222,7 @@ public class ApiServiceImpl implements ApiService {
 //		return returnJson;
 		
 	}
-	public ArcusSuccessResponse setBulk(Map<String, Object> map, int expireTime) {
+	public ArcusSetBulkSuccessResponse setBulk(Map<String, Object> map, int expireTime) {
 		
 		Future<Map<String,CollectionOperationStatus>> future = null;
 		Map<String,CollectionOperationStatus> resultMap = null;
@@ -232,7 +236,9 @@ public class ApiServiceImpl implements ApiService {
 			e.printStackTrace();
 		}
 		
-		return new ArcusSuccessResponse();
+		ArcusSetBulkSuccessResponse response = new ArcusSetBulkSuccessResponse();
+		response.setResult(resultMap);
+		return response;
 		
 //		ObjectMapper mapper = new ObjectMapper();
 //		JsonNode returnJson = mapper.convertValue(resultMap, JsonNode.class);
@@ -258,8 +264,11 @@ public class ApiServiceImpl implements ApiService {
 			e.printStackTrace();
 		}
 		
-		return new ArcusSuccessResponse();
-
+		
+		ArcusSuccessResponse response = new ArcusSuccessResponse();
+		response.setResult(value);
+		return response;
+		
 //		System.out.println(value);
 //		
 //		String jsonString;
@@ -296,7 +305,9 @@ public class ApiServiceImpl implements ApiService {
 			e.printStackTrace();
 		}
 		
-		return new ArcusSuccessResponse();
+		ArcusSuccessResponse response = new ArcusSuccessResponse();
+		response.setResult(resultMap);
+		return response;
 		
 //		//Map to json
 //		ObjectMapper mapper = new ObjectMapper();
@@ -320,8 +331,10 @@ public class ApiServiceImpl implements ApiService {
 			e.printStackTrace();
 		}
 		
-		return new ArcusSuccessResponse();
-
+		ArcusSuccessResponse response = new ArcusSuccessResponse();
+		response.setResult(result);
+		return response;
+		
 //		System.out.println(result.getExpireTime());
 //		System.out.println(result.getType());
 //		
@@ -338,7 +351,7 @@ public class ApiServiceImpl implements ApiService {
 //		return returnJson;
 		
 	}
-	public ArcusSuccessResponse increase(String key, int by) {
+	public ArcusLongSuccessResponse increase(String key, int by) {
 		
 		Future<Long> future = null;
 		long value = 0;
@@ -351,10 +364,12 @@ public class ApiServiceImpl implements ApiService {
 			e.printStackTrace();
 		}
 		
-		return new ArcusSuccessResponse();
-
+		ArcusLongSuccessResponse response = new ArcusLongSuccessResponse();
+		response.setResult(value);
+		return response;
+		
 //		String jsonString = "{\"value\":\""+value+"\"}";
-//		
+//		 
 //		
 //		ObjectMapper mapper = new ObjectMapper();
 //		JsonNode returnJson = null;
@@ -367,7 +382,7 @@ public class ApiServiceImpl implements ApiService {
 //		return returnJson;
 		
 	}
-	public ArcusSuccessResponse increase(String key, int by, long def, int exp) {
+	public ArcusLongSuccessResponse increase(String key, int by, long def, int exp) {
 		
 		Future<Long> future = null;
 		long value = 0;
@@ -380,8 +395,10 @@ public class ApiServiceImpl implements ApiService {
 			e.printStackTrace();
 		}
 		
-		return new ArcusSuccessResponse();
-
+		ArcusLongSuccessResponse response = new ArcusLongSuccessResponse();
+		response.setResult(value);
+		return response;
+		
 //		String jsonString = "{\"value\":\"null\"}";
 //		
 //		ObjectMapper mapper = new ObjectMapper();
@@ -395,7 +412,7 @@ public class ApiServiceImpl implements ApiService {
 //		return returnJson;
 		
 	}
-	public ArcusSuccessResponse decrease(String key, int by) {
+	public ArcusLongSuccessResponse decrease(String key, int by) {
 
 		Future<Long> future = null;
 		long value = 0;
@@ -407,7 +424,9 @@ public class ApiServiceImpl implements ApiService {
 			e.printStackTrace();
 		}
 		
-		return new ArcusSuccessResponse();
+		ArcusLongSuccessResponse response = new ArcusLongSuccessResponse();
+		response.setResult(value);
+		return response;
 
 //		String jsonString = "{\"value\":\""+value+"\"}";
 //		
@@ -423,7 +442,7 @@ public class ApiServiceImpl implements ApiService {
 //		return returnJson;
 		
 	}
-	public ArcusSuccessResponse decrease(String key, int by, long def, int exp) {
+	public ArcusLongSuccessResponse decrease(String key, int by, long def, int exp) {
 	
 		Future<Long> future = null;
 		long value = 0;
@@ -432,11 +451,13 @@ public class ApiServiceImpl implements ApiService {
 		
 		try {
 			value = future.get(700L, TimeUnit.MILLISECONDS);
+			//System.out.println(value);
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
 			e.printStackTrace();
 		}
-		
-		return new ArcusSuccessResponse();
+		ArcusLongSuccessResponse response = new ArcusLongSuccessResponse();
+		response.setResult(value);
+		return response;
 
 //		String jsonString = "{\"value\":\""+value+"\"}";		
 //		

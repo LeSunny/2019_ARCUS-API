@@ -23,12 +23,13 @@ import com.jam2in.httpapi.request.OneRequest;
 import com.jam2in.httpapi.request.ThreeRequest;
 import com.jam2in.httpapi.request.ThreeSingularRequest;
 import com.jam2in.httpapi.request.TwoRequest;
+import com.jam2in.httpapi.response.ArcusLongSuccessResponse;
+import com.jam2in.httpapi.response.ArcusSetBulkSuccessResponse;
 import com.jam2in.httpapi.response.ArcusSuccessResponse;
 
 /**
  * Handles requests for the application home page.
  */
-
 @Controller
 @PropertySource("classpath:/arcus.properties")
 public class HomeController {
@@ -39,10 +40,15 @@ public class HomeController {
 	protected Logger log = LoggerFactory.getLogger(HomeController.class);
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/set", method=RequestMethod.POST)
-	@ResponseBody // ÀÀ´ä ½Ã return µÇ´Â °ÍÀ» ÀÚµ¿À¸·Î jsonÀ¸·Î ¹Ù²Ù¾î ÁÜ
+	@ResponseBody // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ return ï¿½Ç´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ jsonï¿½ï¿½ï¿½ï¿½ ï¿½Ù²Ù¾ï¿½ ï¿½ï¿½
 	ArcusSuccessResponse set(@RequestBody ThreeSingularRequest arcusRequest){	
-//		log.info(arcusRequest.getKey());
-		return apiService.set(arcusRequest.getKey(), arcusRequest.getExpireTime(), arcusRequest.getValue());
+/*
+{
+    "key": "a",
+    "expireTime": "10000",
+    "value": 8
+} 
+*/	return apiService.set(arcusRequest.getKey(), arcusRequest.getExpireTime(), arcusRequest.getValue());
 	}
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/add", method=RequestMethod.POST)
@@ -71,10 +77,22 @@ public class HomeController {
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/set-bulk", method=RequestMethod.POST)
 	@ResponseBody
-	ArcusSuccessResponse setBulk(@RequestBody ThreeRequest arcusRequest) {
-		if(arcusRequest.getValue().get(1)==null) {
-			return apiService.setBulk(arcusRequest.getKey(),arcusRequest.getExpireTime(),arcusRequest.getValue().get(0));
-		}else {
+	ArcusSetBulkSuccessResponse setBulk(@RequestBody ThreeRequest arcusRequest) {
+
+		if(arcusRequest.getValue().size()!=1) {
+/*
+ {
+    "key": ["a","b","c"],
+    "expireTime": "10000",
+    "value": [1, "bb", "finally"]
+}
+
+{
+    "key": ["a","b","c"],
+    "expireTime": "10000",
+    "value": [1, "bb", "{\"kee\" : \"a\"}"]
+}
+ */
 			Iterator<String> key = arcusRequest.getKey().iterator();
 			Iterator<String> value = arcusRequest.getValue().iterator();
 			HashMap<String,Object> paramMap = new HashMap<String,Object>();
@@ -83,6 +101,16 @@ public class HomeController {
 				paramMap.put(key.next(),value.next());
 			}
 			return apiService.setBulk(paramMap, arcusRequest.getExpireTime());
+
+		}else {
+				/*
+				{
+				    "key": ["b","c","d"],
+				    "expireTime": "10000",
+				    "value": 8
+				} 
+				*/
+			return apiService.setBulk(arcusRequest.getKey(),arcusRequest.getExpireTime(),arcusRequest.getValue());
 		}
 	}
 	
@@ -97,19 +125,39 @@ public class HomeController {
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/get-bulk", method=RequestMethod.POST)
 	@ResponseBody
 	ArcusSuccessResponse getBulk(@RequestBody OnePluralRequest arcusRequest) {		
+/*
+{
+    "key": ["b","c"]
+}
+
+=> {"result":{b="bb", c="{\"kee\" : \"a\"}"}}
+*/
 		return apiService.getBulk(arcusRequest.getKey());
+
 	}
 	
-	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/get-attrs",method=RequestMethod.POST)
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/get-attr",method=RequestMethod.POST)
 	@ResponseBody
 	ArcusSuccessResponse getAttr(@RequestBody OneRequest arcusRequest) {
+		/*
+{
+    "key": "c"
+}
+=> {"result":flags=0 expiretime=9686 type=kv}
+		 */
 		return apiService.getAttr(arcusRequest.getKey());
 	}
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/incr",method=RequestMethod.PATCH)
 	@ResponseBody
-	ArcusSuccessResponse increase(@RequestBody FourRequest arcusRequest){//@RequestBody ArcusRequest arcusRequest) {
+	ArcusLongSuccessResponse increase(@RequestBody FourRequest arcusRequest){//@RequestBody ArcusRequest arcusRequest) {
 		if(arcusRequest.getDef() == null) {
+			/*
+{
+    "key": "a",
+    "by" : 4
+} 
+			 */
 			return apiService.increase(arcusRequest.getKey(), arcusRequest.getBy());
 		}else {
 			return apiService.increase(arcusRequest.getKey(), arcusRequest.getBy(), arcusRequest.getDef(), arcusRequest.getExpireTime());
@@ -118,11 +166,11 @@ public class HomeController {
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/decr",method=RequestMethod.PATCH)
 	@ResponseBody
-	ArcusSuccessResponse decrease(@RequestBody FourRequest arcusRequest) {
+	ArcusLongSuccessResponse decrease(@RequestBody FourRequest arcusRequest) {
 		if(arcusRequest.getDef() == null) {
-			return apiService.increase(arcusRequest.getKey(), arcusRequest.getBy());
+			return apiService.decrease(arcusRequest.getKey(), arcusRequest.getBy());
 		}else {
-			return apiService.increase(arcusRequest.getKey(), arcusRequest.getBy(), arcusRequest.getDef(), arcusRequest.getExpireTime());
+			return apiService.decrease(arcusRequest.getKey(), arcusRequest.getBy(), arcusRequest.getDef(), arcusRequest.getExpireTime());
 		}	
 	}
 	
@@ -131,6 +179,7 @@ public class HomeController {
 	ArcusSuccessResponse delete(@RequestBody OneRequest arcusRequest) throws InterruptedException, ExecutionException, TimeoutException {
 		return apiService.delete(arcusRequest.getKey());
 	}
+
 	
 }
 
