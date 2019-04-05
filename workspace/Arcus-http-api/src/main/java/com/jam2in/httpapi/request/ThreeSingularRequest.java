@@ -4,17 +4,18 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonRawValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 public class ThreeSingularRequest {
-	@JsonDeserialize(using = ValueDeserializer.class)
+	/*@JsonDeserialize(using = ValueDeserializer.class)
 	@JsonRawValue
-	String value = null;
+	String value = null;*/
+	Object value = null;
 	
 	String key = null;
 	int expireTime;
 	
-	public String getValue() {
+	public Object getValue() {
 		return value;
 	}
-	public void setValue(String value) {
+	public void setValue(Object value) {
 		this.value = value;
 	}
 	public String getKey() {

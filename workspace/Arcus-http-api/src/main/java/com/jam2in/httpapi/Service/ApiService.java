@@ -13,15 +13,14 @@ import com.jam2in.httpapi.response.ArcusSuccessResponse;
 
 public interface ApiService {
 
-	public ArcusSuccessResponse set(String key, int expireTime, String value);
-	public ArcusSuccessResponse add(String key, int expireTime, String value);
-	public ArcusSuccessResponse replace(String key, int expireTime, String value);
+	public ArcusSuccessResponse set(String key, int expireTime, Object value);
+	public ArcusSuccessResponse add(String key, int expireTime, Object value);
+	public ArcusSuccessResponse replace(String key, int expireTime, Object value);
 	public ArcusSuccessResponse prepend(long cas, String key, Object value);
 	public ArcusSuccessResponse append(long cas, String key, Object value);
 	
 	public ArcusSetBulkSuccessResponse setBulk(List<String> key, int expireTime, Object value);
 	public ArcusSetBulkSuccessResponse setBulk(Map<String, Object> map, int expireTime);
-	
 	
 	public ArcusSuccessResponse get(String key);
 	public ArcusSuccessResponse getBulk(Collection<String> key);

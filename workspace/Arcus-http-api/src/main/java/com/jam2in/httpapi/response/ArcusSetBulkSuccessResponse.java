@@ -13,7 +13,7 @@ public class ArcusSetBulkSuccessResponse {
 	}
 	
 	public void setResult(Map<String,CollectionOperationStatus> result) {
-		System.out.println("result="+result);
+		//System.out.println("result="+result);
 		this.result = result;
 	}
 }

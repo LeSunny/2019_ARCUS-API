@@ -1,7 +1,9 @@
 package com.jam2in.httpapi.Controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
@@ -78,21 +80,66 @@ public class HomeController {
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/set-bulk", method=RequestMethod.POST)
 	@ResponseBody
 	ArcusSetBulkSuccessResponse setBulk(@RequestBody ThreeRequest arcusRequest) {
-
-		if(arcusRequest.getValue().size()!=1) {
-/*
+		Logger log = LoggerFactory.getLogger(HomeController.class);
+		/*
  {
     "key": ["a","b","c"],
     "expireTime": "10000",
     "value": [1, "bb", "finally"]
 }
-
+=> {"result":{a=1, b=bb, c=finally}}
 {
     "key": ["a","b","c"],
     "expireTime": "10000",
-    "value": [1, "bb", "{\"kee\" : \"a\"}"]
+    "value": [1, "bb", {"kee" : "a"}]
 }
+=> {"result":{a=1, b=bb, c={kee=a}}}
+{
+    "key": ["a","b","c"],
+    "expireTime": "10000",
+	"value": { "id": 200, "name": 123123 } 
+}
+=> {"result":{a=200, b=123123}}
+
+{
+    "key": ["b","c","d"],
+    "expireTime": "10000",
+   	"value": 8
+} 
+=> {"result":{b=8, c=8, d=8}}
  */
+		//object
+    	log.info("request value type : "+arcusRequest.getValue().getClass());
+    	if(arcusRequest.getValue() instanceof ArrayList)
+    	{	
+    		List<Object> listValue = (List<Object>)arcusRequest.getValue();
+    		Iterator<String> key = arcusRequest.getKey().iterator();
+			Iterator<Object> value = listValue.iterator();
+			HashMap<String,Object> paramMap = new HashMap<String,Object>();
+			
+			while(key.hasNext() && value.hasNext()) {
+				paramMap.put(key.next(),value.next());
+			}
+	
+	    	log.info("request map : "+paramMap);
+
+			return apiService.setBulk(paramMap, arcusRequest.getExpireTime());
+
+    	
+    	}else {
+    		log.info("request value : "+arcusRequest.getValue());
+    		return apiService.setBulk(arcusRequest.getKey(),arcusRequest.getExpireTime(),arcusRequest.getValue());
+    		
+    	}
+    	
+		/*List<String>인 경우
+    	 * 
+    	 log.info("request value size : ",arcusRequest.getValue().size() );
+    	log.info("request value type : "+arcusRequest.getValue().getClass());
+
+    	 
+		//if(arcusRequest.getValue() instanceof List<String>) {//if(arcusRequest.getValue().size()!=1) {
+
 			Iterator<String> key = arcusRequest.getKey().iterator();
 			Iterator<String> value = arcusRequest.getValue().iterator();
 			HashMap<String,Object> paramMap = new HashMap<String,Object>();
@@ -100,18 +147,18 @@ public class HomeController {
 			while(key.hasNext() && value.hasNext()) {
 				paramMap.put(key.next(),value.next());
 			}
+	
+	    	log.info("controller : map : "+paramMap);
+	    	log.info("controller : map : "+paramMap);
+
 			return apiService.setBulk(paramMap, arcusRequest.getExpireTime());
 
 		}else {
-				/*
-				{
-				    "key": ["b","c","d"],
-				    "expireTime": "10000",
-				    "value": 8
-				} 
-				*/
-			return apiService.setBulk(arcusRequest.getKey(),arcusRequest.getExpireTime(),arcusRequest.getValue());
+				
+	    	log.info("value : "+arcusRequest.getValue().get(0));
+			return apiService.setBulk(arcusRequest.getKey(),arcusRequest.getExpireTime(),arcusRequest.getValue().get(0));
 		}
+	*/
 	}
 	
 	
@@ -125,15 +172,7 @@ public class HomeController {
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/get-bulk", method=RequestMethod.POST)
 	@ResponseBody
 	ArcusSuccessResponse getBulk(@RequestBody OnePluralRequest arcusRequest) {		
-/*
-{
-    "key": ["b","c"]
-}
-
-=> {"result":{b="bb", c="{\"kee\" : \"a\"}"}}
-*/
 		return apiService.getBulk(arcusRequest.getKey());
-
 	}
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/get-attr",method=RequestMethod.POST)
@@ -178,9 +217,7 @@ public class HomeController {
 	@ResponseBody
 	ArcusSuccessResponse delete(@RequestBody OneRequest arcusRequest) throws InterruptedException, ExecutionException, TimeoutException {
 		return apiService.delete(arcusRequest.getKey());
-	}
-
-	
+	}	
 }
 
 
