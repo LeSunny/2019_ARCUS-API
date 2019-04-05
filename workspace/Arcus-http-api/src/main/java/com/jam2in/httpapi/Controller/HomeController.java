@@ -9,8 +9,8 @@ import java.util.concurrent.TimeoutException;
 
 import javax.annotation.Resource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,13 +39,13 @@ public class HomeController {
 	@Resource(name="apiService")
 	private ApiService apiService;
 	
-	protected Logger log = LoggerFactory.getLogger(HomeController.class);
+	//protected Logger log = LoggerFactory.getLogger(HomeController.class);
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/set", method=RequestMethod.POST)
-	@ResponseBody // ���� �� return �Ǵ� ���� �ڵ����� json���� �ٲپ� ��
+	@ResponseBody // automatically changes the return value to json when responding.
 	ArcusSuccessResponse set(@RequestBody ThreeSingularRequest arcusRequest){	
 /*
-{
+ 
     "key": "a",
     "expireTime": "10000",
     "value": 8
@@ -80,7 +80,6 @@ public class HomeController {
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/set-bulk", method=RequestMethod.POST)
 	@ResponseBody
 	ArcusSetBulkSuccessResponse setBulk(@RequestBody ThreeRequest arcusRequest) {
-		Logger log = LoggerFactory.getLogger(HomeController.class);
 		/*
  {
     "key": ["a","b","c"],
@@ -109,7 +108,7 @@ public class HomeController {
 => {"result":{b=8, c=8, d=8}}
  */
 		//object
-    	log.info("request value type : "+arcusRequest.getValue().getClass());
+    	//log.info("request value type : "+arcusRequest.getValue().getClass());
     	if(arcusRequest.getValue() instanceof ArrayList)
     	{	
     		List<Object> listValue = (List<Object>)arcusRequest.getValue();
@@ -120,52 +119,18 @@ public class HomeController {
 			while(key.hasNext() && value.hasNext()) {
 				paramMap.put(key.next(),value.next());
 			}
-	
-	    	log.info("request map : "+paramMap);
-
-			return apiService.setBulk(paramMap, arcusRequest.getExpireTime());
-
-    	
+	    	//log.info("request map : "+paramMap);
+			return apiService.setBulk(paramMap, arcusRequest.getExpireTime());    	
     	}else {
-    		log.info("request value : "+arcusRequest.getValue());
+    		//log.info("request value : "+arcusRequest.getValue());
     		return apiService.setBulk(arcusRequest.getKey(),arcusRequest.getExpireTime(),arcusRequest.getValue());
-    		
     	}
-    	
-		/*List<String>인 경우
-    	 * 
-    	 log.info("request value size : ",arcusRequest.getValue().size() );
-    	log.info("request value type : "+arcusRequest.getValue().getClass());
-
-    	 
-		//if(arcusRequest.getValue() instanceof List<String>) {//if(arcusRequest.getValue().size()!=1) {
-
-			Iterator<String> key = arcusRequest.getKey().iterator();
-			Iterator<String> value = arcusRequest.getValue().iterator();
-			HashMap<String,Object> paramMap = new HashMap<String,Object>();
-			
-			while(key.hasNext() && value.hasNext()) {
-				paramMap.put(key.next(),value.next());
-			}
-	
-	    	log.info("controller : map : "+paramMap);
-	    	log.info("controller : map : "+paramMap);
-
-			return apiService.setBulk(paramMap, arcusRequest.getExpireTime());
-
-		}else {
-				
-	    	log.info("value : "+arcusRequest.getValue().get(0));
-			return apiService.setBulk(arcusRequest.getKey(),arcusRequest.getExpireTime(),arcusRequest.getValue().get(0));
-		}
-	*/
-	}
+   	}
 	
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/get", method=RequestMethod.POST)
 	@ResponseBody
 	ArcusSuccessResponse get(@RequestBody OneRequest arcusRequest){
-		//log.info("get command - "+arcusRequest.getKey());
 		return apiService.get(arcusRequest.getKey());
 	}
 	

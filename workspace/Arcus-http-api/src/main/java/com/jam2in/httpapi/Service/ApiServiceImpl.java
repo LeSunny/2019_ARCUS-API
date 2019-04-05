@@ -130,7 +130,7 @@ public class ApiServiceImpl implements ApiService {
 		
 		Future<Map<String,CollectionOperationStatus>> future = null;
 		Map<String,CollectionOperationStatus> resultMap = null;
-		System.out.println("value : "+value);
+
 		future = apiDAO.setBulk(key, expireTime, value);
 		try {
 			resultMap = future.get(700L, TimeUnit.MILLISECONDS);
@@ -191,7 +191,6 @@ public class ApiServiceImpl implements ApiService {
 		
 		try {
 			resultMap = future.get(700L, TimeUnit.MILLISECONDS);
-			System.out.println("result Map : "+resultMap);
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
 			e.printStackTrace();
 		}
@@ -209,7 +208,6 @@ public class ApiServiceImpl implements ApiService {
 		
 		try {
 			result = future.get(700L, TimeUnit.MILLISECONDS);
-			System.out.println(result);/*flags=0 expiretime=9982 type=kv*/
 		} catch (InterruptedException | TimeoutException | ExecutionException e) {
 			e.printStackTrace();
 		}

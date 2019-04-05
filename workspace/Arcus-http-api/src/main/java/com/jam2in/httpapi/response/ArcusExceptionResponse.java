@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.jam2in.httpapi.Controller.HomeController;
 
-@ControllerAdvice //����ó�� : ����ó���� �ô� Class
+@ControllerAdvice // global processing : Class that handle exceptions
 public class ArcusExceptionResponse {
 	/*InterruptedException
 	ExecutionException
