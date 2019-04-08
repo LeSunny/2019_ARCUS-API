@@ -5,7 +5,20 @@
   <link rel="self" href="https://spring.io/blog.atom" />
   <id>http://spring.io/blog.atom</id>
   <icon>https://spring.io/favicon.ico</icon>
-  <updated>2019-04-05T00:02:00Z</updated>
+  <updated>2019-04-05T14:38:59Z</updated>
+  <entry>
+    <title>CVE-2019-3795: Spring Security 4.2.12, 5.0.12, 5.1.5 Released</title>
+    <link rel="alternate" href="https://spring.io/blog/2019/04/05/cve-2019-3795-spring-security-4-2-12-5-0-12-5-1-5-released" />
+    <category term="releases" label="Releases" />
+    <author>
+      <name>Josh Cummings</name>
+    </author>
+    <id>tag:spring.io,2019-04-04:3629</id>
+    <updated>2019-04-05T14:38:59Z</updated>
+    <content type="html">&lt;div class="paragraph"&gt;
+&lt;p&gt;&lt;a href="https://spring.io/blog/2019/04/03/spring-security-5-1-5-5-0-12-4-2-12-released"&gt;We have released Spring Security 4.2.12, 5.0.12, and 5.1.5&lt;/a&gt; to address &lt;a href="https://pivotal.io/security/cve-2019-3795"&gt;CVE-2019-3795: Insecure Randomness with SecureRandomFactoryBean&lt;/a&gt;. Users are encouraged to update immediately.&lt;/p&gt;
+&lt;/div&gt;</content>
+  </entry>
   <entry>
     <title>A Bootiful Podcast: Microsoft's Kylie Liang and Theresa Nguyen on MIcrosoft's Java and Spring Support</title>
     <link rel="alternate" href="https://spring.io/blog/2019/04/05/a-bootiful-podcast-microsoft-s-kylie-liang-and-theresa-nguyen-on-microsoft-s-java-and-spring-support" />
@@ -667,23 +680,5 @@ dependencies {
 &lt;p&gt;Over the next couple of weeks we will be conducting &lt;strong&gt;user interviews&lt;/strong&gt; to gain better insights on how to improve the website experience and a deeper understanding of the &lt;strong&gt;&amp;ldquo;whys&amp;rdquo;&lt;/strong&gt; behind how users are interacting with the service. &lt;/p&gt;
 &lt;p&gt;As we cannot interview all of our users (we appreciate you all!), we invite you to leave your input and thoughts with our optional &lt;a href="https://docs.google.com/forms/d/1CsQaJAYFntD8FkBz-2zjtew8maj2JWxV2Fv2ugea_VA/viewform?ts=5c8f9ee0&amp;edit_requested=true"&gt;anonymous survey&lt;/a&gt;. This will allow us to build a larger picture of how people are using the service and the expectations and wants from the community. &lt;/p&gt;
 &lt;p&gt;Thank you for your feedback and support as we continue on this journey.&lt;/p&gt;</content>
-  </entry>
-  <entry>
-    <title>A Bootiful Podcast: CQRS with AxonIQ's Steven van Beelen and Pivotal's Ben Wilcock</title>
-    <link rel="alternate" href="https://spring.io/blog/2019/03/21/a-bootiful-podcast-cqrs-with-axoniq-s-steven-van-beelen-and-pivotal-s-ben-wilcock" />
-    <category term="engineering" label="Engineering" />
-    <author>
-      <name>Josh Long</name>
-    </author>
-    <id>tag:spring.io,2019-03-21:3610</id>
-    <updated>2019-03-21T07:57:43Z</updated>
-    <content type="html">&lt;p&gt;Hi Spring fans! In this week&amp;rsquo;s installment &lt;a href="http://twitter.com/Starbuxman"&gt;Josh Long&lt;/a&gt; talks to AxonIQ&amp;rsquo;s Steven van Beelen, lead of the Axon project, and Pivotal&amp;rsquo;s Ben Wilcock, on CQRS, event-sourcing, event-storming, microservices, Spring Boot and the long camaraderie shared by Axon and Spring.&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;Axon framework lead &lt;a href="http://twitter.com/smcvbeelen"&gt;Steve van Beelen&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Pivotal product marketing manager &lt;a href="http://twitter.com/benbravo73"&gt;Ben Wilcock&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Axon founder and AxonIQ CEO &lt;a href="http://twitter.com/allardbz"&gt;Allard Buijze&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="http://axoniq.io/"&gt;AxonIQ&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/593419098&amp;color=%23ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;show_teaser=true&amp;visual=true"&gt;&lt;/iframe&gt;</content>
   </entry>
 </feed>

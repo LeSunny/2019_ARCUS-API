@@ -1342,3 +1342,65 @@
 2019-04-05 18:09:32,448 [Worker-77: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 2 resources
 2019-04-05 18:09:32,452 [Worker-77: Building workspace] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (MS949 actually) to copy filtered resources, i.e. build is platform dependent!
 2019-04-05 18:09:32,461 [Worker-77: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2019-04-06 19:35:43,251 [Worker-7: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is out-of-date. Trying to update.
+2019-04-06 19:35:45,688 [Worker-7: Loading available Gradle versions] WARN  o.e.b.c.i.u.g.PublishedGradleVersions - Can't close stream after downloading published Gradle versions
+javax.net.ssl.SSLException: Connection has been shutdown: javax.net.ssl.SSLException: java.net.SocketException: Connection reset
+	at sun.security.ssl.SSLSocketImpl.checkEOF(SSLSocketImpl.java:1533) ~[na:1.8.0_191]
+	at sun.security.ssl.AppInputStream.available(AppInputStream.java:60) ~[na:1.8.0_191]
+	at java.io.BufferedInputStream.available(BufferedInputStream.java:410) ~[na:1.8.0_191]
+	at sun.net.www.MeteredStream.available(MeteredStream.java:170) ~[na:1.8.0_191]
+	at sun.net.www.http.KeepAliveStream.close(KeepAliveStream.java:85) ~[na:1.8.0_191]
+	at java.io.FilterInputStream.close(FilterInputStream.java:181) ~[na:1.8.0_191]
+	at sun.net.www.protocol.http.HttpURLConnection$HttpInputStream.close(HttpURLConnection.java:3517) ~[na:1.8.0_191]
+	at sun.nio.cs.StreamDecoder.implClose(StreamDecoder.java:378) ~[na:1.8.0_191]
+	at sun.nio.cs.StreamDecoder.close(StreamDecoder.java:193) ~[na:1.8.0_191]
+	at java.io.InputStreamReader.close(InputStreamReader.java:199) ~[na:1.8.0_191]
+	at com.google.common.io.Closeables.close(Closeables.java:76) ~[com.google.guava_21.0.0.v20170206-1425.jar:na]
+	at org.eclipse.buildship.core.internal.util.gradle.PublishedGradleVersions.downloadVersionInformation(PublishedGradleVersions.java:168) [org.eclipse.buildship.core_3.0.0.v20181106-1441-m.jar:na]
+	at org.eclipse.buildship.core.internal.util.gradle.PublishedGradleVersions.tryToDownloadAndCacheVersions(PublishedGradleVersions.java:148) [org.eclipse.buildship.core_3.0.0.v20181106-1441-m.jar:na]
+	at org.eclipse.buildship.core.internal.util.gradle.PublishedGradleVersions.tryToUpdateOutdatedVersionsFile(PublishedGradleVersions.java:132) [org.eclipse.buildship.core_3.0.0.v20181106-1441-m.jar:na]
+	at org.eclipse.buildship.core.internal.util.gradle.PublishedGradleVersions.create(PublishedGradleVersions.java:116) [org.eclipse.buildship.core_3.0.0.v20181106-1441-m.jar:na]
+	at org.eclipse.buildship.core.internal.util.gradle.PublishedGradleVersionsWrapper$LoadVersionsJob.run(PublishedGradleVersionsWrapper.java:62) [org.eclipse.buildship.core_3.0.0.v20181106-1441-m.jar:na]
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63) [org.eclipse.core.jobs_3.10.200.v20180912-1356.jar:na]
+Caused by: javax.net.ssl.SSLException: java.net.SocketException: Connection reset
+	at sun.security.ssl.Alerts.getSSLException(Alerts.java:208) ~[na:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.fatal(SSLSocketImpl.java:1946) ~[na:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.fatal(SSLSocketImpl.java:1903) ~[na:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.handleException(SSLSocketImpl.java:1867) ~[na:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.handleException(SSLSocketImpl.java:1812) ~[na:1.8.0_191]
+	at sun.security.ssl.AppInputStream.read(AppInputStream.java:116) ~[na:1.8.0_191]
+	at java.io.BufferedInputStream.read1(BufferedInputStream.java:284) ~[na:1.8.0_191]
+	at java.io.BufferedInputStream.read(BufferedInputStream.java:345) ~[na:1.8.0_191]
+	at sun.net.www.MeteredStream.read(MeteredStream.java:134) ~[na:1.8.0_191]
+	at java.io.FilterInputStream.read(FilterInputStream.java:133) ~[na:1.8.0_191]
+	at sun.net.www.protocol.http.HttpURLConnection$HttpInputStream.read(HttpURLConnection.java:3444) ~[na:1.8.0_191]
+	at sun.nio.cs.StreamDecoder.readBytes(StreamDecoder.java:284) ~[na:1.8.0_191]
+	at sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:326) ~[na:1.8.0_191]
+	at sun.nio.cs.StreamDecoder.read(StreamDecoder.java:178) ~[na:1.8.0_191]
+	at java.io.InputStreamReader.read(InputStreamReader.java:184) ~[na:1.8.0_191]
+	at java.io.Reader.read(Reader.java:100) ~[na:1.8.0_191]
+	at com.google.common.io.CharStreams.copy(CharStreams.java:74) ~[com.google.guava_21.0.0.v20170206-1425.jar:na]
+	at com.google.common.io.CharStreams.toStringBuilder(CharStreams.java:105) ~[com.google.guava_21.0.0.v20170206-1425.jar:na]
+	at com.google.common.io.CharStreams.toString(CharStreams.java:92) ~[com.google.guava_21.0.0.v20170206-1425.jar:na]
+	at org.eclipse.buildship.core.internal.util.gradle.PublishedGradleVersions.downloadVersionInformation(PublishedGradleVersions.java:162) [org.eclipse.buildship.core_3.0.0.v20181106-1441-m.jar:na]
+	... 5 common frames omitted
+Caused by: java.net.SocketException: Connection reset
+	at java.net.SocketInputStream.read(SocketInputStream.java:210) ~[na:1.8.0_191]
+	at java.net.SocketInputStream.read(SocketInputStream.java:141) ~[na:1.8.0_191]
+	at sun.security.ssl.InputRecord.readFully(InputRecord.java:465) ~[na:1.8.0_191]
+	at sun.security.ssl.InputRecord.readV3Record(InputRecord.java:593) ~[na:1.8.0_191]
+	at sun.security.ssl.InputRecord.read(InputRecord.java:532) ~[na:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.readRecord(SSLSocketImpl.java:975) ~[na:1.8.0_191]
+	at sun.security.ssl.SSLSocketImpl.readDataRecord(SSLSocketImpl.java:933) ~[na:1.8.0_191]
+	at sun.security.ssl.AppInputStream.read(AppInputStream.java:105) ~[na:1.8.0_191]
+	... 19 common frames omitted
+2019-04-06 19:35:46,141 [Worker-7: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Updating Gradle version information cache failed. Using outdated cache.
+2019-04-06 19:36:02,844 [Worker-17: Building workspace] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (MS949 actually) to copy filtered resources, i.e. build is platform dependent!
+2019-04-06 19:36:02,870 [Worker-17: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 2 resources
+2019-04-06 19:36:02,886 [Worker-17: Building workspace] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (MS949 actually) to copy filtered resources, i.e. build is platform dependent!
+2019-04-06 19:36:02,892 [Worker-17: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2019-04-08 13:05:17,612 [Worker-1: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is out-of-date. Trying to update.
+2019-04-08 13:05:44,051 [Worker-14: Building workspace] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (MS949 actually) to copy filtered resources, i.e. build is platform dependent!
+2019-04-08 13:05:44,191 [Worker-14: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 2 resources
+2019-04-08 13:05:44,210 [Worker-14: Building workspace] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (MS949 actually) to copy filtered resources, i.e. build is platform dependent!
+2019-04-08 13:05:44,215 [Worker-14: Building workspace] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
