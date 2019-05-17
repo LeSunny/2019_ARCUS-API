@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
@@ -19,15 +20,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jam2in.httpapi.Service.ApiService;
+import com.jam2in.httpapi.request.BopRequest;
 import com.jam2in.httpapi.request.FourRequest;
 import com.jam2in.httpapi.request.OnePluralRequest;
 import com.jam2in.httpapi.request.OneRequest;
 import com.jam2in.httpapi.request.ThreeRequest;
 import com.jam2in.httpapi.request.ThreeSingularRequest;
 import com.jam2in.httpapi.request.TwoRequest;
+import com.jam2in.httpapi.response.ArcusBopBoolResponse;
+import com.jam2in.httpapi.response.ArcusBopNotBoolResponse;
 import com.jam2in.httpapi.response.ArcusLongSuccessResponse;
 import com.jam2in.httpapi.response.ArcusSetBulkSuccessResponse;
 import com.jam2in.httpapi.response.ArcusSuccessResponse;
+
+import net.spy.memcached.internal.CollectionFuture;
 
 /**
  * Handles requests for the application home page.
@@ -77,6 +83,7 @@ public class HomeController {
 		return apiService.append(-1, arcusRequest.getKey(), arcusRequest.getValue());
 	}
 	
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/set-bulk", method=RequestMethod.POST)
 	@ResponseBody
 	ArcusSetBulkSuccessResponse setBulk(@RequestBody ThreeRequest arcusRequest) {
@@ -182,7 +189,88 @@ public class HomeController {
 	@ResponseBody
 	ArcusSuccessResponse delete(@RequestBody OneRequest arcusRequest) throws InterruptedException, ExecutionException, TimeoutException {
 		return apiService.delete(arcusRequest.getKey());
+	}
+
+	/////////B+Tree
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-create",method=RequestMethod.POST)
+	@ResponseBody
+	ArcusBopBoolResponse bopCreate(@RequestBody BopRequest arcusRequest)  throws IllegalStateException,TimeoutException, InterruptedException, ExecutionException {
+		return apiService.bopCreate(arcusRequest.getKey(),arcusRequest.getAttributes());
+	}
+	
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-insert",method=RequestMethod.POST)
+	@ResponseBody
+	ArcusBopBoolResponse bopInsert(@RequestBody BopRequest arcusRequest) throws IllegalStateException, TimeoutException, InterruptedException, ExecutionException{
+		return apiService.bopInsert(arcusRequest.getKey(), arcusRequest.getBkey(), arcusRequest.geteFlag(), arcusRequest.getValue(), arcusRequest.getAttributesForCreate());
+	}
+	
+//	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-insert-and-get-trimmed",method=RequestMethod.POST)
+//	@ResponseBody
+//	ArcusBopBoolResponse bopInsertAndGetTrimmed(@RequestBody BopRequest arcusRequest) throws Exception{
+//		return apiService.bopInsertAndGetTrimmed(arcusRequest.getKey(), arcusRequest.getBkey(), arcusRequest.geteFlag(), arcusRequest.getValue(), arcusRequest.getAttributes());
+//	}
+	
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-upsert", method=RequestMethod.POST)
+	@ResponseBody
+	ArcusBopBoolResponse bopUpsert(@RequestBody BopRequest arcusRequest) throws IllegalStateException, TimeoutException, InterruptedException, ExecutionException{
+		return apiService.bopUpsert(arcusRequest.getKey(), arcusRequest.getBkey(), arcusRequest.geteFlag(), arcusRequest.getValue(), arcusRequest.getAttributesForCreate());
+	}
+	
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-update",method=RequestMethod.PATCH)
+	@ResponseBody
+	ArcusBopBoolResponse bopUpdate(@RequestBody BopRequest arcusRequest)  throws IllegalStateException, TimeoutException, InterruptedException, ExecutionException{
+		return apiService.bopUpdate(arcusRequest.getKey(), arcusRequest.getBkey(), arcusRequest.geteFlagUpdate(), arcusRequest.getValue());
+				//return 값이 true말고 false도 있음
+	}
+	
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-delete",method=RequestMethod.DELETE)
+	@ResponseBody
+	ArcusBopBoolResponse bopDelete(@RequestBody BopRequest arcusRequest) {
+		if(arcusRequest.getFrom() != null) {
+			return apiService.bopDelete(arcusRequest.getKey(), arcusRequest.getFrom(), arcusRequest.getTo(), arcusRequest.getCount(), arcusRequest.getDropIfEmpty());
+		}else {
+			return apiService.bopDelete(arcusRequest.getKey(), arcusRequest.getBkey(), arcusRequest.getDropIfEmpty());
+		}
+	}
+	
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-incr",method=RequestMethod.PATCH)
+	@ResponseBody
+	ArcusBopNotBoolResponse bopIncr(@RequestBody BopRequest arcusRequest) {
+		if(arcusRequest.getInitial() != null) {
+			return apiService.bopIncr(arcusRequest.getKey(), arcusRequest.getSubkey(), arcusRequest.getBy(), arcusRequest.getInitial(), arcusRequest.geteFlag());
+		}else {
+			return apiService.bopIncr(arcusRequest.getKey(), arcusRequest.getBkey(), arcusRequest.getBy());
+		}
+	}
+	
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-decr",method=RequestMethod.PATCH)
+	@ResponseBody
+	ArcusBopNotBoolResponse bopDecr(@RequestBody BopRequest arcusRequest) {
+		if(arcusRequest.getInitial() != null) {
+			return apiService.bopDecr(arcusRequest.getKey(), arcusRequest.getSubkey(), arcusRequest.getBy(), arcusRequest.getInitial(), arcusRequest.geteFlag());
+		}else {
+			return apiService.bopDecr(arcusRequest.getKey(), arcusRequest.getBkey(), arcusRequest.getBy());
+		}
+	}
+	
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-get-item-count",method=RequestMethod.POST)
+	@ResponseBody
+	ArcusBopNotBoolResponse bopGetItemCount(@RequestBody BopRequest arcusRequest) {
+		return apiService.bopGetItemCount(arcusRequest.getKey(), arcusRequest.getFrom(), arcusRequest.getTo());
+	}
+	
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-get",method=RequestMethod.POST)
+	@ResponseBody
+	ArcusBopNotBoolResponse bopGet(@RequestBody BopRequest arcusRequest) {
+		if(arcusRequest.getFrom() != null) {
+			return apiService.bopGet(arcusRequest.getKey(), arcusRequest.getFrom(), arcusRequest.getTo(), arcusRequest.getOffset(), arcusRequest.getCount(), arcusRequest.getWithDelete(), arcusRequest.getDropIfEmpty());
+		}else {
+			return apiService.bopGet(arcusRequest.getKey(), arcusRequest.getBkey(), arcusRequest.getWithDelete(), arcusRequest.getDropIfEmpty());
+		}
 	}	
+	
+	
+	
 }
 
 

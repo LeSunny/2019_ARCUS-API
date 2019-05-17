@@ -24,13 +24,6 @@
 			<version>1.11.4</version>
 		</dependency>
 		
-		<!-- Arcus 클라이언트 의존성을 추가합니다. -->
-		<dependency>
-			<groupId>com.navercorp.arcus</groupId>
-			<artifactId>arcus-java-client</artifactId>
-			<version>1.8.0</version>
-		</dependency>
-		
 		<!-- jackson -->
 		<dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

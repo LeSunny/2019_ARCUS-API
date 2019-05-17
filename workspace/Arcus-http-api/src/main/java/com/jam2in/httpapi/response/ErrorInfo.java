@@ -5,9 +5,9 @@ import java.util.concurrent.TimeoutException;
 
 public class ErrorInfo {
 
-	public String errorMsg; //ÀÀ´ä ½Ã jsonÀÇ key °ªÀÌ µÈ´Ù.
+	public String errorMsg; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ jsonï¿½ï¿½ key ï¿½ï¿½ï¿½ï¿½ ï¿½È´ï¿½.
 	
-	public String getErrorMsg() { //getter¿Í setter°¡ ÀÖÀ¸¸é ÀÚµ¿À¸·Î ÀúÀåµÇ°í ºÒ·¯¿Ã ¼ö ÀÖÀ½
+	public String getErrorMsg() { //getterï¿½ï¿½ setterï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		return errorMsg;
 	}
 
@@ -19,19 +19,20 @@ public class ErrorInfo {
 		this.errorMsg = getMessage(errorMsg);
 	}
 
-	// ¼­¹ö ¶Ç´Â ³×Æ®¿öÅ© Àå¾Ö ½Ã ArcusClientÀÇ queue¿¡ ´ë±âÁßÀÎ ÀÛ¾÷ÀÌ Ãë¼Ò µÇ¾î ¹ß»ýÇÑ´Ù.
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½Ç´ï¿½ ï¿½ï¿½Æ®ï¿½ï¿½Å© ï¿½ï¿½ï¿½ ï¿½ï¿½ ArcusClientï¿½ï¿½ queueï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Û¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ç¾ï¿½ ï¿½ß»ï¿½ï¿½Ñ´ï¿½.
     private static final String MESSAGE_EXECUTION_EXCEPTION = "Operation was canceled due to server or network failure.";
 
-    // ´Ù¸¥ ¾²·¹µå¿¡¼­ ÇØ´ç ¾²·¹µåÀÇ ÀÛ¾÷À» InterruptÇßÀ» ¶§ InterruptedExceptionÀÌ ¹ß»ýÇÑ´Ù
+    // ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½å¿¡ï¿½ï¿½ ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Û¾ï¿½ï¿½ï¿½ Interruptï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ InterruptedExceptionï¿½ï¿½ ï¿½ß»ï¿½ï¿½Ñ´ï¿½
     private static final String MESSAGE_INTERRUPT_EXCEPTION = "Operation thread was interrupted by another thread.";
 
-    // ÁöÁ¤ÇÑ ½Ã°¢¿¡ °á°ú°¡ ³Ñ¾î ¿ÀÁö ¾Ê°Å³ª JVMÀÇ °úºÎÇÏ(¿¹, full GC)·Î request queue¿¡¼­ Ã³¸®µÇÁö ¾ÊÀ» °æ¿ì
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¾ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê°Å³ï¿½ JVMï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½, full GC)ï¿½ï¿½ request queueï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
     private static final String MESSAGE_TIMEOUT_EXCEPTION = "Operation timeout.";
 
-    // ArcusClient Queue¿¡ ¹®Á¦°¡ »ý°Ü Timeout ³»¿¡ OperationÀ» µî·ÏÇÏÁö ¸øÇÑ °æ¿ì
+    // ArcusClient Queueï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Timeout ï¿½ï¿½ï¿½ï¿½ Operationï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
     private static final String MESSAGE_ILLEGAL_STATE_EXCEPTION = "Operation could not be processed due to a problem in the queue.";
 
-
+    private static final String MESSAGE_NULLPOINTER_EXCEPTION = "Nullpointer exception is occured.";
+    
     public static String getMessage(Exception e) {
         if (e instanceof IllegalStateException) {
             return MESSAGE_ILLEGAL_STATE_EXCEPTION;
@@ -41,7 +42,9 @@ public class ErrorInfo {
             return MESSAGE_EXECUTION_EXCEPTION;
         } else if (e instanceof TimeoutException) {
             return MESSAGE_TIMEOUT_EXCEPTION;
-        } else {
+        } else if (e instanceof NullPointerException){
+        	return MESSAGE_NULLPOINTER_EXCEPTION;
+        }else {
             return e.getMessage();
         }
     }

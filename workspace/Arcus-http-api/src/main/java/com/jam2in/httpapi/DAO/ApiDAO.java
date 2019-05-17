@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.spy.memcached.ArcusClient;
-import net.spy.memcached.collection.CollectionAttributes;
+import net.spy.memcached.collection.*;
 import net.spy.memcached.internal.CollectionFuture;
 import net.spy.memcached.ops.CollectionOperationStatus;
 
@@ -132,5 +132,126 @@ public class ApiDAO {
 		return future;
 		
 	}
+	public CollectionFuture<Boolean> bopCreate(String key, ElementValueType valueType, CollectionAttributes attributes) {
+		CollectionFuture<Boolean> future = null;
+		future = arcusClient.asyncBopCreate(key, valueType, attributes);
+		return future;
+	}
+	public CollectionFuture<Boolean> bopInsert(String key, long bkey, byte[] eFlag, Object value,
+			CollectionAttributes attributesForCreate) {
+		CollectionFuture<Boolean> future = null;
+		future = arcusClient.asyncBopInsert(key, bkey, eFlag, value, attributesForCreate);
+		return future;
+	}
+	public CollectionFuture<Boolean> bopInsert(String key, byte[] bkey, byte[] eFlag, Object value,
+			CollectionAttributes attributesForCreate) {
+		CollectionFuture<Boolean> future = null;
+		future = arcusClient.asyncBopInsert(key, bkey, eFlag, value, attributesForCreate);
+		return future;
+	}
+	public CollectionFuture<Boolean> bopUpsert(String key, long bkey, byte[] eFlag, Object value, CollectionAttributes attributesForCreate){
+		CollectionFuture<Boolean> future = null;
+		future = arcusClient.asyncBopUpsert(key, bkey, eFlag, value, attributesForCreate);
+		return future;
+	}
+	public CollectionFuture<Boolean> bopUpsert(String key, byte[] bkey, byte[] eFlag, Object value, CollectionAttributes attributesForCreate){
+		CollectionFuture<Boolean> future = null;
+		future = arcusClient.asyncBopUpsert(key, bkey, eFlag, value, attributesForCreate);
+		return future;
+	}
+	public CollectionFuture<Boolean> bopUpdate(String key, long bkey, ElementFlagUpdate eFlagUpdate, Object value){
+		CollectionFuture<Boolean> future = null;
+		future = arcusClient.asyncBopUpdate(key, bkey, eFlagUpdate, value);
+		return future;
+	}
+	public CollectionFuture<Boolean> bopUpdate(String key, byte[] bkey, ElementFlagUpdate eFlagUpdate, Object value){
+		CollectionFuture<Boolean> future = null;
+		future = arcusClient.asyncBopUpdate(key, bkey, eFlagUpdate, value);
+		return future;
+	}
+	public CollectionFuture<Boolean> bopDelete(String key, long bkey, ElementFlagFilter eFlagFilter, boolean dropIfEmpty){
+		CollectionFuture<Boolean> future = null;
+		future = arcusClient.asyncBopDelete(key, bkey, eFlagFilter, dropIfEmpty);
+		return future;
+	}
+	public CollectionFuture<Boolean> bopDelete(String key, byte[] bkey, ElementFlagFilter eFlagFilter, boolean dropIfEmpty){
+		CollectionFuture<Boolean> future = null;
+		future = arcusClient.asyncBopDelete(key, bkey, eFlagFilter, dropIfEmpty);
+		return future;
+	}
+	public CollectionFuture<Boolean> bopDelete(String key, long from, long to, ElementFlagFilter eFlagFilter, int count, boolean dropIfEmpty){
+		CollectionFuture<Boolean> future = null;
+		future = arcusClient.asyncBopDelete(key, from, to, eFlagFilter, count, dropIfEmpty);
+		return future;
+	}
+	public CollectionFuture<Boolean> bopDelete(String key, byte[] from, byte[] to, ElementFlagFilter eFlagFilter, int count, boolean dropIfEmpty){
+		CollectionFuture<Boolean> future = null;
+		future = arcusClient.asyncBopDelete(key, from, to, eFlagFilter, count, dropIfEmpty);
+		return future;
+	}
+	public CollectionFuture<Long> bopIncr(String key, long bkey, int by){
+		CollectionFuture<Long> future = null;
+		future = arcusClient.asyncBopIncr(key,bkey,by);
+		return future;
+	}
+	public CollectionFuture<Long> bopIncr(String key, byte[] bkey, int by){
+		CollectionFuture<Long> future = null;
+		future = arcusClient.asyncBopIncr(key,bkey,by);
+		return future;
+	}
+	public CollectionFuture<Long> bopIncr(String key, long subkey, int by, long initial, byte[] eFlag){
+		CollectionFuture<Long> future = null;
+		future = arcusClient.asyncBopIncr(key, subkey, by, initial, eFlag);
+		return future;
+	}
+	public CollectionFuture<Long> bopIncr(String key, byte[] subkey, int by, long initial, byte[] eFlag){
+		CollectionFuture<Long> future = null;
+		future = arcusClient.asyncBopIncr(key, subkey, by, initial, eFlag);
+		return future;
+	}
+	public CollectionFuture<Long> bopDecr(String key, long bkey, int by){
+		CollectionFuture<Long> future = null;
+		future = arcusClient.asyncBopDecr(key,bkey,by);
+		return future;
+	}
+	public CollectionFuture<Long> bopDecr(String key, byte[] bkey, int by){
+		CollectionFuture<Long> future = null;
+		future = arcusClient.asyncBopDecr(key,bkey,by);
+		return future;
+	}
+	public CollectionFuture<Long> bopDecr(String key, long subkey, int by, long initial, byte[] eFlag){
+		CollectionFuture<Long> future = null;
+		future = arcusClient.asyncBopDecr(key, subkey, by, initial, eFlag);
+		return future;
+	}
+	public CollectionFuture<Long> bopDecr(String key, byte[] subkey, int by, long initial, byte[] eFlag){
+		CollectionFuture<Long> future = null;
+		future = arcusClient.asyncBopDecr(key, subkey, by, initial, eFlag);
+		return future;
+	}
+	public CollectionFuture<Integer> bopGetItemCount(String key, long from, long to, ElementFlagFilter eFlagFilter){
+		CollectionFuture<Integer> future = arcusClient.asyncBopGetItemCount(key, from, to, eFlagFilter);
+		return future;
+	}
+	public CollectionFuture<Integer> bopGetItemCount(String key, byte[] from, byte[] to, ElementFlagFilter eFlagFilter){
+		CollectionFuture<Integer> future = arcusClient.asyncBopGetItemCount(key, from, to, eFlagFilter);
+		return future;
+	}
 	
+	public CollectionFuture<Map<Long, Element<Object>>> bopGet(String key, long bkey, ElementFlagFilter eFlagFilter, boolean withDelete, Boolean dropIfEmpty){
+		CollectionFuture<Map<Long, Element<Object>>> future = arcusClient.asyncBopGet(key, bkey, eFlagFilter, withDelete, dropIfEmpty);
+		return future;
+	}
+	public CollectionFuture<Map<ByteArrayBKey, Element<Object>>> bopGet(String key, byte[] bkey, ElementFlagFilter eFlagFilter, boolean withDelete, Boolean dropIfEmpty){
+		CollectionFuture<Map<ByteArrayBKey, Element<Object>>> future = arcusClient.asyncBopGet(key, bkey, eFlagFilter, withDelete, dropIfEmpty);
+		return future;
+	}
+	public CollectionFuture<Map<Long, Element<Object>>> bopGet(String key, long from, long to, ElementFlagFilter eFlagFilter, int offset, int count, boolean withDelete, boolean dropIfEmpty){
+		CollectionFuture<Map<Long, Element<Object>>> future = arcusClient.asyncBopGet(key, from, to, eFlagFilter, offset, count, withDelete, dropIfEmpty);
+		return future;
+	}
+	public CollectionFuture<Map<ByteArrayBKey, Element<Object>>> bopGet(String key, byte[] from, byte[] to, ElementFlagFilter eFlagFilter, int offset, int count, boolean withDelete, boolean dropIfEmpty){
+		CollectionFuture<Map<ByteArrayBKey, Element<Object>>> future = arcusClient.asyncBopGet(key, from, to, eFlagFilter, offset, count, withDelete, dropIfEmpty);
+		return future;
+	}	
 }
