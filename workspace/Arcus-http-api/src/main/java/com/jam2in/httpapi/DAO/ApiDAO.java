@@ -18,6 +18,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.spy.memcached.ArcusClient;
 import net.spy.memcached.collection.*;
 import net.spy.memcached.internal.CollectionFuture;
+import net.spy.memcached.internal.CollectionGetBulkFuture;
+import net.spy.memcached.internal.SMGetFuture;
 import net.spy.memcached.ops.CollectionOperationStatus;
 
 @Repository("apiDAO")
@@ -149,6 +151,24 @@ public class ApiDAO {
 		future = arcusClient.asyncBopInsert(key, bkey, eFlag, value, attributesForCreate);
 		return future;
 	}
+	public CollectionFuture<Map<Integer, CollectionOperationStatus>> bopPipedInsertBulk(String key, Map<Long, Object> elementsWithMap, CollectionAttributes attributesForCreate){
+		CollectionFuture<Map<Integer, CollectionOperationStatus>> future = null;
+		future = arcusClient.asyncBopPipedInsertBulk(key, elementsWithMap, attributesForCreate);
+		return future;
+	}
+
+	public Future<Map<String, CollectionOperationStatus>> bopInsertBulk(List<String> keyList, long bkey, byte[] eflag, Object value, CollectionAttributes attributesForCreate){
+		Future<Map<String, CollectionOperationStatus>> future = null;
+		future = arcusClient.asyncBopInsertBulk(keyList, bkey, eflag, value, attributesForCreate);
+		return future;
+	}
+	
+	public Future<Map<String, CollectionOperationStatus>> bopInsertBulk(List<String> keyList, byte[] bkey, byte[] eflag, Object value, CollectionAttributes attributesForCreate){
+		Future<Map<String, CollectionOperationStatus>> future = null;
+		future = arcusClient.asyncBopInsertBulk(keyList, bkey, eflag, value, attributesForCreate);
+		return future;
+	}
+
 	public CollectionFuture<Boolean> bopUpsert(String key, long bkey, byte[] eFlag, Object value, CollectionAttributes attributesForCreate){
 		CollectionFuture<Boolean> future = null;
 		future = arcusClient.asyncBopUpsert(key, bkey, eFlag, value, attributesForCreate);
@@ -254,4 +274,45 @@ public class ApiDAO {
 		CollectionFuture<Map<ByteArrayBKey, Element<Object>>> future = arcusClient.asyncBopGet(key, from, to, eFlagFilter, offset, count, withDelete, dropIfEmpty);
 		return future;
 	}	
+	public CollectionGetBulkFuture<Map<String, BTreeGetResult<Long, Object>>> bopGetBulk(List<String> keyList, long from, long to, ElementFlagFilter eFlagFilter, int offset, int count){
+		CollectionGetBulkFuture<Map<String, BTreeGetResult<Long, Object>>> future = arcusClient.asyncBopGetBulk(keyList, from, to, eFlagFilter, offset, count);
+		return future;
+	}
+	public CollectionGetBulkFuture<Map<String, BTreeGetResult<ByteArrayBKey, Object>>> bopGetBulk(List<String> keyList, byte[] from, byte[] to, ElementFlagFilter eFlagFilter, int offset, int count){
+		CollectionGetBulkFuture<Map<String, BTreeGetResult<ByteArrayBKey, Object>>> future = arcusClient.asyncBopGetBulk(keyList, from, to, eFlagFilter, offset, count);
+		return future;
+	}
+	public SMGetFuture<List<SMGetElement<Object>>> bopSMGet(List<String> keyList, long from, long to, ElementFlagFilter eFlagFilter, int count, SMGetMode smgetMode){
+		SMGetFuture<List<SMGetElement<Object>>> future = arcusClient.asyncBopSortMergeGet(keyList, from, to, eFlagFilter, count, smgetMode);
+		return future;
+	}
+	public SMGetFuture<List<SMGetElement<Object>>> bopSMGet(List<String> keyList, byte[] from, byte[] to, ElementFlagFilter eFlagFilter, int count, SMGetMode smgetMode){
+		SMGetFuture<List<SMGetElement<Object>>> future = arcusClient.asyncBopSortMergeGet(keyList, from, to, eFlagFilter, count, smgetMode);
+		return future;
+	}
+	public CollectionFuture<Integer> bopFindPosition(String key, long bkey, BTreeOrder order){
+		CollectionFuture<Integer> future = arcusClient.asyncBopFindPosition(key, bkey, order);
+		return future;
+	}
+	public CollectionFuture<Integer> bopFindPosition(String key, byte[] bkey, BTreeOrder order){
+		CollectionFuture<Integer> future = arcusClient.asyncBopFindPosition(key, bkey, order);
+		return future;
+	}
+	public CollectionFuture<Map<Integer, Element<Object>>> bopGetByPosition(String key, BTreeOrder order, int pos){
+		CollectionFuture<Map<Integer, Element<Object>>> future = arcusClient.asyncBopGetByPosition(key, order, pos);
+		return future;
+	}
+	public CollectionFuture<Map<Integer, Element<Object>>> bopGetByPosition(String key, BTreeOrder order, int from, int to){
+		CollectionFuture<Map<Integer, Element<Object>>> future = arcusClient.asyncBopGetByPosition(key, order, from, to);
+		return future;
+	}
+	public CollectionFuture<Map<Integer, Element<Object>>> bopFindPositionWithGet(String key, long bkey, BTreeOrder order, int count){
+		CollectionFuture<Map<Integer, Element<Object>>> future = arcusClient.asyncBopFindPositionWithGet(key, bkey, order, count);
+		return future;
+	}
+	public CollectionFuture<Map<Integer, Element<Object>>> bopFindPositionWithGet(String key, byte[] bkey, BTreeOrder order, int count){
+		CollectionFuture<Map<Integer, Element<Object>>> future = arcusClient.asyncBopFindPositionWithGet(key, bkey, order, count);
+		return future;
+	}
+
 }

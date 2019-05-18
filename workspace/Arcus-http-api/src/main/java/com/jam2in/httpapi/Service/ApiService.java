@@ -8,15 +8,18 @@ import java.util.concurrent.TimeoutException;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.jam2in.httpapi.response.ArcusBopBoolResponse;
+import com.jam2in.httpapi.response.ArcusBopInsertBulkResponse;
 import com.jam2in.httpapi.response.ArcusBopNotBoolResponse;
 import com.jam2in.httpapi.response.ArcusLongSuccessResponse;
 import com.jam2in.httpapi.response.ArcusSetBulkSuccessResponse;
 import com.jam2in.httpapi.response.ArcusSuccessResponse;
 
+import net.spy.memcached.collection.BTreeOrder;
 import net.spy.memcached.collection.CollectionAttributes;
 import net.spy.memcached.collection.ElementFlagFilter;
 import net.spy.memcached.collection.ElementFlagUpdate;
 import net.spy.memcached.collection.ElementValueType;
+import net.spy.memcached.collection.SMGetMode;
 
 public interface ApiService {
 
@@ -55,5 +58,13 @@ public interface ApiService {
 			Boolean withDelete, Boolean dropIfEmpty);
 	public ArcusBopNotBoolResponse bopGet(String key, Object bkey, Boolean withDelete, Boolean dropIfEmpty);
 	
+	public ArcusBopInsertBulkResponse bopPipedInsertBulk(String key, Map<Long, Object> elementsWithMap, CollectionAttributes attributesForCreate);
+	public ArcusBopInsertBulkResponse bopInsertBulk(List<String> keyList, Object bkey, byte[] eflag, Object value, CollectionAttributes attributesForCreate);
+	public ArcusBopNotBoolResponse bopGetBulk(List<String> keyList, Object from, Object to, ElementFlagFilter eFlagFilter, Integer offset, Integer count);
+	public ArcusBopNotBoolResponse bopSMGet(List<String> keyList, Object from, Object to, ElementFlagFilter eFlagFilter, Integer count, SMGetMode smgetMode);
+	public ArcusBopNotBoolResponse bopFindPosition(String key, Object bkey, BTreeOrder order);
+	public ArcusBopNotBoolResponse bopGetByPosition(String key, BTreeOrder order, Integer position);
+	public ArcusBopNotBoolResponse bopGetByPosition(String key, BTreeOrder order, Object from, Object to);
+	public ArcusBopNotBoolResponse bopFindPositionWithGet(String key, Object bkey, BTreeOrder order, Integer count);
 	
 }

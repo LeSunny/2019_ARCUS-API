@@ -4,11 +4,14 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import net.spy.memcached.collection.*;
 
 public class BopRequest {
 	String key = null;
+	List<String> keyList = null;
+
 	//ElementValueType valueType = null;
 	
 	CollectionAttributes attributes = null;
@@ -17,7 +20,7 @@ public class BopRequest {
 	byte[] eFlag = null;
 	Object value = null;
 	ElementFlagUpdate eFlagUpdate = null;
-	//ElementFlagFilter eFlagFilter = null;
+	ElementFlagFilter eFlagFilter = null;
 	Boolean dropIfEmpty = null;
 	Object from = null;
 	Object to = null;
@@ -27,11 +30,19 @@ public class BopRequest {
 	Object subkey = null;
 	Long initial = null;
 	Boolean withDelete = null;
+	Map<Long, Object> elementsWithMap = null;
+	SMGetMode smgetMode = null;
+	BTreeOrder order = null;
+	Integer position = null;
 	
 	public String getKey() {
 		return key;
 	}
 
+	public List<String> getKeyList() {
+		return keyList;
+	}
+	
 	/*
 	 * public ElementValueType getValueType() { return valueType; }
 	 */
@@ -48,7 +59,7 @@ public class BopRequest {
 	}
 	public Object getBkey() {
 		return bkey;
-	}
+	}	
 	public byte[] geteFlag() {
 		return eFlag;
 	}
@@ -58,9 +69,9 @@ public class BopRequest {
 	public ElementFlagUpdate geteFlagUpdate() {
 		return eFlagUpdate;
 	}
-//	public ElementFlagFilter geteFlagFilter() {
-//		return eFlagFilter;
-//	}
+	public ElementFlagFilter geteFlagFilter() {
+		return eFlagFilter;
+	}
 	public Boolean getDropIfEmpty() {
 		return dropIfEmpty;
 	}
@@ -85,16 +96,38 @@ public class BopRequest {
 	public Boolean getWithDelete() {
 		return withDelete;
 	}
+	public Map<Long, Object> getElementsWithMap() {
+		return elementsWithMap;
+	}
+	public SMGetMode getSMGetMode() {
+		return smgetMode;
+	}
+	public BTreeOrder getOrder() {
+		return order;
+	}
+	public Integer getPosition() {
+		return position;
+	}
+	
+	/***********************************************/
+	
 	public void setKey(String key) {
 		this.key = key;
 	}
-
+	
+	public void setKeyList(List<String> keyList) {
+		this.keyList = keyList;
+	}
+	
 	/*
 	 * public void setValueType(ElementValueType valueType) { this.valueType =
 	 * valueType; }
 	 */
 	public void setAttributes(CollectionAttributes attributes) {
 		this.attributes = attributes;
+	}
+	public void setElementsWithMap(Map<Long, Object> elements) {
+		this.elementsWithMap = elements;
 	}
 	public void setBkey(Object bkey) {
 		this.bkey = bkey;
@@ -109,9 +142,9 @@ public class BopRequest {
 	public void seteFlagUpdate(ElementFlagUpdate eFlagUpdate) {
 		this.eFlagUpdate = eFlagUpdate;
 	}
-//	public void seteFlagFilter(ElementFlagFilter eFlagFilter) {
-//		this.eFlagFilter = eFlagFilter;
-//	}
+	public void seteFlagFilter(ElementFlagFilter eFlagFilter) {
+		this.eFlagFilter = eFlagFilter;
+	}
 	public void setDropIfEmpty(Boolean dropIfEmpty) {
 		this.dropIfEmpty = dropIfEmpty;
 	}
@@ -144,5 +177,16 @@ public class BopRequest {
 	public void setOffset(Integer offset) {
 		this.offset = offset;
 	}
+	
+	public void setSMGetMode(SMGetMode smgetMode) {
+		this.smgetMode = smgetMode;
+	}
 
+	public void setBtreeOrder(BTreeOrder order) {
+		this.order = order;
+	}
+	
+	public void setPosition(Integer position) {
+		this.position = position;
+	}
 }

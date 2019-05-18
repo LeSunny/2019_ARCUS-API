@@ -28,6 +28,7 @@ import com.jam2in.httpapi.request.ThreeRequest;
 import com.jam2in.httpapi.request.ThreeSingularRequest;
 import com.jam2in.httpapi.request.TwoRequest;
 import com.jam2in.httpapi.response.ArcusBopBoolResponse;
+import com.jam2in.httpapi.response.ArcusBopInsertBulkResponse;
 import com.jam2in.httpapi.response.ArcusBopNotBoolResponse;
 import com.jam2in.httpapi.response.ArcusLongSuccessResponse;
 import com.jam2in.httpapi.response.ArcusSetBulkSuccessResponse;
@@ -194,7 +195,8 @@ public class HomeController {
 	/////////B+Tree
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-create",method=RequestMethod.POST)
 	@ResponseBody
-	ArcusBopBoolResponse bopCreate(@RequestBody BopRequest arcusRequest)  throws IllegalStateException,TimeoutException, InterruptedException, ExecutionException {
+	ArcusBopBoolResponse bopCreate(@RequestBody BopRequest arcusRequest)  throws IllegalStateException,TimeoutException, InterruptedException, ExecutionException, NullPointerException {
+		System.out.println("controller : key : "+arcusRequest.getKey()+", attributes :"+arcusRequest.getAttributes());
 		return apiService.bopCreate(arcusRequest.getKey(),arcusRequest.getAttributes());
 	}
 	
@@ -203,6 +205,20 @@ public class HomeController {
 	ArcusBopBoolResponse bopInsert(@RequestBody BopRequest arcusRequest) throws IllegalStateException, TimeoutException, InterruptedException, ExecutionException{
 		return apiService.bopInsert(arcusRequest.getKey(), arcusRequest.getBkey(), arcusRequest.geteFlag(), arcusRequest.getValue(), arcusRequest.getAttributesForCreate());
 	}
+	
+
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-piped-insert-bulk",method=RequestMethod.POST)
+	@ResponseBody
+	ArcusBopInsertBulkResponse bopPipedInsertBulk(@RequestBody BopRequest arcusRequest) throws IllegalStateException, TimeoutException, InterruptedException, ExecutionException{
+		return apiService.bopPipedInsertBulk(arcusRequest.getKey(), arcusRequest.getElementsWithMap(), arcusRequest.getAttributesForCreate());
+	}
+	
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-insert-bulk",method=RequestMethod.POST)
+	@ResponseBody
+	ArcusBopInsertBulkResponse bopInsertBulk(@RequestBody BopRequest arcusRequest) throws IllegalStateException, TimeoutException, InterruptedException, ExecutionException{
+		return apiService.bopInsertBulk(arcusRequest.getKeyList(), arcusRequest.getBkey(), arcusRequest.geteFlag(), arcusRequest.getValue(), arcusRequest.getAttributesForCreate());
+	}
+	
 	
 //	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-insert-and-get-trimmed",method=RequestMethod.POST)
 //	@ResponseBody
@@ -269,9 +285,38 @@ public class HomeController {
 		}
 	}	
 	
+
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-get-bulk",method=RequestMethod.POST)
+	@ResponseBody
+	ArcusBopNotBoolResponse bopGetBulk(@RequestBody BopRequest arcusRequest) {
+		return apiService.bopGetBulk(arcusRequest.getKeyList(), arcusRequest.getFrom(), arcusRequest.getTo(), arcusRequest.geteFlagFilter(), arcusRequest.getOffset(), arcusRequest.getCount());
+	}
 	
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-smget",method=RequestMethod.POST)
+	@ResponseBody
+	ArcusBopNotBoolResponse bopSMGet(@RequestBody BopRequest arcusRequest) {
+		return apiService.bopSMGet(arcusRequest.getKeyList(), arcusRequest.getFrom(), arcusRequest.getTo(), arcusRequest.geteFlagFilter(), arcusRequest.getCount(), arcusRequest.getSMGetMode());
+	}
 	
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-find-position",method=RequestMethod.POST)
+	@ResponseBody
+	ArcusBopNotBoolResponse bopFindPosition(@RequestBody BopRequest arcusRequest) {
+		return apiService.bopFindPosition(arcusRequest.getKey(), arcusRequest.getBkey(), arcusRequest.getOrder());
+	}
+	
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-get-by-position",method=RequestMethod.POST)
+	@ResponseBody
+	ArcusBopNotBoolResponse bopGetByPosition(@RequestBody BopRequest arcusRequest) {
+		if (arcusRequest.getFrom() != null) {
+			return apiService.bopGetByPosition(arcusRequest.getKey(), arcusRequest.getOrder(), arcusRequest.getFrom(), arcusRequest.getTo());
+		} else {
+		    return apiService.bopGetByPosition(arcusRequest.getKey(), arcusRequest.getOrder(), arcusRequest.getPosition());
+		}
+	}
+	
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-find-position-with-get",method=RequestMethod.POST)
+	@ResponseBody
+	ArcusBopNotBoolResponse bopFindPositionWithGet(@RequestBody BopRequest arcusRequest) {
+		return apiService.bopFindPositionWithGet(arcusRequest.getKey(), arcusRequest.getBkey(), arcusRequest.getOrder(), arcusRequest.getCount());
+	}
 }
-
-
-

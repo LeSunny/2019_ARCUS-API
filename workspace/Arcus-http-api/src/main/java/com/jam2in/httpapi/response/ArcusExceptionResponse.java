@@ -66,7 +66,5 @@ public class ArcusExceptionResponse {
 
     	log.error("response error ", ex);
         return new ErrorInfo(ex);
-    }
-	
-    
+    }    
 }

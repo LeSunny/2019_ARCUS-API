@@ -48,5 +48,4 @@ public class ErrorInfo {
             return e.getMessage();
         }
     }
-
 }

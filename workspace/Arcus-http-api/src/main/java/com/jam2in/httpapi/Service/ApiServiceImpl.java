@@ -24,12 +24,15 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jam2in.httpapi.DAO.ApiDAO;
 import com.jam2in.httpapi.response.ArcusBopBoolResponse;
+import com.jam2in.httpapi.response.ArcusBopInsertBulkResponse;
 import com.jam2in.httpapi.response.ArcusBopNotBoolResponse;
 import com.jam2in.httpapi.response.ArcusLongSuccessResponse;
 import com.jam2in.httpapi.response.ArcusSetBulkSuccessResponse;
 import com.jam2in.httpapi.response.ArcusSuccessResponse;
 
 import net.spy.memcached.ArcusClient;
+import net.spy.memcached.collection.BTreeGetResult;
+import net.spy.memcached.collection.BTreeOrder;
 import net.spy.memcached.collection.ByteArrayBKey;
 import net.spy.memcached.collection.CollectionAttributes;
 import net.spy.memcached.collection.CollectionResponse;
@@ -38,8 +41,12 @@ import net.spy.memcached.collection.ElementFlagFilter;
 import net.spy.memcached.collection.ElementFlagFilter.CompOperands;
 import net.spy.memcached.collection.ElementFlagUpdate;
 import net.spy.memcached.collection.ElementValueType;
+import net.spy.memcached.collection.SMGetElement;
+import net.spy.memcached.collection.SMGetMode;
 import net.spy.memcached.internal.BTreeStoreAndGetFuture;
 import net.spy.memcached.internal.CollectionFuture;
+import net.spy.memcached.internal.CollectionGetBulkFuture;
+import net.spy.memcached.internal.SMGetFuture;
 import net.spy.memcached.ops.CollectionOperationStatus;
 
 @Service("apiService")
@@ -370,7 +377,7 @@ key, bkey, withDelete, dropIfEmpty
 		
 		CollectionFuture<Boolean> future = null;
 		try {
-			System.out.println(attributes);
+			System.out.println("service : attributes: "+ attributes);
 			future = apiDAO.bopCreate(key, ElementValueType.STRING, attributes);
 		}catch(IllegalStateException e) {
 			e.printStackTrace();
@@ -452,6 +459,109 @@ key, bkey, withDelete, dropIfEmpty
 		}
 		
 		return new ArcusBopBoolResponse(result, future.getOperationStatus().getResponse());
+	}
+
+
+	@SuppressWarnings("unchecked")
+	public ArcusBopInsertBulkResponse bopPipedInsertBulk(String key, Map<Long, Object> elementsWithMap,  CollectionAttributes attributesForCreate) {
+		/*
+		 {
+		    "key": "Prefix:BTreeKey",
+		    "elements": { "5" : "value1", "10" : "value2", "15" : "value3" },
+		    "attributesForCreate": {
+		    	"flags" : 3,
+		    	"expireTime" : 60
+		    }
+		 }
+		*/
+		CollectionFuture<Map<Integer, CollectionOperationStatus>> future = null;		
+		try{
+			future = apiDAO.bopPipedInsertBulk(key, elementsWithMap, attributesForCreate);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		Map<Integer, CollectionOperationStatus> result = null;
+		Map<Object, CollectionOperationStatus> convertResult = null;
+		try {
+			result = future.get(1000L, TimeUnit.MILLISECONDS);
+			for (Map.Entry<Integer, CollectionOperationStatus> entry : result.entrySet()) {
+				convertResult.put(entry.getKey(), entry.getValue());
+			}
+		}catch(TimeoutException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
+		
+		return new ArcusBopInsertBulkResponse(convertResult, elementsWithMap);
+	}
+	
+
+
+	@SuppressWarnings("unchecked")
+	public ArcusBopInsertBulkResponse bopInsertBulk(List<String> keyList, Object bkey, byte[] eflag, Object value, CollectionAttributes attributesForCreate) {
+		/*
+		 {
+		    "keyList": { "Prefix:BTreeKey", "Prefix:BTreeKey2" },
+		    "bkey": 1,
+		    "value":"This is a value.",
+		    "eFlag": [1, 1, 1, 1],
+		    "attributesForCreate": {
+		    	"flags" : 3,
+		    	"expireTime" : 60
+		    }
+		 }   
+		 {
+		    "keyList": { "Prefix:BTreeKey", "Prefix:BTreeKey2" },
+		    "bkey": [3, 2, 1, 0],
+		    "value":"This is a value.",
+		    "eFlag": [1, 1, 1, 1],
+		    "attributesForCreate": {
+		    	"flags" : 3,
+		    	"expireTime" : 60
+		    }
+		 }
+		*/
+		Future<Map<String, CollectionOperationStatus>> future = null;		
+		try{
+			if(bkey instanceof Integer) {
+				int scalarBkey = (int) bkey;
+				future = apiDAO.bopInsertBulk(keyList, scalarBkey, eflag, value, attributesForCreate);
+			}else {				
+				ArrayList<Integer> al = (ArrayList<Integer>)bkey;
+			
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				DataOutputStream out = new DataOutputStream(baos);
+				
+				for (int element : al) {
+				    out.writeUTF(Integer.toString(element));
+				}
+				byte[] bytesBkey = baos.toByteArray();
+				future = apiDAO.bopInsertBulk(keyList, bytesBkey , eflag, value, attributesForCreate);				
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		Map<String, CollectionOperationStatus> result = null;
+		Map<Object, CollectionOperationStatus> convertResult = null;
+		try {
+			result = future.get(1000L, TimeUnit.MILLISECONDS);
+			for (Map.Entry<String, CollectionOperationStatus> entry : result.entrySet()) {
+				convertResult.put(entry.getKey(), entry.getValue());
+			}		
+		}catch(TimeoutException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
+		
+		return new ArcusBopInsertBulkResponse(convertResult, null);
 	}
 
 	// should alter
@@ -646,7 +756,7 @@ key, bkey, withDelete, dropIfEmpty
 	@SuppressWarnings("unchecked")
 	public ArcusBopNotBoolResponse bopIncr(String key, Object subkey, Integer by, Long initial, byte[] eFlag) {
 		CollectionFuture<Long> future = null;
-		
+		System.out.println(key+" "+subkey+" "+by);
 		try {
 			if(subkey instanceof Integer) {
 				int scalarSubkey = (int) subkey;
@@ -691,6 +801,7 @@ key, bkey, withDelete, dropIfEmpty
 		try {
 			if(bkey instanceof Integer) {
 				int scalarBkey = (int) bkey;
+				System.out.println(key+" "+bkey+" "+by);
 				future = apiDAO.bopIncr(key, scalarBkey, by);
 			}else {
 				ArrayList<Integer> al = (ArrayList<Integer>)bkey;
@@ -1025,4 +1136,334 @@ key, bkey, withDelete, dropIfEmpty
 			return new ArcusBopNotBoolResponse(result, future.getOperationStatus().getResponse());
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	public ArcusBopNotBoolResponse bopGetBulk(List<String> keyList, Object from, Object to,  ElementFlagFilter eFlagFilter, Integer offset, Integer count) {
+		/*
+		{
+		    "keyList": { "Prefix:BTreeKey", "Prefix:BTreeKey2" }, 
+		    "from" : 3,
+		    "to" : 1,
+		    "eFlagFilter" : "DO_NOT_FILTER",
+		    "offset" : 0,
+		    "count" : 3
+		}
+		{
+		    "keyList": { "Prefix:BTreeKey", "Prefix:BTreeKey2" }, 
+		    "from" : [3, 2, 1, 0],
+		    "to" : [0, 1, 2, 3],
+		    "eFlagFilter" : "DO_NOT_FILTER",
+		    "offset" : 0,
+		    "count" : 3
+		}
+		 * */
+		if(from instanceof Integer) {
+			CollectionGetBulkFuture<Map<String, BTreeGetResult<Long, Object>>> future = null;
+			try {
+				int scalarFrom = (int) from;
+				int scalarTo = (int) to;
+				future = apiDAO.bopGetBulk(keyList, scalarFrom, scalarTo, eFlagFilter, offset, count);
+			}catch(IllegalStateException e) {
+				e.printStackTrace();
+			}
+			
+			Map<String, BTreeGetResult<Long, Object>> result = null;
+			try {
+				result = future.get(1000L, TimeUnit.MILLISECONDS);
+			}catch(TimeoutException e) {
+				e.printStackTrace();
+			}catch(InterruptedException e) {
+				e.printStackTrace();
+			}catch(ExecutionException e) {
+				e.printStackTrace();
+			}
+			return new ArcusBopNotBoolResponse(result, future.getOperationStatus().getResponse());
+		}else {
+			CollectionGetBulkFuture<Map<String, BTreeGetResult<ByteArrayBKey, Object>>> future = null;
+			try {
+				ArrayList<Integer> alF = (ArrayList<Integer>)from;
+				ArrayList<Integer> alT = (ArrayList<Integer>)to;
+				
+				ByteArrayOutputStream baosF = new ByteArrayOutputStream();
+				DataOutputStream outF = new DataOutputStream(baosF);
+				ByteArrayOutputStream baosT = new ByteArrayOutputStream();
+				DataOutputStream outT = new DataOutputStream(baosT);
+				
+				for (int element : alF) {
+				    outF.writeUTF(Integer.toString(element));
+				}
+				for (int element : alT) {
+				    outT.writeUTF(Integer.toString(element));
+				}
+				byte[] bytesFrom = baosF.toByteArray();
+				byte[] bytesTo = baosT.toByteArray();
+				future = apiDAO.bopGetBulk(keyList, bytesFrom, bytesTo, eFlagFilter, offset, count);
+			}catch(IllegalStateException e) {
+				e.printStackTrace();
+			}catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			Map<String, BTreeGetResult<ByteArrayBKey, Object>> result = null;
+			try {
+				result = future.get(1000L, TimeUnit.MILLISECONDS);
+			}catch(TimeoutException e) {
+				e.printStackTrace();
+			}catch(InterruptedException e) {
+				e.printStackTrace();
+			}catch(ExecutionException e) {
+				e.printStackTrace();
+			}
+			return new ArcusBopNotBoolResponse(result, future.getOperationStatus().getResponse());
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public ArcusBopNotBoolResponse bopSMGet(List<String> keyList, Object from, Object to,  ElementFlagFilter eFlagFilter, Integer count, SMGetMode smgetMode) {
+		/*
+		{
+		    "keyList": { "Prefix:BTreeKey", "Prefix:BTreeKey2" }, 
+		    "from" : 3,
+		    "to" : 1,
+		    "eFlagFilter" : "DO_NOT_FILTER",
+		    "count" : 3,
+		    "smgetMode" : "DUPLICATE"
+		}
+		{
+		    "keyList": { "Prefix:BTreeKey", "Prefix:BTreeKey2" }, 
+		    "from" : [3, 2, 1, 0],
+		    "to" : [0, 1, 2, 3],
+		    "eFlagFilter" : "DO_NOT_FILTER",
+		    "count" : 3,
+		    "smgetMode" : "UNIQUE"
+		}
+		*/
+		SMGetFuture<List<SMGetElement<Object>>> future = null;
+
+		if(from instanceof Integer) {
+			try {
+				int scalarFrom = (int) from;
+				int scalarTo = (int) to;
+				future = apiDAO.bopSMGet(keyList, scalarFrom, scalarTo, eFlagFilter, count, smgetMode);
+			}catch(IllegalStateException e) {
+				e.printStackTrace();
+			}
+		}else {
+			try {
+				ArrayList<Integer> alF = (ArrayList<Integer>)from;
+				ArrayList<Integer> alT = (ArrayList<Integer>)to;
+				
+				ByteArrayOutputStream baosF = new ByteArrayOutputStream();
+				DataOutputStream outF = new DataOutputStream(baosF);
+				ByteArrayOutputStream baosT = new ByteArrayOutputStream();
+				DataOutputStream outT = new DataOutputStream(baosT);
+				
+				for (int element : alF) {
+				    outF.writeUTF(Integer.toString(element));
+				}
+				for (int element : alT) {
+				    outT.writeUTF(Integer.toString(element));
+				}
+				byte[] bytesFrom = baosF.toByteArray();
+				byte[] bytesTo = baosT.toByteArray();
+				future = apiDAO.bopSMGet(keyList, bytesFrom, bytesTo, eFlagFilter, count, smgetMode);
+			}catch(IllegalStateException e) {
+				e.printStackTrace();
+			}catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		List<SMGetElement<Object>> result = null;
+		try {
+			result = future.get(1000L, TimeUnit.MILLISECONDS);
+		}catch(TimeoutException e) {
+			e.printStackTrace();
+		}catch(InterruptedException e) {
+			e.printStackTrace();
+		}catch(ExecutionException e) {
+			e.printStackTrace();
+		}
+		return new ArcusBopNotBoolResponse(result, future.getOperationStatus().getResponse());
+	}
+	
+	@SuppressWarnings("unchecked")
+	public ArcusBopNotBoolResponse bopFindPosition(String key, Object bkey, BTreeOrder order) {
+		/*
+		{
+		    "keyList": "Prefix:BTreeKey", 
+		    "bkey" : 3,
+		    "order" : "ASC"
+		}
+		{
+		    "keyList": "Prefix:BTreeKey", 
+		    "from" : [3, 2, 1, 0],
+		    "order" : "DESC"
+		}
+		*/
+		CollectionFuture<Integer> future = null;
+
+		if(bkey instanceof Integer) {
+			try {
+				int scalarBkey = (int) bkey;
+				future = apiDAO.bopFindPosition(key, scalarBkey, order);
+			}catch(IllegalStateException e) {
+				e.printStackTrace();
+			}
+		}else {
+			try {
+				ArrayList<Integer> alB = (ArrayList<Integer>)bkey;
+				
+				ByteArrayOutputStream baosB = new ByteArrayOutputStream();
+				DataOutputStream outB = new DataOutputStream(baosB);
+
+				for (int element : alB) {
+				    outB.writeUTF(Integer.toString(element));
+				}
+
+				byte[] bytesBkey = baosB.toByteArray();
+				future = apiDAO.bopFindPosition(key, bytesBkey, order);
+			}catch(IllegalStateException e) {
+				e.printStackTrace();
+			}catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		Integer result = null;
+		try {
+			result = future.get(1000L, TimeUnit.MILLISECONDS);
+		}catch(TimeoutException e) {
+			e.printStackTrace();
+		}catch(InterruptedException e) {
+			e.printStackTrace();
+		}catch(ExecutionException e) {
+			e.printStackTrace();
+		}
+		return new ArcusBopNotBoolResponse(result, future.getOperationStatus().getResponse());
+	}
+	
+	@SuppressWarnings("unchecked")
+	public ArcusBopNotBoolResponse bopGetByPosition(String key, BTreeOrder order, Integer position) {
+		/*
+		{
+		    "keyList": "Prefix:BTreeKey", 
+		    "order" : "ASC"
+		    "position" : 3
+		}
+
+		*/
+		CollectionFuture<Map<Integer, Element<Object>>> future = null;
+
+		try {
+			int scalarPosition = (int) position;
+			future = apiDAO.bopGetByPosition(key, order, scalarPosition);
+		}catch(IllegalStateException e) {
+			e.printStackTrace();
+		}
+			
+		Map<Integer, Element<Object>> result = null;
+		try {
+			result = future.get(1000L, TimeUnit.MILLISECONDS);
+		}catch(TimeoutException e) {
+			e.printStackTrace();
+		}catch(InterruptedException e) {
+			e.printStackTrace();
+		}catch(ExecutionException e) {
+			e.printStackTrace();
+		}
+		return new ArcusBopNotBoolResponse(result, future.getOperationStatus().getResponse());
+	}
+	
+	@SuppressWarnings("unchecked")
+	public ArcusBopNotBoolResponse bopGetByPosition(String key, BTreeOrder order, Object from, Object to) {
+		/*
+		{
+		    "keyList": "Prefix:BTreeKey", 
+		    "order" : "DESC"
+		    "from" : 5
+		    "to" : 3
+		}
+		*/
+		CollectionFuture<Map<Integer, Element<Object>>> future = null;
+
+		try {
+			int scalarFrom = (int) from;
+			int scalarTo = (int) to;
+			future = apiDAO.bopGetByPosition(key, order, scalarFrom, scalarTo);
+		}catch(IllegalStateException e) {
+			e.printStackTrace();
+		}
+			
+		Map<Integer, Element<Object>> result = null;
+		try {
+			result = future.get(1000L, TimeUnit.MILLISECONDS);
+		}catch(TimeoutException e) {
+			e.printStackTrace();
+		}catch(InterruptedException e) {
+			e.printStackTrace();
+		}catch(ExecutionException e) {
+			e.printStackTrace();
+		}
+		return new ArcusBopNotBoolResponse(result, future.getOperationStatus().getResponse());
+	}
+	
+	@SuppressWarnings("unchecked")
+	public ArcusBopNotBoolResponse bopFindPositionWithGet(String key, Object bkey, BTreeOrder order, Integer count) {
+		/*
+		{
+		    "keyList": "Prefix:BTreeKey", 
+		    "bkey" : 3,
+		    "order" : "ASC",
+		    "count" : 3
+		}
+		{
+		    "keyList": "Prefix:BTreeKey", 
+		    "from" : [3, 2, 1, 0],
+		    "order" : "DESC",
+		    "count" : 3
+		}
+		*/
+		CollectionFuture<Map<Integer, Element<Object>>> future = null;
+
+		if(bkey instanceof Integer) {
+			try {
+				int scalarBkey = (int) bkey;
+				future = apiDAO.bopFindPositionWithGet(key, scalarBkey, order, count);
+			}catch(IllegalStateException e) {
+				e.printStackTrace();
+			}
+		}else {
+			try {
+				ArrayList<Integer> alB = (ArrayList<Integer>)bkey;
+				
+				ByteArrayOutputStream baosB = new ByteArrayOutputStream();
+				DataOutputStream outB = new DataOutputStream(baosB);
+
+				for (int element : alB) {
+				    outB.writeUTF(Integer.toString(element));
+				}
+
+				byte[] bytesBkey = baosB.toByteArray();
+				future = apiDAO.bopFindPositionWithGet(key, bytesBkey, order, count);
+			}catch(IllegalStateException e) {
+				e.printStackTrace();
+			}catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		Map<Integer, Element<Object>> result = null;
+		try {
+			result = future.get(1000L, TimeUnit.MILLISECONDS);
+		}catch(TimeoutException e) {
+			e.printStackTrace();
+		}catch(InterruptedException e) {
+			e.printStackTrace();
+		}catch(ExecutionException e) {
+			e.printStackTrace();
+		}
+		return new ArcusBopNotBoolResponse(result, future.getOperationStatus().getResponse());
+	}
+	
 }
