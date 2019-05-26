@@ -683,16 +683,17 @@ key, bkey, withDelete, dropIfEmpty
 			byte[] tempCompValue = (byte[])compValue;
 			realeFlagFilter = new ElementFlagFilter(ElementFlagFilter.CompOperands.GreaterOrEqual, tempCompValue);
 		}
-//		else if(eFlagFilter.equals("AND")) {
-//			byte[] tempCompValue = (byte[])compValue;
-//			realeFlagFitler = new ElementFlagFilter(Element.BitwiseOperands.AND, tempCompValue);
-//		}
-//		else if(eFlagFilter.equals("OR")) {
-//			
-//		}
-//		else if(eFlagFilter.equals("XOR")) {
-//			
-//		}
+		else if(eFlagFilter.equals("AND")) {
+			byte[] tempCompValue = (byte[])compValue;
+			//The method setBitOperands(ElementFlagFilter.BitWiseOperands, byte[]) is undefined for the type ElementFlagFilter
+			realeFlagFilter.setBitOperands(ElementFlagFilter.BitWiseOperands.AND, tempCompValue);
+		}
+		else if(eFlagFilter.equals("OR")) {
+			
+		}
+		else if(eFlagFilter.equals("XOR")) {
+			
+		}
 		
 		try {
 			if(from instanceof Integer) {
