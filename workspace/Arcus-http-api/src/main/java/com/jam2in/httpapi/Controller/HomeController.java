@@ -30,6 +30,7 @@ import com.jam2in.httpapi.request.TwoRequest;
 import com.jam2in.httpapi.response.ArcusBopBoolResponse;
 import com.jam2in.httpapi.response.ArcusBopInsertBulkResponse;
 import com.jam2in.httpapi.response.ArcusBopNotBoolResponse;
+import com.jam2in.httpapi.response.ArcusBopTrimmedResponse;
 import com.jam2in.httpapi.response.ArcusLongSuccessResponse;
 import com.jam2in.httpapi.response.ArcusSetBulkSuccessResponse;
 import com.jam2in.httpapi.response.ArcusSuccessResponse;
@@ -220,11 +221,11 @@ public class HomeController {
 	}
 	
 	
-//	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-insert-and-get-trimmed",method=RequestMethod.POST)
-//	@ResponseBody
-//	ArcusBopBoolResponse bopInsertAndGetTrimmed(@RequestBody BopRequest arcusRequest) throws Exception{
-//		return apiService.bopInsertAndGetTrimmed(arcusRequest.getKey(), arcusRequest.getBkey(), arcusRequest.geteFlag(), arcusRequest.getValue(), arcusRequest.getAttributes());
-//	}
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-insert-and-get-trimmed",method=RequestMethod.POST)
+	@ResponseBody
+	ArcusBopTrimmedResponse bopInsertAndGetTrimmed(@RequestBody BopRequest arcusRequest) throws Exception{
+		return apiService.bopInsertAndGetTrimmed(arcusRequest.getKey(), arcusRequest.getBkey(), arcusRequest.geteFlag(), arcusRequest.getValue(), arcusRequest.getAttributesForCreate());
+	}
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-upsert", method=RequestMethod.POST)
 	@ResponseBody

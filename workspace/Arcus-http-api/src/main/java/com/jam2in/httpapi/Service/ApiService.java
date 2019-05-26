@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.jam2in.httpapi.response.ArcusBopBoolResponse;
 import com.jam2in.httpapi.response.ArcusBopInsertBulkResponse;
 import com.jam2in.httpapi.response.ArcusBopNotBoolResponse;
+import com.jam2in.httpapi.response.ArcusBopTrimmedResponse;
 import com.jam2in.httpapi.response.ArcusLongSuccessResponse;
 import com.jam2in.httpapi.response.ArcusSetBulkSuccessResponse;
 import com.jam2in.httpapi.response.ArcusSuccessResponse;
@@ -46,7 +47,7 @@ public interface ApiService {
 	
 	public ArcusBopBoolResponse bopCreate(String key, ElementValueType valueType, CollectionAttributes collectionAttributes);
 	public ArcusBopBoolResponse bopInsert(String key, Object bkey, byte[] eFlag, Object value, CollectionAttributes attributesForCreate);
-//	public ArcusBopBoolResponse bopInsertAndGetTrimmed(String key, Object bkey, byte[] eFlag, Object value, CollectionAttributes attributes);
+	public ArcusBopTrimmedResponse bopInsertAndGetTrimmed(String key, Object bkey, byte[] eFlag, Object value, CollectionAttributes attributes);
 	public ArcusBopBoolResponse bopUpsert(String key, Object bkey, byte[] eFlag, Object value, CollectionAttributes attributesForCreate);
 	public ArcusBopBoolResponse bopUpdate(String key, Object bkey, String eFlagUpdate, Object flag, BitWiseOperands bitOp, Integer eFlagOffset, Object value);
 //	public ArcusBopBoolResponse bopDelete(String key, Object from, Object to, String eFlagFilter, String compValue, Integer count, Boolean dropIfEmpty);

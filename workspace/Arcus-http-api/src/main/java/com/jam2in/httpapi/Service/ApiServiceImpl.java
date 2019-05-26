@@ -26,6 +26,7 @@ import com.jam2in.httpapi.DAO.ApiDAO;
 import com.jam2in.httpapi.response.ArcusBopBoolResponse;
 import com.jam2in.httpapi.response.ArcusBopInsertBulkResponse;
 import com.jam2in.httpapi.response.ArcusBopNotBoolResponse;
+import com.jam2in.httpapi.response.ArcusBopTrimmedResponse;
 import com.jam2in.httpapi.response.ArcusLongSuccessResponse;
 import com.jam2in.httpapi.response.ArcusSetBulkSuccessResponse;
 import com.jam2in.httpapi.response.ArcusSuccessResponse;
@@ -549,12 +550,42 @@ key, bkey, withDelete, dropIfEmpty
 		return new ArcusBopInsertBulkResponse(convertResult, null);
 	}
 
-	// should alter
-//	public ArcusBopBoolResponse bopInsertAndGetTrimmed(String key, Object bkey, byte[] eFlag, Object value, CollectionAttributes attributesForCreate) {
-//		BTreeStoreAndGetFuture<Boolean, Object> future = apiDAO.asyncBopInsertAndGetTrimmed(key, bkey, eFlag, value, attributesForCreate); // key, 2000, null, "val", null
-//		boolean succeeded = future.get();
-//		Element<Object> element = future.getElement();
-//	}
+	public ArcusBopTrimmedResponse bopInsertAndGetTrimmed(String key, Object bkey, byte[] eFlag, Object value, CollectionAttributes attributesForCreate) {
+		BTreeStoreAndGetFuture<Boolean, Object> future = null;
+		
+		try {
+			if(bkey instanceof Integer) {
+				int scalarBkey = (int) bkey;
+				future = apiDAO.bopInsertAndGetTrimmed(key, scalarBkey, eFlag, value, attributesForCreate);
+			}else {				
+				ArrayList<Integer> al = (ArrayList<Integer>)bkey;
+			
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				DataOutputStream out = new DataOutputStream(baos);
+				
+				for (int element : al) {
+				    out.writeUTF(Integer.toString(element));
+				}
+				byte[] bytesBkey = baos.toByteArray();
+				future = apiDAO.bopInsertAndGetTrimmed(key, bytesBkey, eFlag, value, attributesForCreate);
+			}
+		}catch(IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		boolean result = false;
+		try {
+			result = future.get();
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
+		CollectionResponse response = future.getOperationStatus().getResponse();
+		Element<Object> element = future.getElement();
+		
+		return new ArcusBopTrimmedResponse(result, response, element);
+	}
 	
 	@SuppressWarnings("unchecked")
 	public ArcusBopBoolResponse bopUpsert(String key, Object bkey, byte[] eFlag, Object value, CollectionAttributes attributesForCreate) {

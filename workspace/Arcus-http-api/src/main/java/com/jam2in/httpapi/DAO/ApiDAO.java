@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.spy.memcached.ArcusClient;
 import net.spy.memcached.collection.*;
+import net.spy.memcached.internal.BTreeStoreAndGetFuture;
 import net.spy.memcached.internal.CollectionFuture;
 import net.spy.memcached.internal.CollectionGetBulkFuture;
 import net.spy.memcached.internal.SMGetFuture;
@@ -151,20 +152,21 @@ public class ApiDAO {
 		future = arcusClient.asyncBopInsert(key, bkey, eFlag, value, attributesForCreate);
 		return future;
 	}
+	public BTreeStoreAndGetFuture<Boolean, Object> bopInsertAndGetTrimmed(String key, long bkey, byte[] eFlag, Object value, CollectionAttributes attributesForCreate){
+		BTreeStoreAndGetFuture<Boolean, Object> future = null;
+		future = arcusClient.asyncBopInsertAndGetTrimmed(key, bkey, eFlag, value, attributesForCreate);
+		return future;
+	}
+	public BTreeStoreAndGetFuture<Boolean, Object> bopInsertAndGetTrimmed(String key, byte[] bkey, byte[] eFlag, Object value, CollectionAttributes attributesForCreate){
+		BTreeStoreAndGetFuture<Boolean, Object> future = null;
+		future = arcusClient.asyncBopInsertAndGetTrimmed(key, bkey, eFlag, value, attributesForCreate);
+		return future;
+	}
 	public CollectionFuture<Map<Integer, CollectionOperationStatus>> bopPipedInsertBulk(String key, Map<Long, Object> elementsWithMap, CollectionAttributes attributesForCreate){
 		CollectionFuture<Map<Integer, CollectionOperationStatus>> future = null;
 		future = arcusClient.asyncBopPipedInsertBulk(key, elementsWithMap, attributesForCreate);
 		return future;
 	}
-	
-	//일괄삽입추가
-	public CollectionFuture<Map<Integer, CollectionOperationStatus>>asyncBopPipedInsertBulk(String key, List<Element<Object>> elements, CollectionAttributes attributesForCreate){
-		CollectionFuture<Map<Integer, CollectionOperationStatus>> future = null;
-		future = arcusClient.asyncBopPipedInsertBulk(key, elements, attributesForCreate);
-		return future;
-		
-	}	
-
 	public Future<Map<String, CollectionOperationStatus>> bopInsertBulk(List<String> keyList, long bkey, byte[] eflag, Object value, CollectionAttributes attributesForCreate){
 		Future<Map<String, CollectionOperationStatus>> future = null;
 		future = arcusClient.asyncBopInsertBulk(keyList, bkey, eflag, value, attributesForCreate);
