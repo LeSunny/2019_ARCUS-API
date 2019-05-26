@@ -20,7 +20,7 @@ public class ArcusBopTrimmedResponse {
 			else if(explanation.equals(CollectionResponse.CREATED_STORED)) this.explanation += "B+tree collection 생성하고 element를 삽입함.";
 			else if(explanation.equals(CollectionResponse.REPLACED)) this.explanation += "B+tree collection 생성하고 element를 삽입함.";
 			else if(explanation.equals(CollectionResponse.TRIMMED)) this.explanation += "B+tree collection 생성하고 element를 삽입함.";
-			trimmed_item = "The insertion was scceeded and an element "+ element + " was trimmed out.";
+			setTrimmed_item("The insertion was scceeded and an element "+ element + " was trimmed out.");
 		}
 		else if(result == false) {
 			this.result = "FAIL";
@@ -47,5 +47,13 @@ public class ArcusBopTrimmedResponse {
 
 	public void setExplanation(String explanation) {
 		this.explanation = explanation;
+	}
+
+	public String getTrimmed_item() {
+		return trimmed_item;
+	}
+
+	public void setTrimmed_item(String trimmed_item) {
+		this.trimmed_item = trimmed_item;
 	}
 }

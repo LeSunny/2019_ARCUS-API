@@ -18,18 +18,18 @@ public class ArcusBopInsertBulkResponse {
 	@JsonRawValue
 	private Object result;
 	private String explanation = "";
-	private Object response;
+	//private Object response;
 
 	public ArcusBopInsertBulkResponse(Map<Object, CollectionOperationStatus> results, Map<Long, Object> elements) {
 
 		if(results.isEmpty()) {
 			this.result = "SUCCRESS";
-			response = null;
+			//response = null;
 			explanation = "생성 성공";
 		}
 		else {
 			this.result = "PARTIAL FAIL";
-			response = results;
+			//response = results;
 
 	         List<Long> bkeyList = new ArrayList<Long>();
 	         for(Map.Entry<Long, Object> entry : elements.entrySet()) {
@@ -54,10 +54,10 @@ public class ArcusBopInsertBulkResponse {
 	public void setExplanation(String explanation) {
 		this.explanation = explanation;
 	}
-	public Object getResponse() {
-		return response;
-	}
-	public void setResponse(Object response) {
-		this.response = response;
-	}
+//	public Object getResponse() {
+//		return response;
+//	}
+//	public void setResponse(Object response) {
+//		this.response = response;
+//	}
 }

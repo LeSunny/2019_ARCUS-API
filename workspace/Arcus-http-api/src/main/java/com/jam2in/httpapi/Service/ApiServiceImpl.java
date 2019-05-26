@@ -88,6 +88,7 @@ key, bkey, withDelete, dropIfEmpty
 	@Resource(name="apiDAO")
 	private ApiDAO apiDAO;
 	
+	@SuppressWarnings("unused")
 	public ArcusSuccessResponse set(String key, int expireTime, Object value) {
 		
 		Future<Boolean> future = null;
@@ -125,6 +126,7 @@ key, bkey, withDelete, dropIfEmpty
 		
 		return new ArcusSuccessResponse();
 	}
+	@SuppressWarnings("unused")
 	public ArcusSuccessResponse replace(String key, int expireTime, Object value) {
 		
 		Future<Boolean> future = null;
@@ -143,6 +145,7 @@ key, bkey, withDelete, dropIfEmpty
 		}
 		return new ArcusSuccessResponse();
 	}
+	@SuppressWarnings("unused")
 	public ArcusSuccessResponse prepend(long cas, String key, Object value) {
 		
 		Future<Boolean> future = null;
@@ -162,6 +165,7 @@ key, bkey, withDelete, dropIfEmpty
 		
 		return new ArcusSuccessResponse();		
 	}
+	@SuppressWarnings("unused")
 	public ArcusSuccessResponse append(long cas, String key, Object value) {
 
 		Future<Boolean> future = null;
@@ -336,6 +340,7 @@ key, bkey, withDelete, dropIfEmpty
 		response.setResult(value);
 		return response;
 	}
+	@SuppressWarnings("unused")
 	public ArcusSuccessResponse delete(String key) {
 		
 		Future<Boolean> future = null;
@@ -550,6 +555,7 @@ key, bkey, withDelete, dropIfEmpty
 		return new ArcusBopInsertBulkResponse(convertResult, null);
 	}
 
+	@SuppressWarnings("unchecked")
 	public ArcusBopTrimmedResponse bopInsertAndGetTrimmed(String key, Object bkey, byte[] eFlag, Object value, CollectionAttributes attributesForCreate) {
 		BTreeStoreAndGetFuture<Boolean, Object> future = null;
 		
@@ -1007,8 +1013,6 @@ key, bkey, withDelete, dropIfEmpty
 		Long result = null;
 		try {
 			result = future.get(1000L, TimeUnit.MILLISECONDS);
-			System.out.println(result);
-			System.out.println(future.getOperationStatus().getResponse());
 		}catch(TimeoutException e) {
 			e.printStackTrace();
 		}catch(InterruptedException e) {
@@ -1028,6 +1032,7 @@ key, bkey, withDelete, dropIfEmpty
 }
 */
 		CollectionFuture<Integer> future = null;
+		CollectionResponse response = null;
 		
 		try {
 			if(from instanceof Integer) {
@@ -1071,7 +1076,7 @@ key, bkey, withDelete, dropIfEmpty
 		}catch(ExecutionException e) {
 			e.printStackTrace();
 		}
-		return new ArcusBopNotBoolResponse(result, future.getOperationStatus().getResponse());
+		return new ArcusBopNotBoolResponse(result, response);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -1087,28 +1092,21 @@ key, bkey, withDelete, dropIfEmpty
 		    "dropIfEmpty"  : false
 		}
 		 * */
-		ElementFlagFilter filter = new ElementFlagFilter(CompOperands.Equal, new byte[] {1,1});
+		CollectionResponse response = null;
+
 		if(from instanceof Integer) {
 			CollectionFuture<Map<Long, Element<Object>>> future = null;
 
 			try {
 				int scalarFrom = (int) from;
 				int scalarTo = (int) to;
-				future = apiDAO.bopGet(key, scalarFrom, scalarTo, filter, offset, count, withDelete, dropIfEmpty);
+				future = apiDAO.bopGet(key, scalarFrom, scalarTo, ElementFlagFilter.DO_NOT_FILTER, offset, count, withDelete, dropIfEmpty);
 			}catch(IllegalStateException e) {
 				e.printStackTrace();
 			}
 			Map<Long, Element<Object>> result = null;
 			try {
 				result = future.get(1000L, TimeUnit.MILLISECONDS);
-				System.out.println(result);
-				
-				CollectionResponse response = future.getOperationStatus().getResponse();
-				if(response.equals(CollectionResponse.NOT_FOUND)) {
-					System.out.println("Key가 없습니다.(Key에 저장된 B+tree가 없음)");
-				}else if(response.equals(CollectionResponse.NOT_FOUND_ELEMENT)) {
-					System.out.println("Key에 B+tree는 존재하지만 저장된 값 중 조건에 맞는 것이 없음.");
-				}
 			}catch(TimeoutException e) {
 				e.printStackTrace();
 			}catch(InterruptedException e) {
@@ -1116,7 +1114,7 @@ key, bkey, withDelete, dropIfEmpty
 			}catch(ExecutionException e) {
 				e.printStackTrace();
 			}
-			return new ArcusBopNotBoolResponse(result, future.getOperationStatus().getResponse());
+			return new ArcusBopNotBoolResponse(result, response);
 
 		}else {
 			CollectionFuture<Map<ByteArrayBKey, Element<Object>>> future = null;
@@ -1138,23 +1136,18 @@ key, bkey, withDelete, dropIfEmpty
 				}
 				byte[] bytesFrom = baosF.toByteArray();
 				byte[] bytesTo = baosT.toByteArray();
-				future = apiDAO.bopGet(key, bytesFrom, bytesTo, filter, offset, count, withDelete, dropIfEmpty);
+				future = apiDAO.bopGet(key, bytesFrom, bytesTo, ElementFlagFilter.DO_NOT_FILTER, offset, count, withDelete, dropIfEmpty);
 			}catch(IllegalStateException e) {
 				e.printStackTrace();
 			}catch (IOException e) {
 				e.printStackTrace();
 			}
 			Map<ByteArrayBKey, Element<Object>> result = null;
+
 			try {
 				result = future.get(1000L, TimeUnit.MILLISECONDS);
-				System.out.println(result);
 				
-				CollectionResponse response = future.getOperationStatus().getResponse();
-				if(response.equals(CollectionResponse.NOT_FOUND)) {
-					System.out.println("Key가 없습니다.(Key에 저장된 B+tree가 없음)");
-				}else if(response.equals(CollectionResponse.NOT_FOUND_ELEMENT)) {
-					System.out.println("Key에 B+tree는 존재하지만 저장된 값 중 조건에 맞는 것이 없음.");
-				}
+				response = future.getOperationStatus().getResponse();
 			}catch(TimeoutException e) {
 				e.printStackTrace();
 			}catch(InterruptedException e) {
@@ -1162,32 +1155,25 @@ key, bkey, withDelete, dropIfEmpty
 			}catch(ExecutionException e) {
 				e.printStackTrace();
 			}
-			return new ArcusBopNotBoolResponse(result, future.getOperationStatus().getResponse());
+			return new ArcusBopNotBoolResponse(result, response);
 		}
 	}
 	@SuppressWarnings("unchecked")
 	public ArcusBopNotBoolResponse bopGet(String key, Object bkey, Boolean withDelete, Boolean dropIfEmpty) {
-		ElementFlagFilter filter = new ElementFlagFilter(CompOperands.Equal, new byte[] {1,1});
+		CollectionResponse response = null;
 		if(bkey instanceof Integer) {
 			CollectionFuture<Map<Long, Element<Object>>> future = null;
 
 			try {
 				int scalarBkey = (int) bkey;
-				future = apiDAO.bopGet(key, scalarBkey, filter, withDelete, dropIfEmpty);
+				future = apiDAO.bopGet(key, scalarBkey, ElementFlagFilter.DO_NOT_FILTER, withDelete, dropIfEmpty);
 			}catch(IllegalStateException e) {
 				e.printStackTrace();
 			}
 			Map<Long, Element<Object>> result = null;
 			try {
 				result = future.get(1000L, TimeUnit.MILLISECONDS);
-				System.out.println(result);
-				
-				CollectionResponse response = future.getOperationStatus().getResponse();
-				if(response.equals(CollectionResponse.NOT_FOUND)) {
-					System.out.println("Key가 없습니다.(Key에 저장된 B+tree가 없음)");
-				}else if(response.equals(CollectionResponse.NOT_FOUND_ELEMENT)) {
-					System.out.println("Key에 B+tree는 존재하지만 저장된 값 중 조건에 맞는 것이 없음.");
-				}
+				response = future.getOperationStatus().getResponse();
 			}catch(TimeoutException e) {
 				e.printStackTrace();
 			}catch(InterruptedException e) {
@@ -1195,7 +1181,7 @@ key, bkey, withDelete, dropIfEmpty
 			}catch(ExecutionException e) {
 				e.printStackTrace();
 			}
-			return new ArcusBopNotBoolResponse(result, future.getOperationStatus().getResponse());
+			return new ArcusBopNotBoolResponse(result, response);
 
 		}else {
 			CollectionFuture<Map<ByteArrayBKey, Element<Object>>> future = null;
@@ -1210,7 +1196,7 @@ key, bkey, withDelete, dropIfEmpty
 				    outF.writeUTF(Integer.toString(element));
 				}
 				byte[] bytes = baos.toByteArray();
-				future = apiDAO.bopGet(key, bytes, filter, withDelete, dropIfEmpty);
+				future = apiDAO.bopGet(key, bytes, ElementFlagFilter.DO_NOT_FILTER, withDelete, dropIfEmpty);
 			}catch(IllegalStateException e) {
 				e.printStackTrace();
 			}catch (IOException e) {
@@ -1220,13 +1206,7 @@ key, bkey, withDelete, dropIfEmpty
 			try {
 				result = future.get(1000L, TimeUnit.MILLISECONDS);
 				System.out.println(result);
-				
-				CollectionResponse response = future.getOperationStatus().getResponse();
-				if(response.equals(CollectionResponse.NOT_FOUND)) {
-					System.out.println("Key가 없습니다.(Key에 저장된 B+tree가 없음)");
-				}else if(response.equals(CollectionResponse.NOT_FOUND_ELEMENT)) {
-					System.out.println("Key에 B+tree는 존재하지만 저장된 값 중 조건에 맞는 것이 없음.");
-				}
+				response = future.getOperationStatus().getResponse();
 			}catch(TimeoutException e) {
 				e.printStackTrace();
 			}catch(InterruptedException e) {
@@ -1234,7 +1214,7 @@ key, bkey, withDelete, dropIfEmpty
 			}catch(ExecutionException e) {
 				e.printStackTrace();
 			}
-			return new ArcusBopNotBoolResponse(result, future.getOperationStatus().getResponse());
+			return new ArcusBopNotBoolResponse(result, response);
 		}
 	}
 	
