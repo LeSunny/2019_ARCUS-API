@@ -21,6 +21,7 @@ import net.spy.memcached.collection.ElementFlagFilter;
 import net.spy.memcached.collection.ElementFlagUpdate;
 import net.spy.memcached.collection.ElementValueType;
 import net.spy.memcached.collection.SMGetMode;
+import net.spy.memcached.collection.ElementFlagFilter.BitWiseOperands;
 
 public interface ApiService {
 
@@ -47,7 +48,7 @@ public interface ApiService {
 	public ArcusBopBoolResponse bopInsert(String key, Object bkey, byte[] eFlag, Object value, CollectionAttributes attributesForCreate);
 //	public ArcusBopBoolResponse bopInsertAndGetTrimmed(String key, Object bkey, byte[] eFlag, Object value, CollectionAttributes attributes);
 	public ArcusBopBoolResponse bopUpsert(String key, Object bkey, byte[] eFlag, Object value, CollectionAttributes attributesForCreate);
-	public ArcusBopBoolResponse bopUpdate(String key, Object bkey, ElementFlagUpdate eFlagUpdate, Object value);
+	public ArcusBopBoolResponse bopUpdate(String key, Object bkey, String eFlagUpdate, Object flag, BitWiseOperands bitOp, Integer eFlagOffset, Object value);
 	public ArcusBopBoolResponse bopDelete(String key, Object from, Object to, String eFlagFilter, String compValue, Integer count, Boolean dropIfEmpty);
 	public ArcusBopBoolResponse bopDelete(String key, Object bkey, String eFlagFilter, String compValue, Boolean dropIfEmpty);
 	public ArcusBopNotBoolResponse bopIncr(String key, Object subkey, Integer by, Long initial, byte[] eFlag);

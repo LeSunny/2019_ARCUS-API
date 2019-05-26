@@ -34,6 +34,7 @@ import com.jam2in.httpapi.response.ArcusLongSuccessResponse;
 import com.jam2in.httpapi.response.ArcusSetBulkSuccessResponse;
 import com.jam2in.httpapi.response.ArcusSuccessResponse;
 
+import net.spy.memcached.collection.ElementFlagFilter.BitWiseOperands;
 import net.spy.memcached.internal.CollectionFuture;
 
 /**
@@ -235,8 +236,7 @@ public class HomeController {
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-update",method=RequestMethod.PATCH)
 	@ResponseBody
 	ArcusBopBoolResponse bopUpdate(@RequestBody BopRequest arcusRequest)  throws IllegalStateException, TimeoutException, InterruptedException, ExecutionException{
-		return apiService.bopUpdate(arcusRequest.getKey(), arcusRequest.getBkey(), arcusRequest.geteFlagUpdate(), arcusRequest.getValue());
-				//return 값이 true말고 false도 있음
+		return apiService.bopUpdate(arcusRequest.getKey(), arcusRequest.getBkey(), arcusRequest.geteFlagUpdate(), arcusRequest.getFlag(), arcusRequest.getBitOp(), arcusRequest.geteFlagOffset(), arcusRequest.getValue());
 	}
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-delete",method=RequestMethod.DELETE)

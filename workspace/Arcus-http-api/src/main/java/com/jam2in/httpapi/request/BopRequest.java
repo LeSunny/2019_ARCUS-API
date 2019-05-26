@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.spy.memcached.collection.*;
+import net.spy.memcached.collection.ElementFlagFilter.BitWiseOperands;
 import net.spy.memcached.collection.ElementFlagFilter.CompOperands;
 
 public class BopRequest {
@@ -21,7 +22,27 @@ public class BopRequest {
 	byte[] eFlag = null;
 	Object value = null;
 	
+	BitWiseOperands bitOp = null;
+	public BitWiseOperands getBitOp() {
+		return bitOp;
+	}
+
+	public void setBitOp(BitWiseOperands bitOp) {
+		this.bitOp = bitOp;
+	}
+
+	public Integer geteFlagOffset() {
+		return eFlagOffset;
+	}
+
+	public void seteFlagOffset(Integer eFlagOffset) {
+		this.eFlagOffset = eFlagOffset;
+	}
+
+	Integer eFlagOffset = null;
+	
 	Object compValue = null;
+	Object flag = null;
 	String eFlagUpdate = null;
 	String eFlagFilter = null;
 	
@@ -115,9 +136,15 @@ public class BopRequest {
 	public Object getCompValue() {
 		return compValue;
 	}
+	public Object getFlag() {
+		return flag;
+	}
+
 	
 	/***********************************************/
-
+	public void setFlag(Object flag) {
+		this.flag = flag;
+	}
 	public void setCompValue(Object compValue) {
 		this.compValue = compValue;
 	}

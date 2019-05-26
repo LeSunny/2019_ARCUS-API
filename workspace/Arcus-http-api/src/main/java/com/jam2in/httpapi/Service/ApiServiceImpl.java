@@ -606,7 +606,7 @@ key, bkey, withDelete, dropIfEmpty
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ArcusBopBoolResponse bopUpdate(String key, Object bkey, ElementFlagUpdate eFlagUpdate, Object value) {
+	public ArcusBopBoolResponse bopUpdate(String key, Object bkey, String eFlagUpdate, Object flag, BitWiseOperands bitOp, Integer eFlagOffset, Object value) {
 /*
 {
     "key": "Prefix:BTreeKey",
@@ -616,11 +616,24 @@ key, bkey, withDelete, dropIfEmpty
 }
 */
 		CollectionFuture<Boolean> future = null;
+		ElementFlagUpdate realeFlagUpdate = null;
+		
+		if(flag.equals(null) && eFlagOffset.equals(null) && bitOp.equals(null) && eFlagUpdate.contentEquals(null)) {
+			realeFlagUpdate = null;
+		}else if(!flag.equals(null) && eFlagOffset.equals(null) && bitOp.equals(null)) {
+			realeFlagUpdate = new ElementFlagUpdate((byte[])flag);
+		}else if(!flag.equals(null) && !eFlagOffset.equals(null) && !bitOp.equals(null) ) {
+			realeFlagUpdate = new ElementFlagUpdate((int)eFlagOffset, bitOp, (byte[])flag);
+		}
 		
 		try {
 			if(bkey instanceof Integer) {
 				int scalarBkey = (int) bkey;
-				future = apiDAO.bopUpdate(key, scalarBkey, eFlagUpdate, value);
+				if(eFlagUpdate.equals("RESET_FLAG")) {
+					future = apiDAO.bopUpdate(key, scalarBkey, ElementFlagUpdate.RESET_FLAG, value);
+				}else {
+					future = apiDAO.bopUpdate(key, scalarBkey, realeFlagUpdate, value);					
+				}
 			}else {
 				ArrayList<Integer> al = (ArrayList<Integer>)bkey;
 				
