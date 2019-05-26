@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.spy.memcached.collection.*;
+import net.spy.memcached.collection.ElementFlagFilter.CompOperands;
 
 public class BopRequest {
 	String key = null;
@@ -19,8 +20,11 @@ public class BopRequest {
 	Object bkey = null;
 	byte[] eFlag = null;
 	Object value = null;
-	ElementFlagUpdate eFlagUpdate = null;
-	ElementFlagFilter eFlagFilter = null;
+	
+	Object compValue = null;
+	String eFlagUpdate = null;
+	String eFlagFilter = null;
+	
 	Boolean dropIfEmpty = null;
 	Object from = null;
 	Object to = null;
@@ -66,10 +70,10 @@ public class BopRequest {
 	public Object getValue() {
 		return value;
 	}
-	public ElementFlagUpdate geteFlagUpdate() {
+	public String geteFlagUpdate() {
 		return eFlagUpdate;
 	}
-	public ElementFlagFilter geteFlagFilter() {
+	public Object geteFlagFilter() {
 		return eFlagFilter;
 	}
 	public Boolean getDropIfEmpty() {
@@ -108,9 +112,15 @@ public class BopRequest {
 	public Integer getPosition() {
 		return position;
 	}
+	public Object getCompValue() {
+		return compValue;
+	}
 	
 	/***********************************************/
-	
+
+	public void setCompValue(Object compValue) {
+		this.compValue = compValue;
+	}
 	public void setKey(String key) {
 		this.key = key;
 	}
@@ -134,16 +144,18 @@ public class BopRequest {
 	}
 	public void seteFlag(byte[] eFlag) {
 		this.eFlag = eFlag;//Arrays.toString(eFlag);//(byte[]) eFlag;
-		System.out.println("BopRequest : eFlag : "+Arrays.toString(this.eFlag));
 	}
 	public void setValue(Object value) {
 		this.value = value;
 	}
-	public void seteFlagUpdate(ElementFlagUpdate eFlagUpdate) {
+	public void seteFlagUpdate(String eFlagUpdate) {
 		this.eFlagUpdate = eFlagUpdate;
 	}
-	public void seteFlagFilter(ElementFlagFilter eFlagFilter) {
-		this.eFlagFilter = eFlagFilter;
+	public void seteFlagFilter(String stringFilter) {
+		if(stringFilter.isEmpty())
+			eFlagFilter = "DO_NOT_FILTER";
+		else 
+			eFlagFilter = stringFilter;	
 	}
 	public void setDropIfEmpty(Boolean dropIfEmpty) {
 		this.dropIfEmpty = dropIfEmpty;

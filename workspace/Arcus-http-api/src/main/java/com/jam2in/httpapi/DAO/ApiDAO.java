@@ -156,6 +156,14 @@ public class ApiDAO {
 		future = arcusClient.asyncBopPipedInsertBulk(key, elementsWithMap, attributesForCreate);
 		return future;
 	}
+	
+	//일괄삽입추가
+	public CollectionFuture<Map<Integer, CollectionOperationStatus>>asyncBopPipedInsertBulk(String key, List<Element<Object>> elements, CollectionAttributes attributesForCreate){
+		CollectionFuture<Map<Integer, CollectionOperationStatus>> future = null;
+		future = arcusClient.asyncBopPipedInsertBulk(key, elements, attributesForCreate);
+		return future;
+		
+	}	
 
 	public Future<Map<String, CollectionOperationStatus>> bopInsertBulk(List<String> keyList, long bkey, byte[] eflag, Object value, CollectionAttributes attributesForCreate){
 		Future<Map<String, CollectionOperationStatus>> future = null;
@@ -168,7 +176,14 @@ public class ApiDAO {
 		future = arcusClient.asyncBopInsertBulk(keyList, bkey, eflag, value, attributesForCreate);
 		return future;
 	}
-
+	
+	//일괄변경 추가
+	CollectionFuture<Map<Integer, CollectionOperationStatus>> asyncBopPipedUpdateBulk(String key, List<Element<Object>> elements){
+		CollectionFuture<Map<Integer, CollectionOperationStatus>> future = null;
+		future = arcusClient.asyncBopPipedUpdateBulk(key, elements);
+		return future;
+	}
+	
 	public CollectionFuture<Boolean> bopUpsert(String key, long bkey, byte[] eFlag, Object value, CollectionAttributes attributesForCreate){
 		CollectionFuture<Boolean> future = null;
 		future = arcusClient.asyncBopUpsert(key, bkey, eFlag, value, attributesForCreate);

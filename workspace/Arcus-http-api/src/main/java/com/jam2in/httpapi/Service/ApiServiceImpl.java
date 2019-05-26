@@ -31,18 +31,8 @@ import com.jam2in.httpapi.response.ArcusSetBulkSuccessResponse;
 import com.jam2in.httpapi.response.ArcusSuccessResponse;
 
 import net.spy.memcached.ArcusClient;
-import net.spy.memcached.collection.BTreeGetResult;
-import net.spy.memcached.collection.BTreeOrder;
-import net.spy.memcached.collection.ByteArrayBKey;
-import net.spy.memcached.collection.CollectionAttributes;
-import net.spy.memcached.collection.CollectionResponse;
-import net.spy.memcached.collection.Element;
-import net.spy.memcached.collection.ElementFlagFilter;
-import net.spy.memcached.collection.ElementFlagFilter.CompOperands;
-import net.spy.memcached.collection.ElementFlagUpdate;
-import net.spy.memcached.collection.ElementValueType;
-import net.spy.memcached.collection.SMGetElement;
-import net.spy.memcached.collection.SMGetMode;
+import net.spy.memcached.collection.*;
+import net.spy.memcached.collection.ElementFlagFilter.*;
 import net.spy.memcached.internal.BTreeStoreAndGetFuture;
 import net.spy.memcached.internal.CollectionFuture;
 import net.spy.memcached.internal.CollectionGetBulkFuture;
@@ -462,12 +452,11 @@ key, bkey, withDelete, dropIfEmpty
 	}
 
 
-	@SuppressWarnings("unchecked")
 	public ArcusBopInsertBulkResponse bopPipedInsertBulk(String key, Map<Long, Object> elementsWithMap,  CollectionAttributes attributesForCreate) {
 		/*
 		 {
 		    "key": "Prefix:BTreeKey",
-		    "elements": { "5" : "value1", "10" : "value2", "15" : "value3" },
+		    "elementWithMap": { "5" : "value1", "10" : "value2", "15" : "value3" },
 		    "attributesForCreate": {
 		    	"flags" : 3,
 		    	"expireTime" : 60
@@ -477,12 +466,12 @@ key, bkey, withDelete, dropIfEmpty
 		CollectionFuture<Map<Integer, CollectionOperationStatus>> future = null;		
 		try{
 			future = apiDAO.bopPipedInsertBulk(key, elementsWithMap, attributesForCreate);
-		}catch(Exception e) {
+		}catch(IllegalStateException e) {
 			e.printStackTrace();
 		}
 		
 		Map<Integer, CollectionOperationStatus> result = null;
-		Map<Object, CollectionOperationStatus> convertResult = null;
+		Map<Object, CollectionOperationStatus> convertResult = new HashMap<Object, CollectionOperationStatus>();
 		try {
 			result = future.get(1000L, TimeUnit.MILLISECONDS);
 			for (Map.Entry<Integer, CollectionOperationStatus> entry : result.entrySet()) {
@@ -494,12 +483,16 @@ key, bkey, withDelete, dropIfEmpty
 			e.printStackTrace();
 		} catch (ExecutionException e) {
 			e.printStackTrace();
-		}
+		}		
 		
 		return new ArcusBopInsertBulkResponse(convertResult, elementsWithMap);
 	}
 	
 
+	public ArcusBopInsertBulkResponse bopPipedInsertBulk(String key, List<Element<Object>> elementsWithList, CollectionAttributes attributesForCreate) {
+		
+		
+	}
 
 	@SuppressWarnings("unchecked")
 	public ArcusBopInsertBulkResponse bopInsertBulk(List<String> keyList, Object bkey, byte[] eflag, Object value, CollectionAttributes attributesForCreate) {
@@ -659,14 +652,53 @@ key, bkey, withDelete, dropIfEmpty
 		}
 		return new ArcusBopBoolResponse(result, future.getOperationStatus().getResponse());
 	}
-	public ArcusBopBoolResponse bopDelete(String key, Object from, Object to, Integer count, Boolean dropIfEmpty) {
+	@SuppressWarnings("unchecked")
+	public ArcusBopBoolResponse bopDelete(String key, Object from, Object to, String eFlagFilter, Object compValue, Integer count, Boolean dropIfEmpty) {
 		CollectionFuture<Boolean> future = null;
+		ElementFlagFilter realeFlagFilter = null;
+
+		if(eFlagFilter.equals("DO_NOT_FILTER") && compValue.equals(null))
+			realeFlagFilter = ElementFlagFilter.DO_NOT_FILTER;
+		else if(eFlagFilter.equals("Equal")) {
+			byte[] tempCompValue = (byte[])compValue;
+			realeFlagFilter = new ElementFlagFilter(ElementFlagFilter.CompOperands.Equal, tempCompValue);
+		}
+		else if(eFlagFilter.equals("NotEqual")) {
+			byte[] tempCompValue = (byte[])compValue;
+			realeFlagFilter = new ElementFlagFilter(ElementFlagFilter.CompOperands.NotEqual, tempCompValue);			
+		}
+		else if(eFlagFilter.equals("LessThan")) {
+			byte[] tempCompValue = (byte[])compValue;
+			realeFlagFilter = new ElementFlagFilter(ElementFlagFilter.CompOperands.LessThan, tempCompValue);
+		}
+		else if(eFlagFilter.equals("LessOrEqual")) {
+			byte[] tempCompValue = (byte[])compValue;
+			realeFlagFilter = new ElementFlagFilter(ElementFlagFilter.CompOperands.LessOrEqual, tempCompValue);
+		}
+		else if(eFlagFilter.equals("GreaterThan")) {
+			byte[] tempCompValue = (byte[])compValue;
+			realeFlagFilter = new ElementFlagFilter(ElementFlagFilter.CompOperands.GreaterThan, tempCompValue);
+		}
+		else if(eFlagFilter.equals("GreaterOrEqual")) {
+			byte[] tempCompValue = (byte[])compValue;
+			realeFlagFilter = new ElementFlagFilter(ElementFlagFilter.CompOperands.GreaterOrEqual, tempCompValue);
+		}
+//		else if(eFlagFilter.equals("AND")) {
+//			byte[] tempCompValue = (byte[])compValue;
+//			realeFlagFitler = new ElementFlagFilter(Element.BitwiseOperands.AND, tempCompValue);
+//		}
+//		else if(eFlagFilter.equals("OR")) {
+//			
+//		}
+//		else if(eFlagFilter.equals("XOR")) {
+//			
+//		}
 		
 		try {
 			if(from instanceof Integer) {
 				int scalarFrom = (int) from;
 				int scalarTo = (int) to;
-				future = apiDAO.bopDelete(key, scalarFrom, scalarTo, ElementFlagFilter.DO_NOT_FILTER, count, dropIfEmpty);
+				future = apiDAO.bopDelete(key, scalarFrom, scalarTo, realeFlagFilter, count, dropIfEmpty);
 			}else {
 				ArrayList<Integer> alF = (ArrayList<Integer>)from;
 				ArrayList<Integer> alT = (ArrayList<Integer>)to;
@@ -709,7 +741,7 @@ key, bkey, withDelete, dropIfEmpty
 	
 
 	@SuppressWarnings("unchecked")
-	public ArcusBopBoolResponse bopDelete(String key, Object bkey, Boolean dropIfEmpty) {
+	public ArcusBopBoolResponse bopDelete(String key, Object bkey, String eFlagFilter, String compValue, Boolean dropIfEmpty) {
 		/*{
     "key": "Prefix:BTreeKey",
     "bkey": [3, 2, 1, 0],
@@ -918,7 +950,7 @@ key, bkey, withDelete, dropIfEmpty
 		return new ArcusBopNotBoolResponse(result, future.getOperationStatus().getResponse());
 	}
 	@SuppressWarnings("unchecked")
-	public ArcusBopNotBoolResponse bopGetItemCount(String key, Object from, Object to) {
+	public ArcusBopNotBoolResponse bopGetItemCount(String key, Object from, Object to, String eFlagFilter, String compValue) {
 /*
 {
     "key": "Prefix:BTreeKey",
@@ -974,7 +1006,7 @@ key, bkey, withDelete, dropIfEmpty
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ArcusBopNotBoolResponse bopGet(String key, Object from, Object to, Integer offset, Integer count, Boolean withDelete, Boolean dropIfEmpty) {
+	public ArcusBopNotBoolResponse bopGet(String key, Object from, Object to, String eFlagFilter, String compValue, Integer offset, Integer count, Boolean withDelete, Boolean dropIfEmpty) {
 		/*
 		{
 		    "key": "Prefix:BTreeKey",
@@ -1065,7 +1097,7 @@ key, bkey, withDelete, dropIfEmpty
 		}
 	}
 	@SuppressWarnings("unchecked")
-	public ArcusBopNotBoolResponse bopGet(String key, Object bkey, Boolean withDelete, Boolean dropIfEmpty) {
+	public ArcusBopNotBoolResponse bopGet(String key, Object bkey, String eFlagFilter, String compValue, Boolean withDelete, Boolean dropIfEmpty) {
 		ElementFlagFilter filter = new ElementFlagFilter(CompOperands.Equal, new byte[] {1,1});
 		if(bkey instanceof Integer) {
 			CollectionFuture<Map<Long, Element<Object>>> future = null;
@@ -1138,7 +1170,7 @@ key, bkey, withDelete, dropIfEmpty
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ArcusBopNotBoolResponse bopGetBulk(List<String> keyList, Object from, Object to,  ElementFlagFilter eFlagFilter, Integer offset, Integer count) {
+	public ArcusBopNotBoolResponse bopGetBulk(List<String> keyList, Object from, Object to, String eFlagFilter, String compValue, Integer offset, Integer count) {
 		/*
 		{
 		    "keyList": { "Prefix:BTreeKey", "Prefix:BTreeKey2" }, 
@@ -1219,7 +1251,7 @@ key, bkey, withDelete, dropIfEmpty
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ArcusBopNotBoolResponse bopSMGet(List<String> keyList, Object from, Object to,  ElementFlagFilter eFlagFilter, Integer count, SMGetMode smgetMode) {
+	public ArcusBopNotBoolResponse bopSMGet(List<String> keyList, Object from, Object to, String eFlagFilter, String compValue, Integer count, SMGetMode smgetMode) {
 		/*
 		{
 		    "keyList": { "Prefix:BTreeKey", "Prefix:BTreeKey2" }, 

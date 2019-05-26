@@ -243,9 +243,9 @@ public class HomeController {
 	@ResponseBody
 	ArcusBopBoolResponse bopDelete(@RequestBody BopRequest arcusRequest) {
 		if(arcusRequest.getFrom() != null) {
-			return apiService.bopDelete(arcusRequest.getKey(), arcusRequest.getFrom(), arcusRequest.getTo(), arcusRequest.getCount(), arcusRequest.getDropIfEmpty());
+			return apiService.bopDelete(arcusRequest.getKey(), arcusRequest.getFrom(), arcusRequest.geteFlagFilter(), arcusRequest.getCompValue(), arcusRequest.getTo(), arcusRequest.getCount(), arcusRequest.getDropIfEmpty());
 		}else {
-			return apiService.bopDelete(arcusRequest.getKey(), arcusRequest.getBkey(), arcusRequest.getDropIfEmpty());
+			return apiService.bopDelete(arcusRequest.getKey(), arcusRequest.getBkey(), arcusRequest.geteFlagFilter(), arcusRequest.getCompValue(), arcusRequest.getDropIfEmpty());
 		}
 	}
 	
@@ -272,16 +272,16 @@ public class HomeController {
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-get-item-count",method=RequestMethod.POST)
 	@ResponseBody
 	ArcusBopNotBoolResponse bopGetItemCount(@RequestBody BopRequest arcusRequest) {
-		return apiService.bopGetItemCount(arcusRequest.getKey(), arcusRequest.getFrom(), arcusRequest.getTo());
+		return apiService.bopGetItemCount(arcusRequest.getKey(), arcusRequest.getFrom(), arcusRequest.getTo(), arcusRequest.geteFlagFilter(), arcusRequest.getCompValue());
 	}
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-get",method=RequestMethod.POST)
 	@ResponseBody
 	ArcusBopNotBoolResponse bopGet(@RequestBody BopRequest arcusRequest) {
 		if(arcusRequest.getFrom() != null) {
-			return apiService.bopGet(arcusRequest.getKey(), arcusRequest.getFrom(), arcusRequest.getTo(), arcusRequest.getOffset(), arcusRequest.getCount(), arcusRequest.getWithDelete(), arcusRequest.getDropIfEmpty());
+			return apiService.bopGet(arcusRequest.getKey(), arcusRequest.getFrom(), arcusRequest.getTo(), arcusRequest.geteFlagFilter(), arcusRequest.getCompValue(), arcusRequest.getOffset(), arcusRequest.getCount(), arcusRequest.getWithDelete(), arcusRequest.getDropIfEmpty());
 		}else {
-			return apiService.bopGet(arcusRequest.getKey(), arcusRequest.getBkey(), arcusRequest.getWithDelete(), arcusRequest.getDropIfEmpty());
+			return apiService.bopGet(arcusRequest.getKey(), arcusRequest.getBkey(), arcusRequest.geteFlagFilter(), arcusRequest.getCompValue(), arcusRequest.getWithDelete(), arcusRequest.getDropIfEmpty());
 		}
 	}	
 	
@@ -289,13 +289,13 @@ public class HomeController {
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-get-bulk",method=RequestMethod.POST)
 	@ResponseBody
 	ArcusBopNotBoolResponse bopGetBulk(@RequestBody BopRequest arcusRequest) {
-		return apiService.bopGetBulk(arcusRequest.getKeyList(), arcusRequest.getFrom(), arcusRequest.getTo(), arcusRequest.geteFlagFilter(), arcusRequest.getOffset(), arcusRequest.getCount());
+		return apiService.bopGetBulk(arcusRequest.getKeyList(), arcusRequest.getFrom(), arcusRequest.getTo(), arcusRequest.geteFlagFilter(), arcusRequest.getCompValue(), arcusRequest.getOffset(), arcusRequest.getCount());
 	}
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-smget",method=RequestMethod.POST)
 	@ResponseBody
 	ArcusBopNotBoolResponse bopSMGet(@RequestBody BopRequest arcusRequest) {
-		return apiService.bopSMGet(arcusRequest.getKeyList(), arcusRequest.getFrom(), arcusRequest.getTo(), arcusRequest.geteFlagFilter(), arcusRequest.getCount(), arcusRequest.getSMGetMode());
+		return apiService.bopSMGet(arcusRequest.getKeyList(), arcusRequest.getFrom(), arcusRequest.getTo(), arcusRequest.geteFlagFilter(), arcusRequest.getCompValue(), arcusRequest.getCount(), arcusRequest.getSMGetMode());
 	}
 	
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-find-position",method=RequestMethod.POST)
