@@ -354,7 +354,7 @@ key, bkey, withDelete, dropIfEmpty
 		return new ArcusSuccessResponse();
 	}
 	
-	public ArcusBopBoolResponse bopCreate(String key, CollectionAttributes attributes) {
+	public ArcusBopBoolResponse bopCreate(String key, ElementValueType valueType, CollectionAttributes attributes) {
 /*
  *
 {
@@ -367,16 +367,13 @@ key, bkey, withDelete, dropIfEmpty
 		
 		CollectionFuture<Boolean> future = null;
 		try {
-			System.out.println("service : attributes: "+ attributes);
-			future = apiDAO.bopCreate(key, ElementValueType.STRING, attributes);
+			future = apiDAO.bopCreate(key, valueType, attributes);
 		}catch(IllegalStateException e) {
 			e.printStackTrace();
 		}
 		Boolean result = null;
 		try {
 			result = future.get(1000L, TimeUnit.MILLISECONDS);
-			System.out.println(result);
-			System.out.println(future.getOperationStatus().getResponse());
 		}catch(TimeoutException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
@@ -488,12 +485,7 @@ key, bkey, withDelete, dropIfEmpty
 		return new ArcusBopInsertBulkResponse(convertResult, elementsWithMap);
 	}
 	
-
-	public ArcusBopInsertBulkResponse bopPipedInsertBulk(String key, List<Element<Object>> elementsWithList, CollectionAttributes attributesForCreate) {
-		
-		
-	}
-
+//	@SuppressWarnings({ "unchecked", "null" })
 	@SuppressWarnings("unchecked")
 	public ArcusBopInsertBulkResponse bopInsertBulk(List<String> keyList, Object bkey, byte[] eflag, Object value, CollectionAttributes attributesForCreate) {
 		/*
@@ -618,18 +610,52 @@ key, bkey, withDelete, dropIfEmpty
 		CollectionFuture<Boolean> future = null;
 		ElementFlagUpdate realeFlagUpdate = null;
 		
-		if(flag.equals(null) && eFlagOffset.equals(null) && bitOp.equals(null) && eFlagUpdate.contentEquals(null)) {
+		// only changing value and leaving eflag value as is
+		if(flag.equals(null) && eFlagOffset.equals(null) && bitOp.equals(null) && eFlagUpdate.equals(null)) {
 			realeFlagUpdate = null;
-		}else if(!flag.equals(null) && eFlagOffset.equals(null) && bitOp.equals(null)) {
-			realeFlagUpdate = new ElementFlagUpdate((byte[])flag);
-		}else if(!flag.equals(null) && !eFlagOffset.equals(null) && !bitOp.equals(null) ) {
-			realeFlagUpdate = new ElementFlagUpdate((int)eFlagOffset, bitOp, (byte[])flag);
+		}
+		// replacing the entire eflag value
+		else if(!flag.equals(null) && eFlagOffset.equals(null) && bitOp.equals(null)) {
+			ArrayList<Integer> al = (ArrayList<Integer>)flag;
+			
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			DataOutputStream out = new DataOutputStream(baos);
+			
+			for (int element : al) {
+			    try {
+					out.writeUTF(Integer.toString(element));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			byte[] bytesFlag = baos.toByteArray();
+			
+			realeFlagUpdate = new ElementFlagUpdate(bytesFlag);
+		}
+		// replacing the partial eflag value 
+		else if(!flag.equals(null) && !eFlagOffset.equals(null) && !bitOp.equals(null) ) {
+			ArrayList<Integer> al = (ArrayList<Integer>)flag;
+			
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			DataOutputStream out = new DataOutputStream(baos);
+			
+			for (int element : al) {
+			    try {
+					out.writeUTF(Integer.toString(element));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			byte[] bytesFlag = baos.toByteArray();
+			
+			realeFlagUpdate = new ElementFlagUpdate((int)eFlagOffset, bitOp, bytesFlag);
 		}
 		
 		try {
 			if(bkey instanceof Integer) {
 				int scalarBkey = (int) bkey;
 				if(eFlagUpdate.equals("RESET_FLAG")) {
+					// deleting eflag and leaving the value as is
 					future = apiDAO.bopUpdate(key, scalarBkey, ElementFlagUpdate.RESET_FLAG, value);
 				}else {
 					future = apiDAO.bopUpdate(key, scalarBkey, realeFlagUpdate, value);					
@@ -644,8 +670,12 @@ key, bkey, withDelete, dropIfEmpty
 				    out.writeUTF(Integer.toString(element));
 				}
 				byte[] bytesBkey = baos.toByteArray();
-				future = apiDAO.bopUpdate(key, bytesBkey, eFlagUpdate, value);
-			}
+				if(eFlagUpdate.equals("RESET_FLAG")) {
+					// deleting eflag and leaving the value as is
+					future = apiDAO.bopUpdate(key, bytesBkey, ElementFlagUpdate.RESET_FLAG, value);
+				}else {
+					future = apiDAO.bopUpdate(key, bytesBkey, realeFlagUpdate, value);					
+				}			}
 		}catch(IllegalStateException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -666,53 +696,47 @@ key, bkey, withDelete, dropIfEmpty
 		return new ArcusBopBoolResponse(result, future.getOperationStatus().getResponse());
 	}
 	@SuppressWarnings("unchecked")
-	public ArcusBopBoolResponse bopDelete(String key, Object from, Object to, String eFlagFilter, Object compValue, Integer count, Boolean dropIfEmpty) {
+	public ArcusBopBoolResponse bopDelete(String key, Object from, Object to, Integer count, Boolean dropIfEmpty) {//, String eFlagFilter, Object compValue, Integer count, Boolean dropIfEmpty) {
 		CollectionFuture<Boolean> future = null;
-		ElementFlagFilter realeFlagFilter = null;
+//		ElementFlagFilter realeFlagFilter = null;
 
-		if(eFlagFilter.equals("DO_NOT_FILTER") && compValue.equals(null))
-			realeFlagFilter = ElementFlagFilter.DO_NOT_FILTER;
-		else if(eFlagFilter.equals("Equal")) {
-			byte[] tempCompValue = (byte[])compValue;
-			realeFlagFilter = new ElementFlagFilter(ElementFlagFilter.CompOperands.Equal, tempCompValue);
-		}
-		else if(eFlagFilter.equals("NotEqual")) {
-			byte[] tempCompValue = (byte[])compValue;
-			realeFlagFilter = new ElementFlagFilter(ElementFlagFilter.CompOperands.NotEqual, tempCompValue);			
-		}
-		else if(eFlagFilter.equals("LessThan")) {
-			byte[] tempCompValue = (byte[])compValue;
-			realeFlagFilter = new ElementFlagFilter(ElementFlagFilter.CompOperands.LessThan, tempCompValue);
-		}
-		else if(eFlagFilter.equals("LessOrEqual")) {
-			byte[] tempCompValue = (byte[])compValue;
-			realeFlagFilter = new ElementFlagFilter(ElementFlagFilter.CompOperands.LessOrEqual, tempCompValue);
-		}
-		else if(eFlagFilter.equals("GreaterThan")) {
-			byte[] tempCompValue = (byte[])compValue;
-			realeFlagFilter = new ElementFlagFilter(ElementFlagFilter.CompOperands.GreaterThan, tempCompValue);
-		}
-		else if(eFlagFilter.equals("GreaterOrEqual")) {
-			byte[] tempCompValue = (byte[])compValue;
-			realeFlagFilter = new ElementFlagFilter(ElementFlagFilter.CompOperands.GreaterOrEqual, tempCompValue);
-		}
-		else if(eFlagFilter.equals("AND")) {
-			byte[] tempCompValue = (byte[])compValue;
-			//The method setBitOperands(ElementFlagFilter.BitWiseOperands, byte[]) is undefined for the type ElementFlagFilter
-			realeFlagFilter.setBitOperands(ElementFlagFilter.BitWiseOperands.AND, tempCompValue);
-		}
-		else if(eFlagFilter.equals("OR")) {
-			
-		}
-		else if(eFlagFilter.equals("XOR")) {
-			
-		}
+//		if(eFlagFilter.equals("DO_NOT_FILTER") && compValue.equals(null))
+//			realeFlagFilter = ElementFlagFilter.DO_NOT_FILTER;
+//		else if(eFlagFilter.equals("Equal")) {
+//			byte[] tempCompValue = (byte[])compValue;
+//			realeFlagFilter = new ElementFlagFilter(ElementFlagFilter.CompOperands.Equal, tempCompValue);
+//		}
+//		else if(eFlagFilter.equals("NotEqual")) {
+//			byte[] tempCompValue = (byte[])compValue;
+//			realeFlagFilter = new ElementFlagFilter(ElementFlagFilter.CompOperands.NotEqual, tempCompValue);			
+//		}
+//		else if(eFlagFilter.equals("LessThan")) {
+//			byte[] tempCompValue = (byte[])compValue;
+//			realeFlagFilter = new ElementFlagFilter(ElementFlagFilter.CompOperands.LessThan, tempCompValue);
+//		}
+//		else if(eFlagFilter.equals("LessOrEqual")) {
+//			byte[] tempCompValue = (byte[])compValue;
+//			realeFlagFilter = new ElementFlagFilter(ElementFlagFilter.CompOperands.LessOrEqual, tempCompValue);
+//		}
+//		else if(eFlagFilter.equals("GreaterThan")) {
+//			byte[] tempCompValue = (byte[])compValue;
+//			realeFlagFilter = new ElementFlagFilter(ElementFlagFilter.CompOperands.GreaterThan, tempCompValue);
+//		}
+//		else if(eFlagFilter.equals("GreaterOrEqual")) {
+//			byte[] tempCompValue = (byte[])compValue;
+//			realeFlagFilter = new ElementFlagFilter(ElementFlagFilter.CompOperands.GreaterOrEqual, tempCompValue);
+//		}
+//		else if(eFlagFilter.equals("AND")) {
+//			byte[] tempCompValue = (byte[])compValue;
+//			//The method setBitOperands(ElementFlagFilter.BitWiseOperands, byte[]) is undefined for the type ElementFlagFilter
+//			realeFlagFilter.setBitOperands(ElementFlagFilter.BitWiseOperands.AND, tempCompValue);
+//		}
 		
 		try {
 			if(from instanceof Integer) {
 				int scalarFrom = (int) from;
 				int scalarTo = (int) to;
-				future = apiDAO.bopDelete(key, scalarFrom, scalarTo, realeFlagFilter, count, dropIfEmpty);
+				future = apiDAO.bopDelete(key, scalarFrom, scalarTo, ElementFlagFilter.DO_NOT_FILTER, count, dropIfEmpty);
 			}else {
 				ArrayList<Integer> alF = (ArrayList<Integer>)from;
 				ArrayList<Integer> alT = (ArrayList<Integer>)to;
@@ -755,7 +779,7 @@ key, bkey, withDelete, dropIfEmpty
 	
 
 	@SuppressWarnings("unchecked")
-	public ArcusBopBoolResponse bopDelete(String key, Object bkey, String eFlagFilter, String compValue, Boolean dropIfEmpty) {
+	public ArcusBopBoolResponse bopDelete(String key, Object bkey, Boolean dropIfEmpty) {
 		/*{
     "key": "Prefix:BTreeKey",
     "bkey": [3, 2, 1, 0],
@@ -964,7 +988,7 @@ key, bkey, withDelete, dropIfEmpty
 		return new ArcusBopNotBoolResponse(result, future.getOperationStatus().getResponse());
 	}
 	@SuppressWarnings("unchecked")
-	public ArcusBopNotBoolResponse bopGetItemCount(String key, Object from, Object to, String eFlagFilter, String compValue) {
+	public ArcusBopNotBoolResponse bopGetItemCount(String key, Object from, Object to) {
 /*
 {
     "key": "Prefix:BTreeKey",
@@ -1020,7 +1044,7 @@ key, bkey, withDelete, dropIfEmpty
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ArcusBopNotBoolResponse bopGet(String key, Object from, Object to, String eFlagFilter, String compValue, Integer offset, Integer count, Boolean withDelete, Boolean dropIfEmpty) {
+	public ArcusBopNotBoolResponse bopGet(String key, Object from, Object to, Integer offset, Integer count, Boolean withDelete, Boolean dropIfEmpty) {
 		/*
 		{
 		    "key": "Prefix:BTreeKey",
@@ -1111,7 +1135,7 @@ key, bkey, withDelete, dropIfEmpty
 		}
 	}
 	@SuppressWarnings("unchecked")
-	public ArcusBopNotBoolResponse bopGet(String key, Object bkey, String eFlagFilter, String compValue, Boolean withDelete, Boolean dropIfEmpty) {
+	public ArcusBopNotBoolResponse bopGet(String key, Object bkey, Boolean withDelete, Boolean dropIfEmpty) {
 		ElementFlagFilter filter = new ElementFlagFilter(CompOperands.Equal, new byte[] {1,1});
 		if(bkey instanceof Integer) {
 			CollectionFuture<Map<Long, Element<Object>>> future = null;
@@ -1184,7 +1208,7 @@ key, bkey, withDelete, dropIfEmpty
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ArcusBopNotBoolResponse bopGetBulk(List<String> keyList, Object from, Object to, String eFlagFilter, String compValue, Integer offset, Integer count) {
+	public ArcusBopNotBoolResponse bopGetBulk(List<String> keyList, Object from, Object to, Integer offset, Integer count) {
 		/*
 		{
 		    "keyList": { "Prefix:BTreeKey", "Prefix:BTreeKey2" }, 
@@ -1208,7 +1232,7 @@ key, bkey, withDelete, dropIfEmpty
 			try {
 				int scalarFrom = (int) from;
 				int scalarTo = (int) to;
-				future = apiDAO.bopGetBulk(keyList, scalarFrom, scalarTo, eFlagFilter, offset, count);
+				future = apiDAO.bopGetBulk(keyList, scalarFrom, scalarTo, ElementFlagFilter.DO_NOT_FILTER, offset, count);
 			}catch(IllegalStateException e) {
 				e.printStackTrace();
 			}
@@ -1243,7 +1267,7 @@ key, bkey, withDelete, dropIfEmpty
 				}
 				byte[] bytesFrom = baosF.toByteArray();
 				byte[] bytesTo = baosT.toByteArray();
-				future = apiDAO.bopGetBulk(keyList, bytesFrom, bytesTo, eFlagFilter, offset, count);
+				future = apiDAO.bopGetBulk(keyList, bytesFrom, bytesTo, ElementFlagFilter.DO_NOT_FILTER, offset, count);
 			}catch(IllegalStateException e) {
 				e.printStackTrace();
 			}catch (IOException e) {
@@ -1265,7 +1289,7 @@ key, bkey, withDelete, dropIfEmpty
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ArcusBopNotBoolResponse bopSMGet(List<String> keyList, Object from, Object to, String eFlagFilter, String compValue, Integer count, SMGetMode smgetMode) {
+	public ArcusBopNotBoolResponse bopSMGet(List<String> keyList, Object from, Object to, Integer count, SMGetMode smgetMode) {
 		/*
 		{
 		    "keyList": { "Prefix:BTreeKey", "Prefix:BTreeKey2" }, 
@@ -1290,7 +1314,7 @@ key, bkey, withDelete, dropIfEmpty
 			try {
 				int scalarFrom = (int) from;
 				int scalarTo = (int) to;
-				future = apiDAO.bopSMGet(keyList, scalarFrom, scalarTo, eFlagFilter, count, smgetMode);
+				future = apiDAO.bopSMGet(keyList, scalarFrom, scalarTo, ElementFlagFilter.DO_NOT_FILTER, count, smgetMode);
 			}catch(IllegalStateException e) {
 				e.printStackTrace();
 			}
@@ -1312,7 +1336,7 @@ key, bkey, withDelete, dropIfEmpty
 				}
 				byte[] bytesFrom = baosF.toByteArray();
 				byte[] bytesTo = baosT.toByteArray();
-				future = apiDAO.bopSMGet(keyList, bytesFrom, bytesTo, eFlagFilter, count, smgetMode);
+				future = apiDAO.bopSMGet(keyList, bytesFrom, bytesTo, ElementFlagFilter.DO_NOT_FILTER, count, smgetMode);
 			}catch(IllegalStateException e) {
 				e.printStackTrace();
 			}catch (IOException e) {

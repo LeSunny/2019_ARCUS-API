@@ -14,7 +14,7 @@ public class BopRequest {
 	String key = null;
 	List<String> keyList = null;
 
-	//ElementValueType valueType = null;
+	ElementValueType valueType = null;
 	
 	CollectionAttributes attributes = null;
 	CollectionAttributes attributesForCreate = null;
@@ -27,8 +27,13 @@ public class BopRequest {
 		return bitOp;
 	}
 
-	public void setBitOp(BitWiseOperands bitOp) {
-		this.bitOp = bitOp;
+	public void setBitOp(String bitOp) {
+		if(bitOp.equals("AND"))
+			this.bitOp = BitWiseOperands.AND;
+		else if(bitOp.equals("OR"))
+			this.bitOp = BitWiseOperands.OR;
+		else if(bitOp.equals("XOR"))
+			this.bitOp = BitWiseOperands.XOR;
 	}
 
 	public Integer geteFlagOffset() {
@@ -139,7 +144,9 @@ public class BopRequest {
 	public Object getFlag() {
 		return flag;
 	}
-
+	public ElementValueType getValueType() {
+		return valueType;
+	}
 	
 	/***********************************************/
 	public void setFlag(Object flag) {
@@ -227,5 +234,36 @@ public class BopRequest {
 	
 	public void setPosition(Integer position) {
 		this.position = position;
+	}
+	
+	public void setValueType(String valueType) {
+		if(valueType.equals("STRING")) {
+			this.valueType = ElementValueType.STRING;
+		}
+		else if(valueType.equals("LONG")) {
+			this.valueType = ElementValueType.LONG;
+		}
+		else if(valueType.equals("INTEGER")) {
+			this.valueType = ElementValueType.INTEGER;
+		}
+		else if(valueType.equals("BOOLEAN")) {
+			this.valueType = ElementValueType.BOOLEAN;
+		}
+		else if(valueType.equals("DATE")) {
+			this.valueType = ElementValueType.DATE;
+		}
+		else if(valueType.equals("BYTE")) {
+			this.valueType = ElementValueType.BYTE;
+		}
+		else if(valueType.equals("FLOAT")) {
+			this.valueType = ElementValueType.FLOAT;
+		}
+		else if(valueType.equals("DOUBLE")) {
+			this.valueType = ElementValueType.DOUBLE;
+		}
+		else if(valueType.equals("BYTEARRAY")) {
+			this.valueType = ElementValueType.BYTEARRAY;
+		}
+		//ElementValueType.OTHERS : for example, user defined class
 	}
 }
