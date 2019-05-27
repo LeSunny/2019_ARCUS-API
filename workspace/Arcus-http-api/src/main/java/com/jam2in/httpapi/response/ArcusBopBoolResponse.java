@@ -29,6 +29,9 @@ public class ArcusBopBoolResponse {
 		else if(explanation.equals(CollectionResponse.NOT_FOUND_ELEMENT)) this.explanation = "주어진 bkey를 가진 element가 없음.";
 		else if(explanation.equals(CollectionResponse.TYPE_MISMATCH)) this.explanation = "해당 item이 b+tree가 아님.";
 		else if(explanation.equals(CollectionResponse.BKEY_MISMATCH)) this.explanation = "주어진 bkey 유형이 기존 bkey 유형과 다름.";
+		else if(explanation.equals(CollectionResponse.ELEMENT_EXISTS)) this.explanation = "주어진 bkey를 가진 element가 이미 존재함.";
+		else if(explanation.equals(CollectionResponse.OVERFLOWED)) this.explanation = "최대 저장가능한 개수만큼 element들이 존재함.";
+		else if(explanation.equals(CollectionResponse.OUT_OF_RANGE)) this.explanation = "주어진 bkey가 b+tree trimmed 영역에 해당됨.";
 		else if(explanation.equals(CollectionResponse.EFLAG_MISMATCH)) this.explanation = "주어진 eFlagUpate가 해당 element의 eflag 데이터와 불일치.";
 		else if(explanation.equals(CollectionResponse.DELETED)) this.explanation = "Element 삭제.";
 		else if(explanation.equals(CollectionResponse.DELETED_DROPPED)) this.explanation = "Element 삭제하고 B+tree 자체도 삭제.";

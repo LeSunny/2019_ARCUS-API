@@ -796,7 +796,6 @@ key, bkey, withDelete, dropIfEmpty
 		}catch(IllegalStateException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		Boolean result = null;
