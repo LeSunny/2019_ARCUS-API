@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.jam2in.httpapi.Controller.ArcusBopFindPositionWithGetResponse;
 import com.jam2in.httpapi.response.ArcusBopBoolResponse;
 import com.jam2in.httpapi.response.ArcusBopInsertBulkResponse;
 import com.jam2in.httpapi.response.ArcusBopNotBoolResponse;
@@ -70,7 +71,7 @@ public interface ApiService {
 	//일괄변경 추가
 	//public ArcusBopNotBoolResponse bopGetBulk(List<String> keyList, Object from, Object to, String eFlagFilter, String compValue, Integer offset, Integer count);
 	//public ArcusBopNotBoolResponse bopSMGet(List<String> keyList, Object from, Object to, String eFlagFilter, String compValue, Integer count, SMGetMode smgetMode);
-	public ArcusBopNotBoolResponse bopGetBulk(List<String> keyList, Object from, Object to, Integer offset, Integer count);
+	public ArcusBopGetBulkResponse bopGetBulk(List<String> keyList, Object from, Object to, Integer offset, Integer count);
 	public ArcusBopNotBoolResponse bopSMGet(List<String> keyList, Object from, Object to, Integer count, SMGetMode smgetMode);
 	public ArcusBopNotBoolResponse bopFindPosition(String key, Object bkey, BTreeOrder order);
 	public ArcusBopNotBoolResponse bopGetByPosition(String key, BTreeOrder order, Integer position);

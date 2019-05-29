@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jam2in.httpapi.DAO.ApiDAO;
 import com.jam2in.httpapi.response.ArcusBopBoolResponse;
+import com.jam2in.httpapi.response.ArcusBopGetBulkResponse;
 import com.jam2in.httpapi.response.ArcusBopInsertBulkResponse;
 import com.jam2in.httpapi.response.ArcusBopNotBoolResponse;
 import com.jam2in.httpapi.response.ArcusBopTrimmedResponse;
@@ -1218,7 +1219,7 @@ key, bkey, withDelete, dropIfEmpty
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ArcusBopNotBoolResponse bopGetBulk(List<String> keyList, Object from, Object to, Integer offset, Integer count) {
+	public ArcusBopGetBulkResponse bopGetBulk(List<String> keyList, Object from, Object to, Integer offset, Integer count) {
 		/*
 		{
 		    "keyList": { "Prefix:BTreeKey", "Prefix:BTreeKey2" }, 
@@ -1257,8 +1258,9 @@ key, bkey, withDelete, dropIfEmpty
 			}catch(ExecutionException e) {
 				e.printStackTrace();
 			}
-			return new ArcusBopNotBoolResponse(result, future.getOperationStatus().getResponse());
-		}else {
+			return new ArcusBopGetBulkResponse(result);
+		}
+		else {
 			CollectionGetBulkFuture<Map<String, BTreeGetResult<ByteArrayBKey, Object>>> future = null;
 			try {
 				ArrayList<Integer> alF = (ArrayList<Integer>)from;
@@ -1294,7 +1296,7 @@ key, bkey, withDelete, dropIfEmpty
 			}catch(ExecutionException e) {
 				e.printStackTrace();
 			}
-			return new ArcusBopNotBoolResponse(result, future.getOperationStatus().getResponse());
+			return new ArcusBopGetBulkResponse(result);
 		}
 	}
 	

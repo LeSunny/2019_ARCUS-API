@@ -5,7 +5,76 @@
   <link rel="self" href="https://spring.io/blog.atom" />
   <id>http://spring.io/blog.atom</id>
   <icon>https://spring.io/favicon.ico</icon>
-  <updated>2019-05-24T09:45:58Z</updated>
+  <updated>2019-05-29T00:00:00Z</updated>
+  <entry>
+    <title>Spring Tips: Debugging Reactor Applications</title>
+    <link rel="alternate" href="https://spring.io/blog/2019/05/29/spring-tips-debugging-reactor-applications" />
+    <category term="engineering" label="Engineering" />
+    <author>
+      <name>Josh Long</name>
+    </author>
+    <id>tag:spring.io,2019-05-28:3694</id>
+    <updated>2019-05-29T00:00:00Z</updated>
+    <content type="html">&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/0oI_-xBhAK8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
+&lt;p&gt;Hi Spring fans! In this video we look at how to debug Reactor Applications. There are a lot of obvious ways, using the debugger and so on, but in this video we look at ways that Reactor and Reactor-ecosystem tools can help you out.&lt;/p&gt;
+&lt;p&gt;speaker: Josh Long &lt;a href="http://twitter.com/starbuxman"&gt;@starbuxman&lt;/a&gt;&lt;/p&gt;
+&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
+  </entry>
+  <entry>
+    <title>Spring Cloud Open Service Broker 3.0.1 Released</title>
+    <link rel="alternate" href="https://spring.io/blog/2019/05/28/spring-cloud-open-service-broker-3-0-1-released" />
+    <category term="releases" label="Releases" />
+    <author>
+      <name>Roy Clarkson</name>
+    </author>
+    <id>tag:spring.io,2019-05-28:3695</id>
+    <updated>2019-05-28T19:30:31Z</updated>
+    <content type="html">&lt;p&gt;We are pleased to announce the 3.0.1 release of Spring Cloud Open Service Broker. This release is a maintenance release that includes the following &lt;a href="https://github.com/spring-cloud/spring-cloud-open-service-broker/issues?q=is%3Aclosed+milestone%3A3.0.1.RELEASE"&gt;updates&lt;/a&gt;:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Improve getting started experience&lt;/li&gt;
+  &lt;li&gt;Update reference documentation&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Include the following Spring Boot starter:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="prettyprint"&gt;&amp;lt;dependency&amp;gt;&#xD;
+  &amp;lt;groupId&amp;gt;org.springframework.cloud&amp;lt;/groupId&amp;gt;&#xD;
+  &amp;lt;artifactId&amp;gt;spring-cloud-starter-open-service-broker&amp;lt;/artifactId&amp;gt;&#xD;
+  &amp;lt;version&amp;gt;3.0.1.RELEASE&amp;lt;/version&amp;gt;&#xD;
+&amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;a href="https://spring.io/projects/spring-cloud-open-service-broker"&gt;Project Page&lt;/a&gt; | &lt;a href="https://github.com/spring-cloud/spring-cloud-open-service-broker"&gt;GitHub&lt;/a&gt; | &lt;a href="https://docs.spring.io/spring-cloud-open-service-broker/docs/3.0.1.RELEASE/reference/html5"&gt;Reference Doc&lt;/a&gt; | &lt;a href="https://docs.spring.io/spring-cloud-open-service-broker/docs/3.0.1.RELEASE/apidocs/"&gt;API Doc&lt;/a&gt; &lt;/p&gt;
+&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
+  </entry>
+  <entry>
+    <title>This Week in Spring - May 28, 2019</title>
+    <link rel="alternate" href="https://spring.io/blog/2019/05/28/this-week-in-spring-may-28-2019" />
+    <category term="engineering" label="Engineering" />
+    <author>
+      <name>Josh Long</name>
+    </author>
+    <id>tag:spring.io,2019-05-28:3693</id>
+    <updated>2019-05-28T08:15:54Z</updated>
+    <content type="html">&lt;p&gt;Hi Spring fans! What a week it&amp;rsquo;s been since we last spoke! I was in Zurich, Switzerland; then Paris, France; then Minsk, Belarus; and now I&amp;rsquo;m in Barcelona, Spain for the epic JBCN show. I&amp;rsquo;ve recorded a few episodes for the podcast (?), gave a talk (?) and now have a workshop to deliver on Wednesday (?). Fun week by the beach! Don&amp;rsquo;t worry about me, I&amp;rsquo;ll pull through..&lt;/p&gt;
+&lt;div style ="padding-top : 10px; padding-bottom : 10px "&gt;&#xD;
+&lt;img src = "https://pbs.twimg.com/media/D7o8JAyXkAAbAT4.jpg:large" /&gt;&#xD;
+&lt;span&gt;Spring en la primavera&lt;/span&gt;&#xD;
+&lt;/div&gt;
+&lt;p&gt;&amp;hellip;.And I&amp;rsquo;m not going anywhere until Thursday when I&amp;rsquo;ll fly home to San Francisco, USA to see our kid graduate middle school! I&amp;rsquo;m so proud of her. What a legend.&lt;/p&gt;
+&lt;p&gt;Anywho, lot&amp;rsquo;s to cover this week, so let&amp;rsquo;s get to it! &lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;In last week&amp;rsquo;s &lt;a href="https://spring.io/blog/2019/05/24/a-bootiful-podcast-twitter-s-chris-thalinger-on-java-graal-jvms-jits-and-more"&gt;&lt;em&gt;A Bootiful Podcast&lt;/em&gt; I talked to Twitter&amp;rsquo;s Chris Thalinger on Java, Graal, JVMs, JITs, and more&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://spring.io/blog/2019/05/24/spring-tools-4-2-2-released"&gt;Spring Tools 4.2.2 released&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Hi Spring fans! In last week&amp;rsquo;s Spring Tips I introduced the new support for transaction management in Reactive APIs, check it out: &lt;a href="https://spring.io/blog/2019/05/22/spring-tips-reactive-transactions"&gt;Spring Tips: Reactive Transactions&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://spring.io/blog/2019/05/21/spring-cloud-data-flow-2-1-ga-released"&gt;Spring Cloud Data Flow 2.1 GA Released&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://www.businessinsider.in/heres-why-companies-like-google-square-and-atlassian-are-sprinting-to-use-kotlin-the-fastest-growing-programming-language-according-to-github/amp_articleshow/69487942.cms"&gt;Here&amp;rsquo;s why companies like Google, Square, and Atlassian are sprinting to use Kotlin, the fastest-growing programming language according to GitHub - Businessinsider India on Mobile&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Want to learn more about stream processing? Check out this talk that Tim Berglund and I did at the Kafka Summit NYC 2019 on stream processing with Spring Cloud Stream and Kafka Streams: &lt;a href="https://www.confluent.io/kafka-summit-ny19/stream-processing-with-the-spring-framework"&gt;Stream Processing with the Spring Framework (Like You&amp;rsquo;ve Never Seen It Before)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;This is kind of interesting: it&amp;rsquo;s a validation framework that integrates with Spring Webflux: &lt;a href="https://github.com/making/yavi#example-with-spring-webfluxfn"&gt;&lt;em&gt;Yet Another Validation for Java&lt;/em&gt; (A lambda based type safe validation framework)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;This is an awesome post by Matt Raible on the Okta blog: &lt;a href="https://developer.okta.com/blog/2019/05/23/java-microservices-spring-cloud-config"&gt;JHipster (which builds on Spring Boot and Spring Cloud) and Spring Cloud Config-powered microservices&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;This is an oldie-but-a-goodie: a nice post by Matt Raible &lt;a href="https://developer.okta.com/blog/2019/05/22/java-microservices-spring-boot-spring-cloud"&gt;on the Okta blog on building secure microservces with Spring Boot and Spring Cloud and Okta&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Seriously, have you &lt;a href="http://DataFlow.Spring.io"&gt;seen the new Dataflow portal&lt;/a&gt;?&lt;/li&gt;
+  &lt;li&gt;Spring Data lead Mark Paluch has a great post on the &lt;a href="https://paluch.biz/blog/179-reactive-relational-database-transactions.html"&gt;benefits of reactive transaction management&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
+  </entry>
   <entry>
     <title>A Bootiful Podcast: Twitter's Chris Thalinger on Java, Graal, JVMs, JITs, and more</title>
     <link rel="alternate" href="https://spring.io/blog/2019/05/24/a-bootiful-podcast-twitter-s-chris-thalinger-on-java-graal-jvms-jits-and-more" />
@@ -602,190 +671,6 @@ Mono&amp;lt;Void&amp;gt; atomic = template.update(Step.class)&#xD;
   &lt;li&gt;Spring Data Elasticsearch 2.1.22 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-elasticsearch/2.1.22.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/elasticsearch/docs/2.1.22.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/elasticsearch/docs/2.1.22.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/elasticsearch/docs/2.1.22.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;Spring Data Couchbase 2.2.22 - &lt;a href="https://repo.spring.io/libs-release/org/springframework/data/spring-data-couchbase/2.2.22.RELEASE"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/couchbase/docs/2.2.22.RELEASE/api"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/couchbase/docs/2.2.22.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/couchbase/docs/2.2.22.RELEASE/changelog.txt"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
-  </entry>
-  <entry>
-    <title>Spring Integration 5.2 Milestone 2 Available</title>
-    <link rel="alternate" href="https://spring.io/blog/2019/05/13/spring-integration-5-2-milestone-2-available" />
-    <category term="releases" label="Releases" />
-    <author>
-      <name>Artem Bilan</name>
-    </author>
-    <id>tag:spring.io,2019-05-13:3676</id>
-    <updated>2019-05-13T20:16:49Z</updated>
-    <content type="html">&lt;div class="paragraph"&gt;
-&lt;p&gt;On behalf of Spring Integration team I am pleased to announce that Spring Integration &lt;code&gt;5.2.0.M2&lt;/code&gt; is available.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;It can be downloaded from our &lt;a href="https://repo.spring.io/milestone"&gt;milestone repository&lt;/a&gt;:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="listingblock"&gt;
-&lt;div class="content"&gt;
-&lt;pre class="prettyprint highlight"&gt;&lt;code class="language-groovy" data-lang="groovy"&gt;compile "org.springframework.integration:spring-integration-core:5.2.0.M2"&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="sect2"&gt;
-&lt;h3 id="highlights"&gt;&lt;a class="anchor" href="#highlights"&gt;&lt;/a&gt;Highlights&lt;/h3&gt;
-&lt;div class="ulist"&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;The &lt;a href="https://github.com/rsocket/rsocket-java"&gt;RSocket&lt;/a&gt; channel adapters are available now for full reactive network interaction between client and server.
-See &lt;code&gt;spring-integration-rsocket&lt;/code&gt; module and &lt;code&gt;RSocketInboundGateway&lt;/code&gt; &amp;amp; &lt;code&gt;RSocketOutboundGateway&lt;/code&gt; JavaDocs, respectively&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Kotlin Jsr223 scripting support has been added into &lt;code&gt;spring-integration-scripting&lt;/code&gt; module&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;The &lt;code&gt;CacheRequestHandlerAdvice&lt;/code&gt; was introduced to perform caching operations on the &lt;code&gt;handleRequestMessage()&lt;/code&gt; method in the &lt;code&gt;AbstractReplyProducingMessageHandler&lt;/code&gt; implementations&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;The &lt;code&gt;RateLimiterRequestHandlerAdvice&lt;/code&gt; is also available for limiting access to the &lt;code&gt;handleRequestMessage()&lt;/code&gt; method logic&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;The &lt;code&gt;Splitter&lt;/code&gt; component now can be configured with a &lt;code&gt;discardChannel&lt;/code&gt; to send those request messages for which a splitting function returns empty collection&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;The &lt;code&gt;MailReceiver&lt;/code&gt; implementations can now be configured with the &lt;code&gt;autoCloseFolder = false&lt;/code&gt; option to not close the mail folder just after fetching, allowing a proper mail message multi-part content processing&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;For more information see the &lt;a href="https://docs.spring.io/spring-integration/docs/5.2.0.M2/reference/html/#whats-new-part"&gt;What&amp;#8217;s New chapter in the documentation&lt;/a&gt; and the change logs.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="ulist"&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href="https://github.com/spring-projects/spring-integration/releases/tag/v5.2.0.M1"&gt;Change log for M1&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href="https://github.com/spring-projects/spring-integration/releases/tag/v5.2.0.M2"&gt;Change log for M2&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;Any feedback, feature ideas, critics, bug reports and questions are welcome via appropriate communication channels:&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;&lt;a href="http://projects.spring.io/spring-integration/"&gt;Project Page&lt;/a&gt; | &lt;a href="https://github.com/spring-projects/spring-integration/issues"&gt;GitHub Issues&lt;/a&gt; | &lt;a href="https://github.com/spring-projects/spring-integration/blob/master/CONTRIBUTING.adoc"&gt;Contributing&lt;/a&gt; | &lt;a href="http://stackoverflow.com/questions/tagged/spring-integration"&gt;Help&lt;/a&gt; | &lt;a href="https://gitter.im/spring-projects/spring-integration"&gt;Chat&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
-  </entry>
-  <entry>
-    <title>Spring for Apache Kafka 2.3 Milestone 2</title>
-    <link rel="alternate" href="https://spring.io/blog/2019/05/13/spring-for-apache-kafka-2-3-milestone-2" />
-    <category term="releases" label="Releases" />
-    <author>
-      <name>Gary Russell</name>
-    </author>
-    <id>tag:spring.io,2019-05-13:3674</id>
-    <updated>2019-05-13T19:49:57Z</updated>
-    <content type="html">&lt;div class="paragraph"&gt;
-&lt;p&gt;We are pleased to announce the availability of the second milestone of the Spring for Apache Kafka 2.3 release - 2.3.0.M2.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="sect2"&gt;
-&lt;h3 id="highlights"&gt;&lt;a class="anchor" href="#highlights"&gt;&lt;/a&gt;Highlights&lt;/h3&gt;
-&lt;div class="ulist"&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;code&gt;SeekToCurrentErrorHandler&lt;/code&gt; can be configured to not retry certain exceptions.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;The new &lt;code&gt;RecoveringDeserializationExceptionHandler&lt;/code&gt; can recover from failed deserialization operations in Kafka Streams applications, for example to send the failed message to a dead-letter topic.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;The new &lt;code&gt;HeaderEnricher&lt;/code&gt; transformer can be added to a Kafka Streams topology to add headers.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;The new &lt;code&gt;MessagingTransformer&lt;/code&gt; can be used to invoke a Spring Integration flow within a Kafka Streams topology.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;The new &lt;code&gt;AggregatingReplyingKafkaTemplate&lt;/code&gt; can send a record and wait for responses from multiple consumers.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;For more information see the &lt;a href="https://docs.spring.io/spring-kafka/docs/2.3.0.M2/reference/html/#whats-new-part"&gt;What&amp;#8217;s New chapter in the documentation&lt;/a&gt; and the change logs.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="ulist"&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href="https://github.com/spring-projects/spring-kafka/releases/tag/v2.3.0.M1"&gt;Change log for M1&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href="https://github.com/spring-projects/spring-kafka/releases/tag/v2.3.0.M2"&gt;Change log for M2&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;In addition, Spring Integration for Apache Kafka (&lt;code&gt;spring-integration-kafka&lt;/code&gt;) 3.2.0.M2 is available; it is based on Spring for Apache Kafka 2.3 and Spring Integration 5.2.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="ulist"&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;The &lt;code&gt;KafkaMessageSource&lt;/code&gt; consumer can now be paused/resumed.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;The &lt;code&gt;KafkaMessageSource&lt;/code&gt; consumer can now be configured to retrieve multiple records on each poll.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;XML configuration is now available for all components.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;See the &lt;a href="https://docs.spring.io/spring-kafka/docs/2.3.0.M2/reference/html/#spring-integration"&gt;Spring Integration Chapter&lt;/a&gt; for more information.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;&lt;a href="http://projects.spring.io/spring-kafka/"&gt;Project Page&lt;/a&gt; | &lt;a href="https://github.com/spring-projects/spring-kafka"&gt;GitHub&lt;/a&gt; | &lt;a href="https://github.com/spring-projects/spring-kafka/issues"&gt;Issues&lt;/a&gt; | &lt;a href="http://docs.spring.io/spring-kafka/docs/2.3.0.M2/reference/html/"&gt;Documentation&lt;/a&gt; | &lt;a href="http://stackoverflow.com/questions/tagged/spring-kafka"&gt;Stack Overflow&lt;/a&gt; | &lt;a href="https://gitter.im/spring-projects/spring-kafka"&gt;Gitter&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
-  </entry>
-  <entry>
-    <title>Spring AMQP (Spring for RabbitMQ) 2.2 Milestone 2</title>
-    <link rel="alternate" href="https://spring.io/blog/2019/05/13/spring-amqp-spring-for-rabbitmq-2-2-milestone-2" />
-    <category term="releases" label="Releases" />
-    <author>
-      <name>Gary Russell</name>
-    </author>
-    <id>tag:spring.io,2019-05-13:3675</id>
-    <updated>2019-05-13T19:49:47Z</updated>
-    <content type="html">&lt;div class="paragraph"&gt;
-&lt;p&gt;We are pleased to announce the availability of the second milestone of the Spring AMQP 2.2 release - 2.2.0.M2.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="sect2"&gt;
-&lt;h3 id="highlights"&gt;&lt;a class="anchor" href="#highlights"&gt;&lt;/a&gt;Highlights&lt;/h3&gt;
-&lt;div class="ulist"&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Spring Data "Projection Interfaces" are now supported by the Jackson message converter.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;code&gt;@RabbitListener&lt;/code&gt; methods can now receive batched messages as a &lt;code&gt;List&amp;lt;?&amp;gt;&lt;/code&gt; instead of one-at-a-time.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;You can now override the default acknowledge mode and executor directly on the &lt;code&gt;@RabbitListener&lt;/code&gt; annotation.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;For more information, see the &lt;a href="https://docs.spring.io/spring-amqp/docs/2.2.0.M2/reference/html/#whats-new"&gt;What&amp;#8217;s New&lt;/a&gt; chapter and the change logs.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="ulist"&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href="https://github.com/spring-projects/spring-amqp/releases/tag/v2.2.0.M1"&gt;Change log for M1&lt;/a&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href="https://github.com/spring-projects/spring-amqp/releases/tag/v2.2.0.M2"&gt;Change log for M2&lt;/a&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;div class="paragraph"&gt;
-&lt;p&gt;&lt;a href="http://projects.spring.io/spring-amqp/"&gt;Project Page&lt;/a&gt; | &lt;a href="https://github.com/spring-projects/spring-amqp"&gt;GitHub&lt;/a&gt; | &lt;a href="https://jira.spring.io/browse/AMQP"&gt;JIRA&lt;/a&gt; | &lt;a href="http://docs.spring.io/spring-amqp/docs/2.2.0.M2/reference/html"&gt;Documentation&lt;/a&gt; | &lt;a href="http://stackoverflow.com/questions/tagged/spring-amqp"&gt;Stack Overflow&lt;/a&gt; | &lt;a href="https://gitter.im/spring-projects/spring-amqp"&gt;Gitter&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
 &lt;!-- rendered by Sagan Renderer Service --&gt;</content>
   </entry>
 </feed>

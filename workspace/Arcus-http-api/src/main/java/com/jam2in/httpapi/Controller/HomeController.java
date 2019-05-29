@@ -28,6 +28,7 @@ import com.jam2in.httpapi.request.ThreeRequest;
 import com.jam2in.httpapi.request.ThreeSingularRequest;
 import com.jam2in.httpapi.request.TwoRequest;
 import com.jam2in.httpapi.response.ArcusBopBoolResponse;
+import com.jam2in.httpapi.response.ArcusBopGetBulkResponse;
 import com.jam2in.httpapi.response.ArcusBopInsertBulkResponse;
 import com.jam2in.httpapi.response.ArcusBopNotBoolResponse;
 import com.jam2in.httpapi.response.ArcusBopTrimmedResponse;
@@ -293,7 +294,7 @@ public class HomeController {
 
 	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-get-bulk",method=RequestMethod.POST)
 	@ResponseBody
-	ArcusBopNotBoolResponse bopGetBulk(@RequestBody BopRequest arcusRequest) {
+	ArcusBopGetBulkResponse bopGetBulk(@RequestBody BopRequest arcusRequest) {
 //		return apiService.bopGetBulk(arcusRequest.getKeyList(), arcusRequest.getFrom(), arcusRequest.getTo(), arcusRequest.geteFlagFilter(), arcusRequest.getCompValue(), arcusRequest.getOffset(), arcusRequest.getCount());
 		return apiService.bopGetBulk(arcusRequest.getKeyList(), arcusRequest.getFrom(), arcusRequest.getTo(), arcusRequest.getOffset(), arcusRequest.getCount());
 	}
