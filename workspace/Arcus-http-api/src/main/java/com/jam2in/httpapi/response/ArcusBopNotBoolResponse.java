@@ -10,15 +10,14 @@ public class ArcusBopNotBoolResponse {
 	@JsonDeserialize(using = ValueDeserializer.class)
 	@JsonRawValue
 	private Object result; // success or fail
-	private Object response; // future.get 결과
+	private Object response = null; // future.get 결과
 
 	public ArcusBopNotBoolResponse(Object results, CollectionResponse explanation) {
 		if(results.equals(null)) {
 			this.result = "FAIL";
-			response = null;
 		}
 		else {
-			this.result = "SUCCESS";
+			this.result = "SUCCESS (" + results + ")";
 			response = explanation;
 		}
 	}	

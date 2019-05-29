@@ -196,51 +196,51 @@ public class HomeController {
 	}
 
 	/////////B+Tree
-	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-create",method=RequestMethod.POST)
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/bop-create",method=RequestMethod.POST)
 	@ResponseBody
 	ArcusBopBoolResponse bopCreate(@RequestBody BopRequest arcusRequest)  throws IllegalStateException,TimeoutException, InterruptedException, ExecutionException, NullPointerException {
 		return apiService.bopCreate(arcusRequest.getKey(), arcusRequest.getValueType(), arcusRequest.getAttributes());
 	}
 	
-	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-insert",method=RequestMethod.POST)
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/bop-insert",method=RequestMethod.POST)
 	@ResponseBody
 	ArcusBopBoolResponse bopInsert(@RequestBody BopRequest arcusRequest) throws IllegalStateException, TimeoutException, InterruptedException, ExecutionException{
 		return apiService.bopInsert(arcusRequest.getKey(), arcusRequest.getBkey(), arcusRequest.geteFlag(), arcusRequest.getValue(), arcusRequest.getAttributesForCreate());
 	}
 	
 
-	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-piped-insert-bulk",method=RequestMethod.POST)
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/bop-piped-insert-bulk",method=RequestMethod.POST)
 	@ResponseBody
 	ArcusBopInsertBulkResponse bopPipedInsertBulk(@RequestBody BopRequest arcusRequest) throws IllegalStateException, TimeoutException, InterruptedException, ExecutionException{
 		return apiService.bopPipedInsertBulk(arcusRequest.getKey(), arcusRequest.getElementsWithMap(), arcusRequest.getAttributesForCreate());
 	}
 	
-	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-insert-bulk",method=RequestMethod.POST)
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/bop-insert-bulk",method=RequestMethod.POST)
 	@ResponseBody
 	ArcusBopInsertBulkResponse bopInsertBulk(@RequestBody BopRequest arcusRequest) throws IllegalStateException, TimeoutException, InterruptedException, ExecutionException{
 		return apiService.bopInsertBulk(arcusRequest.getKeyList(), arcusRequest.getBkey(), arcusRequest.geteFlag(), arcusRequest.getValue(), arcusRequest.getAttributesForCreate());
 	}
 	
 	
-	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-insert-and-get-trimmed",method=RequestMethod.POST)
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/bop-insert-and-get-trimmed",method=RequestMethod.POST)
 	@ResponseBody
 	ArcusBopTrimmedResponse bopInsertAndGetTrimmed(@RequestBody BopRequest arcusRequest) throws Exception{
 		return apiService.bopInsertAndGetTrimmed(arcusRequest.getKey(), arcusRequest.getBkey(), arcusRequest.geteFlag(), arcusRequest.getValue(), arcusRequest.getAttributesForCreate());
 	}
 	
-	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-upsert", method=RequestMethod.POST)
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/bop-upsert", method=RequestMethod.POST)
 	@ResponseBody
 	ArcusBopBoolResponse bopUpsert(@RequestBody BopRequest arcusRequest) throws IllegalStateException, TimeoutException, InterruptedException, ExecutionException{
 		return apiService.bopUpsert(arcusRequest.getKey(), arcusRequest.getBkey(), arcusRequest.geteFlag(), arcusRequest.getValue(), arcusRequest.getAttributesForCreate());
 	}
 	
-	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-update",method=RequestMethod.PATCH)
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/bop-update",method=RequestMethod.PATCH)
 	@ResponseBody
 	ArcusBopBoolResponse bopUpdate(@RequestBody BopRequest arcusRequest)  throws IllegalStateException, TimeoutException, InterruptedException, ExecutionException{
 		return apiService.bopUpdate(arcusRequest.getKey(), arcusRequest.getBkey(), arcusRequest.geteFlagUpdate(), arcusRequest.getFlag(), arcusRequest.getBitOp(), arcusRequest.geteFlagOffset(), arcusRequest.getValue());
 	}
 	
-	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-delete",method=RequestMethod.DELETE)
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/bop-delete",method=RequestMethod.DELETE)
 	@ResponseBody
 	ArcusBopBoolResponse bopDelete(@RequestBody BopRequest arcusRequest) {
 		if(arcusRequest.getFrom() != null) {
@@ -252,7 +252,7 @@ public class HomeController {
 		}
 	}
 	
-	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-incr",method=RequestMethod.PATCH)
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/bop-incr",method=RequestMethod.PATCH)
 	@ResponseBody
 	ArcusBopNotBoolResponse bopIncr(@RequestBody BopRequest arcusRequest) {
 		if(arcusRequest.getInitial() != null) {
@@ -262,7 +262,7 @@ public class HomeController {
 		}
 	}
 	
-	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-decr",method=RequestMethod.PATCH)
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/bop-decr",method=RequestMethod.PATCH)
 	@ResponseBody
 	ArcusBopNotBoolResponse bopDecr(@RequestBody BopRequest arcusRequest) {
 		if(arcusRequest.getInitial() != null) {
@@ -272,14 +272,14 @@ public class HomeController {
 		}
 	}
 	
-	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-get-item-count",method=RequestMethod.POST)
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/bop-get-item-count",method=RequestMethod.POST)
 	@ResponseBody
 	ArcusBopNotBoolResponse bopGetItemCount(@RequestBody BopRequest arcusRequest) {
 		//return apiService.bopGetItemCount(arcusRequest.getKey(), arcusRequest.getFrom(), arcusRequest.getTo(), arcusRequest.geteFlagFilter(), arcusRequest.getCompValue());
 		return apiService.bopGetItemCount(arcusRequest.getKey(), arcusRequest.getFrom(), arcusRequest.getTo());
 	}
 	
-	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-get",method=RequestMethod.POST)
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/bop-get",method=RequestMethod.POST)
 	@ResponseBody
 	ArcusBopNotBoolResponse bopGet(@RequestBody BopRequest arcusRequest) {
 		if(arcusRequest.getFrom() != null) {
@@ -292,27 +292,27 @@ public class HomeController {
 	}	
 	
 
-	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-get-bulk",method=RequestMethod.POST)
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/bop-get-bulk",method=RequestMethod.POST)
 	@ResponseBody
 	ArcusBopGetBulkResponse bopGetBulk(@RequestBody BopRequest arcusRequest) {
 //		return apiService.bopGetBulk(arcusRequest.getKeyList(), arcusRequest.getFrom(), arcusRequest.getTo(), arcusRequest.geteFlagFilter(), arcusRequest.getCompValue(), arcusRequest.getOffset(), arcusRequest.getCount());
 		return apiService.bopGetBulk(arcusRequest.getKeyList(), arcusRequest.getFrom(), arcusRequest.getTo(), arcusRequest.getOffset(), arcusRequest.getCount());
 	}
 	
-	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-smget",method=RequestMethod.POST)
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/bop-smget",method=RequestMethod.POST)
 	@ResponseBody
 	ArcusBopNotBoolResponse bopSMGet(@RequestBody BopRequest arcusRequest) {
 //		return apiService.bopSMGet(arcusRequest.getKeyList(), arcusRequest.getFrom(), arcusRequest.getTo(), arcusRequest.geteFlagFilter(), arcusRequest.getCompValue(), arcusRequest.getCount(), arcusRequest.getSMGetMode());
 		return apiService.bopSMGet(arcusRequest.getKeyList(), arcusRequest.getFrom(), arcusRequest.getTo(), arcusRequest.getCount(), arcusRequest.getSMGetMode());
 	}
 	
-	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-find-position",method=RequestMethod.POST)
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/bop-find-position",method=RequestMethod.POST)
 	@ResponseBody
 	ArcusBopNotBoolResponse bopFindPosition(@RequestBody BopRequest arcusRequest) {
 		return apiService.bopFindPosition(arcusRequest.getKey(), arcusRequest.getBkey(), arcusRequest.getOrder());
 	}
 	
-	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-get-by-position",method=RequestMethod.POST)
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/bop-get-by-position",method=RequestMethod.POST)
 	@ResponseBody
 	ArcusBopNotBoolResponse bopGetByPosition(@RequestBody BopRequest arcusRequest) {
 		if (arcusRequest.getFrom() != null) {
@@ -322,7 +322,7 @@ public class HomeController {
 		}
 	}
 	
-	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/async-bop-find-position-with-get",method=RequestMethod.POST)
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/bop-find-position-with-get",method=RequestMethod.POST)
 	@ResponseBody
 	ArcusBopNotBoolResponse bopFindPositionWithGet(@RequestBody BopRequest arcusRequest) {
 		return apiService.bopFindPositionWithGet(arcusRequest.getKey(), arcusRequest.getBkey(), arcusRequest.getOrder(), arcusRequest.getCount());

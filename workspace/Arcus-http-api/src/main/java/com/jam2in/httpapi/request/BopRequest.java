@@ -224,12 +224,14 @@ public class BopRequest {
 		this.offset = offset;
 	}
 	
-	public void setSMGetMode(SMGetMode smgetMode) {
-		this.smgetMode = smgetMode;
+	public void setSMGetMode(String smgetMode) {
+		if(smgetMode.equals("unique")) this.smgetMode = SMGetMode.UNIQUE;
+		else if(smgetMode.equals("duplicate")) this.smgetMode = SMGetMode.DUPLICATE;
 	}
 
-	public void setBtreeOrder(BTreeOrder order) {
-		this.order = order;
+	public void setBtreeOrder(String order) {
+		if(order.equals("ASC")) this.order = BTreeOrder.ASC;
+		else if(order.equals("DESC")) this.order = BTreeOrder.DESC;
 	}
 	
 	public void setPosition(Integer position) {
