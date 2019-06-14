@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -331,5 +332,16 @@ public class ApiDAO {
 		CollectionFuture<Map<Integer, Element<Object>>> future = arcusClient.asyncBopFindPositionWithGet(key, bkey, order, count);
 		return future;
 	}
-
+	public CollectionFuture<Boolean> sopCreate(String key, ElementValueType valueType, CollectionAttributes attributes){
+		CollectionFuture<Boolean> future = arcusClient.asyncSopCreate(key, valueType, attributes);
+		return future;
+	}
+	public CollectionFuture<Boolean> sopInsert(String key, Object value, CollectionAttributes attributesForCreate){
+		CollectionFuture<Boolean> future = arcusClient.asyncSopInsert(key, value, attributesForCreate);
+		return future;
+	}
+	public CollectionFuture<Set<Object>> sopGet(String key, int count, boolean withDelete, boolean dropIfEmpty){
+		CollectionFuture<Set<Object>> future = arcusClient.asyncSopGet(key, count, withDelete, dropIfEmpty);
+		return future;
+	}
 }

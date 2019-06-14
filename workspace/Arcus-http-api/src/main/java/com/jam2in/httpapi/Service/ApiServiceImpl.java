@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -31,6 +32,8 @@ import com.jam2in.httpapi.response.ArcusBopNotBoolResponse;
 import com.jam2in.httpapi.response.ArcusBopTrimmedResponse;
 import com.jam2in.httpapi.response.ArcusLongSuccessResponse;
 import com.jam2in.httpapi.response.ArcusSetBulkSuccessResponse;
+import com.jam2in.httpapi.response.ArcusSopBoolResponse;
+import com.jam2in.httpapi.response.ArcusSopGetResponse;
 import com.jam2in.httpapi.response.ArcusSuccessResponse;
 
 import net.spy.memcached.ArcusClient;
@@ -1576,4 +1579,61 @@ key, bkey, withDelete, dropIfEmpty
 		return new ArcusBopNotBoolResponse(result, future.getOperationStatus().getResponse());
 	}
 	
+	public ArcusSopBoolResponse sopCreate(String key, ElementValueType valueType, CollectionAttributes attributes) {
+		CollectionFuture<Boolean> future = null;
+		try{
+			future = apiDAO.sopCreate(key, valueType, attributes);
+		}catch(IllegalStateException e) {
+			e.printStackTrace();
+		}
+		Boolean result = null;
+		try {
+			result = future.get(1000L, TimeUnit.MILLISECONDS);			
+		}catch(TimeoutException e) {
+			e.printStackTrace();
+		}catch(InterruptedException e) {
+			e.printStackTrace();
+		}catch(ExecutionException e) {
+			e.printStackTrace();
+		}
+		return new ArcusSopBoolResponse(result, future.getOperationStatus().getResponse());
+	}
+	public ArcusSopBoolResponse sopInsert(String key, Object value, CollectionAttributes attributesForCreate) {
+		CollectionFuture<Boolean> future = null;
+		try {
+			future = apiDAO.sopInsert(key, value, attributesForCreate);
+		}catch(IllegalStateException e) {
+			e.printStackTrace();
+		}		
+		Boolean result = null;
+		try{
+			result = future.get(1000L, TimeUnit.MILLISECONDS);
+		}catch(TimeoutException e) {
+			e.printStackTrace();
+		}catch(InterruptedException e) {
+			e.printStackTrace();
+		}catch(ExecutionException e) {
+			e.printStackTrace();
+		}
+		return new ArcusSopBoolResponse(result, future.getOperationStatus().getResponse());
+	}
+	public ArcusSopGetResponse sopGet(String key, int count, boolean withDelete, boolean dropIfEmpty) {
+		CollectionFuture<Set<Object>> future = null;
+		try {
+			future = apiDAO.sopGet(key, count, withDelete, dropIfEmpty);
+		}catch(IllegalStateException e) {
+			e.printStackTrace();
+		}
+		Set<Object> result = null;
+		try{
+			result = future.get(1000L, TimeUnit.MILLISECONDS);
+		}catch(TimeoutException e) {
+			e.printStackTrace();
+		}catch(InterruptedException e) {
+			e.printStackTrace();
+		}catch(ExecutionException e) {
+			e.printStackTrace();
+		}
+		return new ArcusSopGetResponse(result, future.getOperationStatus().getResponse());
+	}	
 }

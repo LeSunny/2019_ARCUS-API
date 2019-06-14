@@ -8,12 +8,15 @@ import java.util.concurrent.TimeoutException;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.jam2in.httpapi.response.ArcusBopBoolResponse;
+
 import com.jam2in.httpapi.response.ArcusBopGetBulkResponse;
 import com.jam2in.httpapi.response.ArcusBopInsertBulkResponse;
 import com.jam2in.httpapi.response.ArcusBopNotBoolResponse;
 import com.jam2in.httpapi.response.ArcusBopTrimmedResponse;
 import com.jam2in.httpapi.response.ArcusLongSuccessResponse;
 import com.jam2in.httpapi.response.ArcusSetBulkSuccessResponse;
+import com.jam2in.httpapi.response.ArcusSopBoolResponse;
+import com.jam2in.httpapi.response.ArcusSopGetResponse;
 import com.jam2in.httpapi.response.ArcusSuccessResponse;
 
 import net.spy.memcached.collection.BTreeOrder;
@@ -78,4 +81,8 @@ public interface ApiService {
 	public ArcusBopNotBoolResponse bopGetByPosition(String key, BTreeOrder order, Object from, Object to);
 	public ArcusBopNotBoolResponse bopFindPositionWithGet(String key, Object bkey, BTreeOrder order, Integer count);
 	
+	//set
+	public ArcusSopBoolResponse sopCreate(String key, ElementValueType valueType, CollectionAttributes attributes);
+	public ArcusSopBoolResponse sopInsert(String key, Object value, CollectionAttributes attributesForCreate);
+	public ArcusSopGetResponse sopGet(String key, int count, boolean withDelete, boolean dropIfEmpty);
 }

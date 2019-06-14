@@ -24,6 +24,7 @@ import com.jam2in.httpapi.request.BopRequest;
 import com.jam2in.httpapi.request.FourRequest;
 import com.jam2in.httpapi.request.OnePluralRequest;
 import com.jam2in.httpapi.request.OneRequest;
+import com.jam2in.httpapi.request.SopRequest;
 import com.jam2in.httpapi.request.ThreeRequest;
 import com.jam2in.httpapi.request.ThreeSingularRequest;
 import com.jam2in.httpapi.request.TwoRequest;
@@ -34,6 +35,8 @@ import com.jam2in.httpapi.response.ArcusBopNotBoolResponse;
 import com.jam2in.httpapi.response.ArcusBopTrimmedResponse;
 import com.jam2in.httpapi.response.ArcusLongSuccessResponse;
 import com.jam2in.httpapi.response.ArcusSetBulkSuccessResponse;
+import com.jam2in.httpapi.response.ArcusSopBoolResponse;
+import com.jam2in.httpapi.response.ArcusSopGetResponse;
 import com.jam2in.httpapi.response.ArcusSuccessResponse;
 
 import net.spy.memcached.collection.ElementFlagFilter.BitWiseOperands;
@@ -327,5 +330,23 @@ public class HomeController {
 	ArcusBopNotBoolResponse bopFindPositionWithGet(@RequestBody BopRequest arcusRequest) {
 		return apiService.bopFindPositionWithGet(arcusRequest.getKey(), arcusRequest.getBkey(), arcusRequest.getOrder(), arcusRequest.getCount());
 	}
+
+	//set
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/sop-create",method=RequestMethod.POST)
+	@ResponseBody
+	ArcusSopBoolResponse sopCreate(@RequestBody SopRequest arcusRequest) {
+		return apiService.sopCreate(arcusRequest.getKey(), arcusRequest.getValueType(), arcusRequest.getAttributes());
+	}
 	
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/sop-insert",method=RequestMethod.POST)
+	@ResponseBody
+	ArcusSopBoolResponse sopInsert(@RequestBody SopRequest arcusRequest) {
+		return apiService.sopInsert(arcusRequest.getKey(), arcusRequest.getValue(), arcusRequest.getAttributesForCreate());
+	}
+	
+	@RequestMapping(value="/${arcus.apiVersion}/${arcus.serviceCode}/sop-get",method=RequestMethod.POST)
+	@ResponseBody
+	ArcusSopGetResponse sopGet(@RequestBody SopRequest arcusRequest) {
+		return apiService.sopGet(arcusRequest.getKey(), arcusRequest.getCount(), arcusRequest.getWithDelete(), arcusRequest.getDropIfEmpty());
+	}
 }
