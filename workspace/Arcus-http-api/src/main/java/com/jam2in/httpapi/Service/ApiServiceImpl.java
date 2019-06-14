@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -1249,8 +1250,13 @@ key, bkey, withDelete, dropIfEmpty
 			}
 			
 			Map<String, BTreeGetResult<Long, Object>> result = null;
+			//Map<String, BTreeGetResult<Object, Object>> convertResult = null;
 			try {
 				result = future.get(1000L, TimeUnit.MILLISECONDS);
+				//convertResult = new HashMap<String, BTreeGetResult<Object, Object>>();
+				//for (Entry<String, BTreeGetResult<Long, Object>> entry : result.entrySet()) {
+				//	convertResult.put(entry.getKey(), entry.getValue());
+				//}
 			}catch(TimeoutException e) {
 				e.printStackTrace();
 			}catch(InterruptedException e) {
@@ -1259,6 +1265,28 @@ key, bkey, withDelete, dropIfEmpty
 				e.printStackTrace();
 			}
 			return new ArcusBopGetBulkResponse(result);
+			/*
+			 * insertbulk 참고
+			 * Map<Integer, CollectionOperationStatus> result = null;
+		Map<Object, CollectionOperationStatus> convertResult = new HashMap<Object, CollectionOperationStatus>();
+		try {
+			result = future.get(1000L, TimeUnit.MILLISECONDS);
+			for (Map.Entry<Integer, CollectionOperationStatus> entry : result.entrySet()) {
+				convertResult.put(entry.getKey(), entry.getValue());
+			}
+		}catch(TimeoutException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}		
+		
+		return new ArcusBopInsertBulkResponse(convertResult, elementsWithMap);
+
+			 * 
+			 * */
+			
 		}
 		else {
 			CollectionGetBulkFuture<Map<String, BTreeGetResult<ByteArrayBKey, Object>>> future = null;

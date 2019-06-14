@@ -327,4 +327,5 @@ public class HomeController {
 	ArcusBopNotBoolResponse bopFindPositionWithGet(@RequestBody BopRequest arcusRequest) {
 		return apiService.bopFindPositionWithGet(arcusRequest.getKey(), arcusRequest.getBkey(), arcusRequest.getOrder(), arcusRequest.getCount());
 	}
+	
 }
