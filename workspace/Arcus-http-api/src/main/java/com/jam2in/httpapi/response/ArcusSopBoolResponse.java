@@ -13,7 +13,7 @@ public class ArcusSopBoolResponse {
 	private Object response = null;
 
 	public ArcusSopBoolResponse(Boolean results, CollectionResponse response) {
-		if(results.equals(null)) {
+		if(results!=true) {
 			this.result = "FAIL";
 		}
 		else {
