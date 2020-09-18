@@ -1,3 +1,0 @@
-INDEX VERSION 1.131
-C:\Users\DASOM\2019_ARCUS-API\workspace\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\949859118.index
-\Arcus-http-api\src\main\java
